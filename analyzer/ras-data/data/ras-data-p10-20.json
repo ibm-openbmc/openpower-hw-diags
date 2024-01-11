@@ -17813,7 +17813,7 @@
                 "1d": "core29_M_level2_L_th_1",
                 "1e": "core30_M_level2_L_th_1",
                 "1f": "core31_M_level2_L_th_1",
-                "flags": ["cs_possible"]
+                "flags": ["sue_source"]
             },
             "12": {
                 "00": "core0_M_level2_L_th_1",
@@ -17848,7 +17848,7 @@
                 "1d": "core29_M_level2_L_th_1",
                 "1e": "core30_M_level2_L_th_1",
                 "1f": "core31_M_level2_L_th_1",
-                "flags": ["cs_possible"]
+                "flags": ["sue_source"]
             },
             "13": {
                 "00": "self_M_th_32perDay",
