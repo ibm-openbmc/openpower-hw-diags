@@ -2,6 +2,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <util/ffdc_file.hpp>
+#include <util/trace.hpp>
 
 #include <string>
 #include <variant>
@@ -55,6 +56,31 @@ int findService(const std::string& i_interface, const std::string& i_path,
 int getProperty(const std::string& i_interface, const std::string& i_path,
                 const std::string& i_service, const std::string& i_property,
                 DBusValue& o_response);
+
+template <typename T>
+void setProperty(const std::string& service, const std::string& object,
+                 const std::string& interface, const std::string& propertyName,
+                 const std::variant<T>& propertyValue)
+{
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto method = bus.new_method_call(service.c_str(), object.c_str(),
+                                          "org.freedesktop.DBus.Properties",
+                                          "Set");
+        method.append(interface);
+        method.append(propertyName);
+        method.append(propertyValue);
+
+        bus.call(method);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        trace::err("util::dbus::setProperty exception");
+        std::string traceMsg = std::string(e.what());
+        trace::err(traceMsg.c_str());
+    }
+}
 
 /**
  * Get the IBM compatible names defined for this system

@@ -31,4 +31,13 @@ class DumpParameters
  */
 void requestDump(uint32_t i_logId, const DumpParameters& dumpParameters);
 
+/**
+ * Enable or disable host watchdog dbus property
+ *
+ * This property is used in enabling/ disabling host watchdog.
+ *
+ * @param enable        Whether to enable (True) or disable (False) the watchdog
+ */
+void enableWatchdog(bool enable);
+
 } // namespace attn
