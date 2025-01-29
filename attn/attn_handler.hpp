@@ -2,6 +2,8 @@
 
 #include <attn/attn_config.hpp>
 
+#include <cstdint>
+
 namespace attn
 {
 /** @brief Attention global status bits */
