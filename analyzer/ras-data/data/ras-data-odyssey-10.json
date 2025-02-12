@@ -142,6 +142,21 @@
                 "type": "action"
             }
         ],
+        "level2_M_ocmb_L_th_32perDay": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "priority": "LOW",
+                "type": "callout_self"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
         "level2_M_th_1": [
             {
                 "name": "level2_M",
@@ -459,6 +474,12 @@
         "omi_degraded_mode": [
             {
                 "name": "omi_bus_th_1",
+                "type": "action"
+            }
+        ],
+        "omi_detected_crc_event": [
+            {
+                "name": "omi_bus_info_only",
                 "type": "action"
             }
         ],
@@ -992,13 +1013,13 @@
                 "00": "ocmb_M_info_only"
             },
             "03": {
-                "00": "ocmb_M_info_only"
+                "00": "ocmb_M_th_32perDay"
             },
             "04": {
-                "00": "ocmb_M_info_only"
+                "00": "ocmb_M_th_32perDay"
             },
             "05": {
-                "00": "ocmb_M_info_only"
+                "00": "ocmb_M_th_32perDay"
             },
             "06": {
                 "00": "ocmb_M_info_only"
@@ -1383,7 +1404,7 @@
                 "00": "level2_M_th_1"
             },
             "1a": {
-                "00": "level2_M_ocmb_L_th_1",
+                "00": "level2_M_ocmb_L_th_32perDay",
                 "flags": ["crc_root_cause", "mask_but_dont_clear"]
             },
             "1b": {
@@ -1607,7 +1628,7 @@
                 "00": "ocmb_M_th_32perDay"
             },
             "04": {
-                "00": "level2_M_th_1",
+                "00": "omi_detected_crc_event",
                 "flags": ["crc_related_err"]
             },
             "05": {
@@ -2009,7 +2030,7 @@
     },
     "units": {
         "dimm0": "mem_port0/dimm0",
-        "dimm1": "mem_port1/dimm1",
+        "dimm1": "mem_port1/dimm0",
         "mem_port0": "mem_port0",
         "mem_port1": "mem_port1"
     },
