@@ -60,21 +60,20 @@ test_additional_srcs = [
 ################################################################################
 
 testcases = [
-  'test-bin-stream',
-  'test-ffdc-file',
-  'test-lpc-timeout',
-  'test-pdbg-dts',
-  'test-pll-unlock',
-  'test-resolution',
-  'test-root-cause-filter',
-  'test-tod-step-check-fault',
-  'test-cli',
+    'test-bin-stream',
+    'test-ffdc-file',
+    'test-lpc-timeout',
+    'test-pdbg-dts',
+    'test-pll-unlock',
+    'test-resolution',
+    'test-root-cause-filter',
+    'test-tod-step-check-fault',
+    'test-cli',
+    'test-chnl-timeout',
 ]
 
 # allow more time for long running tests
-longtests = {
-  'test-pll-unlock': 2,
-}
+longtests = {'test-pll-unlock': 2, 'test-chnl-timeout': 2}
 
 foreach tc : testcases
 

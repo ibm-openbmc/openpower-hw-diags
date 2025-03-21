@@ -720,547 +720,179 @@
                 "type": "action"
             }
         ],
-        "channel_timeout_omi0": [
-            {
-                "guard": true,
-                "name": "omi0",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi0",
-                "priority": "LOW",
-                "type": "callout_bus"
-            }
-        ],
         "channel_timeout_omi0_th_1": [
             {
-                "name": "channel_timeout_omi0",
-                "type": "action"
+                "instance": 0,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi0_th_32perDay": [
-            {
-                "name": "channel_timeout_omi0",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi1": [
-            {
-                "guard": true,
-                "name": "omi1",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi1",
-                "priority": "LOW",
-                "type": "callout_bus"
-            }
-        ],
-        "channel_timeout_omi10": [
-            {
-                "guard": true,
-                "name": "omi10",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi10",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi10_th_1": [
             {
-                "name": "channel_timeout_omi10",
-                "type": "action"
+                "instance": 10,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi10_th_32perDay": [
-            {
-                "name": "channel_timeout_omi10",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi11": [
-            {
-                "guard": true,
-                "name": "omi11",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi11",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi11_th_1": [
             {
-                "name": "channel_timeout_omi11",
-                "type": "action"
+                "instance": 11,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi11_th_32perDay": [
-            {
-                "name": "channel_timeout_omi11",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi12": [
-            {
-                "guard": true,
-                "name": "omi12",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi12",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi12_th_1": [
             {
-                "name": "channel_timeout_omi12",
-                "type": "action"
+                "instance": 12,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi12_th_32perDay": [
-            {
-                "name": "channel_timeout_omi12",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi13": [
-            {
-                "guard": true,
-                "name": "omi13",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi13",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi13_th_1": [
             {
-                "name": "channel_timeout_omi13",
-                "type": "action"
+                "instance": 13,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi13_th_32perDay": [
-            {
-                "name": "channel_timeout_omi13",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi14": [
-            {
-                "guard": true,
-                "name": "omi14",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi14",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi14_th_1": [
             {
-                "name": "channel_timeout_omi14",
-                "type": "action"
+                "instance": 14,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi14_th_32perDay": [
-            {
-                "name": "channel_timeout_omi14",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi15": [
-            {
-                "guard": true,
-                "name": "omi15",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi15",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi15_th_1": [
             {
-                "name": "channel_timeout_omi15",
-                "type": "action"
+                "instance": 15,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi15_th_32perDay": [
-            {
-                "name": "channel_timeout_omi15",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
                 "type": "action"
             }
         ],
         "channel_timeout_omi1_th_1": [
             {
-                "name": "channel_timeout_omi1",
-                "type": "action"
+                "instance": 1,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi1_th_32perDay": [
-            {
-                "name": "channel_timeout_omi1",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi2": [
-            {
-                "guard": true,
-                "name": "omi2",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi2",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi2_th_1": [
             {
-                "name": "channel_timeout_omi2",
-                "type": "action"
+                "instance": 2,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi2_th_32perDay": [
-            {
-                "name": "channel_timeout_omi2",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi3": [
-            {
-                "guard": true,
-                "name": "omi3",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi3",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi3_th_1": [
             {
-                "name": "channel_timeout_omi3",
-                "type": "action"
+                "instance": 3,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi3_th_32perDay": [
-            {
-                "name": "channel_timeout_omi3",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi4": [
-            {
-                "guard": true,
-                "name": "omi4",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi4",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi4_th_1": [
             {
-                "name": "channel_timeout_omi4",
-                "type": "action"
+                "instance": 4,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi4_th_32perDay": [
-            {
-                "name": "channel_timeout_omi4",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi5": [
-            {
-                "guard": true,
-                "name": "omi5",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi5",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi5_th_1": [
             {
-                "name": "channel_timeout_omi5",
-                "type": "action"
+                "instance": 5,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi5_th_32perDay": [
-            {
-                "name": "channel_timeout_omi5",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi6": [
-            {
-                "guard": true,
-                "name": "omi6",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi6",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi6_th_1": [
             {
-                "name": "channel_timeout_omi6",
-                "type": "action"
+                "instance": 6,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi6_th_32perDay": [
-            {
-                "name": "channel_timeout_omi6",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi7": [
-            {
-                "guard": true,
-                "name": "omi7",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi7",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi7_th_1": [
             {
-                "name": "channel_timeout_omi7",
-                "type": "action"
+                "instance": 7,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi7_th_32perDay": [
-            {
-                "name": "channel_timeout_omi7",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi8": [
-            {
-                "guard": true,
-                "name": "omi8",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi8",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi8_th_1": [
             {
-                "name": "channel_timeout_omi8",
-                "type": "action"
+                "instance": 8,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
                 "type": "action"
-            }
-        ],
-        "channel_timeout_omi8_th_32perDay": [
-            {
-                "name": "channel_timeout_omi8",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi9": [
-            {
-                "guard": true,
-                "name": "omi9",
-                "priority": "HIGH",
-                "type": "callout_connected"
-            },
-            {
-                "guard": false,
-                "name": "omi9",
-                "priority": "LOW",
-                "type": "callout_bus"
             }
         ],
         "channel_timeout_omi9_th_1": [
             {
-                "name": "channel_timeout_omi9",
-                "type": "action"
+                "instance": 9,
+                "name": "channel_timeout",
+                "type": "plugin"
             },
             {
                 "name": "th_1",
-                "type": "action"
-            }
-        ],
-        "channel_timeout_omi9_th_32perDay": [
-            {
-                "name": "channel_timeout_omi9",
-                "type": "action"
-            },
-            {
-                "name": "th_32perDay",
                 "type": "action"
             }
         ],
