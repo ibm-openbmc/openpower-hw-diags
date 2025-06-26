@@ -301,9 +301,23 @@ TEST(Resolution, BusCallout)
     nlohmann::json j{};
     std::string s{};
 
+    // Special case: The bus callout will add both ends of the bus to the
+    // callout list at LOW priority with no guarding. Generally, this would be
+    // the last thing to be added to the callout list because of the priority.
+    // However, there was a field defect where a higher priority callout of one
+    // of the endpoint was added to the list (with guard action) after the bus
+    // callout. The priority of the callout was updated to match the higher
+    // priority, but the guard action was not updated. So the following are
+    // added to the callout list in a specific order:
+    //  - First, one of the endpoints with MED_A and guard.
+    //  - Then, the bus callout with LOW and no guard. This should result in
+    //    both endpoints in the list: one at MED_A (guard), the other at LOW (no
+    //    guard).
+    //  - Finally, the other endpoint with MED_A and guard. This should result
+    //    in both endpoints in the list with MED_A priority and guard actions.
     c1->resolve(sd);
-    c2->resolve(sd);
     c3->resolve(sd);
+    c2->resolve(sd);
 
     // Verify the subsystem
     std::pair<callout::SrcSubsystem, callout::Priority> subsys = {
@@ -349,17 +363,17 @@ TEST(Resolution, BusCallout)
     },
     {
         "Bus Type": "OMI_BUS",
-        "Callout Type": "Connected Callout",
-        "Guard": true,
-        "Priority": "medium_group_A",
+        "Callout Type": "Bus Callout",
+        "Guard": false,
+        "Priority": "low",
         "RX Target": "/proc0/pib/perv12/mc0/mi0/mcc0/omi0",
         "TX Target": "/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0"
     },
     {
         "Bus Type": "OMI_BUS",
-        "Callout Type": "Bus Callout",
-        "Guard": false,
-        "Priority": "low",
+        "Callout Type": "Connected Callout",
+        "Guard": true,
+        "Priority": "medium_group_A",
         "RX Target": "/proc0/pib/perv12/mc0/mi0/mcc0/omi0",
         "TX Target": "/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0"
     }
