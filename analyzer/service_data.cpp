@@ -181,25 +181,27 @@ void ServiceData::addCallout(const nlohmann::json& i_callout)
     assert(i_callout.contains("Priority") &&
            m.contains(i_callout.at("Priority")));
 
-    bool addCallout = true;
+    // Look if this callout already exists in the list.
+    auto itr = std::find_if(iv_calloutList.begin(), iv_calloutList.end(),
+                            [&](const auto& c) {
+        return c.contains(type) && c.at(type) == i_callout.at(type);
+    });
 
-    for (auto& c : iv_calloutList)
+    if (iv_calloutList.end() != itr)
     {
-        if (c.contains(type) && (c.at(type) == i_callout.at(type)))
+        // The callout already exists in the list. If the priority of the
+        // callout in the list is lower than the new callout, replace it with
+        // the new callout. Otherwise, use the current callout in the list and
+        // ignore the new callout. This is done to maintain any guard
+        // information that may be associated with the highest priority callout.
+        if (m.at(itr->at("Priority")) < m.at(i_callout.at("Priority")))
         {
-            // The new callout already exists. Don't add a new callout.
-            addCallout = false;
-
-            if (m.at(c.at("Priority")) < m.at(i_callout.at("Priority")))
-            {
-                // The new callout has a higher priority, update it.
-                c["Priority"] = i_callout.at("Priority");
-            }
+            *itr = i_callout;
         }
     }
-
-    if (addCallout)
+    else
     {
+        // New callout. So push it to the list.
         iv_calloutList.push_back(i_callout);
     }
 }
