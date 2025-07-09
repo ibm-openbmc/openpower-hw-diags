@@ -27,7 +27,7 @@ configure_file(
     input: 'attn_handler.service.in',
     output: 'attn_handler.service',
     install: true,
-    install_dir: dependency('systemd').get_variable('systemdsystemunitdir'),
+    install_dir: dependency('systemd').get_variable('systemd_system_unit_dir'),
 )
 
 # install attention handler config file
