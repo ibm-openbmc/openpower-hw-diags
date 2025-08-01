@@ -12,15 +12,15 @@ namespace attn
 /**
  *  @brief Responsible for monitoring attention GPIO state change
  */
-class AttnMonitor
+class GpioAttnMonitor
 {
   public:
-    AttnMonitor() = delete;
-    ~AttnMonitor() = default;
+    GpioAttnMonitor() = delete;
+    ~GpioAttnMonitor() = default;
 
-    /** @brief Constructs AttnMonitor object.
+    /** @brief Constructs GpioAttnMonitor object.
      *
-     * The AttnMonitor constructor will create a new object and start
+     * The GpioAttnMonitor constructor will create a new object and start
      * the objects associated GPIO listener.
      *
      * @param line         GPIO line handle
@@ -28,8 +28,8 @@ class AttnMonitor
      * @param io           io service
      * @param i_attnConfig poiner to attention handler configuration object
      */
-    AttnMonitor(gpiod_line* line, gpiod_line_request_config& config,
-                boost::asio::io_context& io, Config* i_attnConfig) :
+    GpioAttnMonitor(gpiod_line* line, gpiod_line_request_config& config,
+                    boost::asio::io_context& io, Config* i_attnConfig) :
         iv_gpioLine(line), iv_gpioConfig(config), iv_gpioEventDescriptor(io),
         iv_config(i_attnConfig)
     {
@@ -37,16 +37,16 @@ class AttnMonitor
     }
 
     // delete copy constructor
-    AttnMonitor(const AttnMonitor&) = delete;
+    GpioAttnMonitor(const GpioAttnMonitor&) = delete;
 
     // delete assignment operator
-    AttnMonitor& operator=(const AttnMonitor&) = delete;
+    GpioAttnMonitor& operator=(const GpioAttnMonitor&) = delete;
 
     // delere move copy consructor
-    AttnMonitor(AttnMonitor&&) = delete;
+    GpioAttnMonitor(GpioAttnMonitor&&) = delete;
 
     // delete move assignment operator
-    AttnMonitor& operator=(AttnMonitor&&) = delete;
+    GpioAttnMonitor& operator=(GpioAttnMonitor&&) = delete;
 
   private: // instance variables
     /** @brief gpiod handle to gpio line */

@@ -1,4 +1,4 @@
-#include <attn/attn_monitor.hpp>
+#include <attn/gpio_attn_monitor.hpp>
 
 namespace attn
 {
@@ -28,9 +28,9 @@ int attnDaemon(Config* i_config)
     else
     {
         // Creating a vector of one gpio to monitor
-        std::vector<std::unique_ptr<attn::AttnMonitor>> gpios;
-        gpios.push_back(
-            std::make_unique<attn::AttnMonitor>(line, config, io, i_config));
+        std::vector<std::unique_ptr<attn::GpioAttnMonitor>> gpios;
+        gpios.push_back(std::make_unique<attn::GpioAttnMonitor>(
+            line, config, io, i_config));
 
         io.run(); // start GPIO monitor
 

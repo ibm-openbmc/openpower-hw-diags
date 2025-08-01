@@ -1,12 +1,12 @@
 #include <attn/attn_handler.hpp>
-#include <attn/attn_monitor.hpp>
+#include <attn/gpio_attn_monitor.hpp>
 #include <util/trace.hpp>
 
 namespace attn
 {
 
 /** @brief Register a callback for gpio event */
-void AttnMonitor::scheduleGPIOEvent()
+void GpioAttnMonitor::scheduleGPIOEvent()
 {
     // Register async callback, note that callback is a
     // lambda function with "this" pointer captured
@@ -27,7 +27,7 @@ void AttnMonitor::scheduleGPIOEvent()
 }
 
 /** @brief Handle the GPIO state change event */
-void AttnMonitor::handleGPIOEvent()
+void GpioAttnMonitor::handleGPIOEvent()
 {
     gpiod_line_event gpioEvent;
 
@@ -59,7 +59,7 @@ void AttnMonitor::handleGPIOEvent()
 }
 
 /** @brief Request a GPIO line for monitoring attention events */
-void AttnMonitor::requestGPIOEvent()
+void GpioAttnMonitor::requestGPIOEvent()
 {
     if (0 != gpiod_line_request(iv_gpioLine, &iv_gpioConfig, 0))
     {
