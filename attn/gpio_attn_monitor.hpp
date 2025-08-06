@@ -42,7 +42,7 @@ class GpioAttnMonitor
     // delete assignment operator
     GpioAttnMonitor& operator=(const GpioAttnMonitor&) = delete;
 
-    // delere move copy consructor
+    // delete move copy consructor
     GpioAttnMonitor(GpioAttnMonitor&&) = delete;
 
     // delete move assignment operator

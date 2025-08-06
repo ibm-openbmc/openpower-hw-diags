@@ -50,6 +50,7 @@ attn_src = files(
     'attn_logging.cpp',
     'attn_main.cpp',
     'bp_handler.cpp',
+    'fsi_attn_monitor.cpp',
     'gpio_attn_monitor.cpp',
     'ti_handler.cpp',
     'vital_handler.cpp',
