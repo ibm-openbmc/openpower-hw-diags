@@ -1,0 +1,5042 @@
+{
+    "actions": {
+        "TBD": [
+            {
+                "name": "level2_M_th_1",
+                "type": "action"
+            }
+        ],
+        "compute_chip_M_info_only": [
+            {
+                "name": "compute_chip_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "compute_chip_M_info_only_mnfg": [
+            {
+                "name": "compute_chip_M_info_only",
+                "type": "action"
+            },
+            {
+                "name": "mnfg_informational_only",
+                "type": "flag"
+            }
+        ],
+        "compute_chip_M_level2_L_th_1": [
+            {
+                "guard": true,
+                "priority": "MED",
+                "type": "callout_self"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "compute_chip_M_th_1": [
+            {
+                "guard": true,
+                "priority": "MED",
+                "type": "callout_self"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "compute_chip_M_th_32perDay": [
+            {
+                "guard": true,
+                "priority": "MED",
+                "type": "callout_self"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core0_M": [
+            {
+                "guard": true,
+                "name": "core0",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core0_M_info_only": [
+            {
+                "name": "core0_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core0_M_level2_L_th_1": [
+            {
+                "name": "core0_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core0_M_level2_M_th_core_recovery": [
+            {
+                "name": "core0_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core0_M_th_1": [
+            {
+                "name": "core0_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core0_M_th_32perDay": [
+            {
+                "name": "core0_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core0_M_th_core_recovery": [
+            {
+                "name": "core0_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core1_M": [
+            {
+                "guard": true,
+                "name": "core1",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core1_M_info_only": [
+            {
+                "name": "core1_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core1_M_level2_L_th_1": [
+            {
+                "name": "core1_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core1_M_level2_M_th_core_recovery": [
+            {
+                "name": "core1_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core1_M_th_1": [
+            {
+                "name": "core1_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core1_M_th_32perDay": [
+            {
+                "name": "core1_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core1_M_th_core_recovery": [
+            {
+                "name": "core1_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core2_M": [
+            {
+                "guard": true,
+                "name": "core2",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core2_M_info_only": [
+            {
+                "name": "core2_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core2_M_level2_L_th_1": [
+            {
+                "name": "core2_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core2_M_level2_M_th_core_recovery": [
+            {
+                "name": "core2_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core2_M_th_1": [
+            {
+                "name": "core2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core2_M_th_32perDay": [
+            {
+                "name": "core2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core2_M_th_core_recovery": [
+            {
+                "name": "core2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core3_M": [
+            {
+                "guard": true,
+                "name": "core3",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core3_M_info_only": [
+            {
+                "name": "core3_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core3_M_level2_L_th_1": [
+            {
+                "name": "core3_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core3_M_level2_M_th_core_recovery": [
+            {
+                "name": "core3_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core3_M_th_1": [
+            {
+                "name": "core3_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core3_M_th_32perDay": [
+            {
+                "name": "core3_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core3_M_th_core_recovery": [
+            {
+                "name": "core3_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core4_M": [
+            {
+                "guard": true,
+                "name": "core4",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core4_M_info_only": [
+            {
+                "name": "core4_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core4_M_level2_L_th_1": [
+            {
+                "name": "core4_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core4_M_level2_M_th_core_recovery": [
+            {
+                "name": "core4_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core4_M_th_1": [
+            {
+                "name": "core4_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core4_M_th_32perDay": [
+            {
+                "name": "core4_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core4_M_th_core_recovery": [
+            {
+                "name": "core4_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core5_M": [
+            {
+                "guard": true,
+                "name": "core5",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core5_M_info_only": [
+            {
+                "name": "core5_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core5_M_level2_L_th_1": [
+            {
+                "name": "core5_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core5_M_level2_M_th_core_recovery": [
+            {
+                "name": "core5_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core5_M_th_1": [
+            {
+                "name": "core5_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core5_M_th_32perDay": [
+            {
+                "name": "core5_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core5_M_th_core_recovery": [
+            {
+                "name": "core5_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core6_M": [
+            {
+                "guard": true,
+                "name": "core6",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core6_M_info_only": [
+            {
+                "name": "core6_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core6_M_level2_L_th_1": [
+            {
+                "name": "core6_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core6_M_level2_M_th_core_recovery": [
+            {
+                "name": "core6_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core6_M_th_1": [
+            {
+                "name": "core6_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core6_M_th_32perDay": [
+            {
+                "name": "core6_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core6_M_th_core_recovery": [
+            {
+                "name": "core6_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core7_M": [
+            {
+                "guard": true,
+                "name": "core7",
+                "priority": "MED",
+                "type": "callout_unit"
+            }
+        ],
+        "core7_M_info_only": [
+            {
+                "name": "core7_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "core7_M_level2_L_th_1": [
+            {
+                "name": "core7_M",
+                "type": "action"
+            },
+            {
+                "name": "LEVEL2",
+                "priority": "LOW",
+                "type": "callout_procedure"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core7_M_level2_M_th_core_recovery": [
+            {
+                "name": "core7_M",
+                "type": "action"
+            },
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "core7_M_th_1": [
+            {
+                "name": "core7_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "core7_M_th_32perDay": [
+            {
+                "name": "core7_M",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "core7_M_th_core_recovery": [
+            {
+                "name": "core7_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "eq0_M_info_only": [
+            {
+                "name": "eq0_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "eq0_M_info_only_mnfg": [
+            {
+                "name": "eq0_M_info_only",
+                "type": "action"
+            },
+            {
+                "name": "mnfg_informational_only",
+                "type": "flag"
+            }
+        ],
+        "eq0_M_th_1": [
+            {
+                "guard": true,
+                "name": "eq0",
+                "priority": "MED",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "eq0_M_th_32perDay": [
+            {
+                "guard": true,
+                "name": "eq0",
+                "priority": "MED",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "eq1_M_info_only": [
+            {
+                "name": "eq1_M_th_32perDay",
+                "type": "action"
+            },
+            {
+                "name": "informational_only",
+                "type": "flag"
+            }
+        ],
+        "eq1_M_info_only_mnfg": [
+            {
+                "name": "eq1_M_info_only",
+                "type": "action"
+            },
+            {
+                "name": "mnfg_informational_only",
+                "type": "flag"
+            }
+        ],
+        "eq1_M_th_1": [
+            {
+                "guard": true,
+                "name": "eq1",
+                "priority": "MED",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "eq1_M_th_32perDay": [
+            {
+                "guard": true,
+                "name": "eq1",
+                "priority": "MED",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "hub_chip_M": [
+            {
+                "guard": true,
+                "name": "tbus",
+                "priority": "MED",
+                "type": "callout_connected"
+            }
+        ],
+        "hub_chip_M_th_1": [
+            {
+                "name": "hub_chip_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce0": [
+            {
+                "name": "level2_M_core0_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce1": [
+            {
+                "name": "level2_M_core1_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce2": [
+            {
+                "name": "level2_M_core2_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce3": [
+            {
+                "name": "level2_M_core3_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce4": [
+            {
+                "name": "level2_M_core4_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce5": [
+            {
+                "name": "level2_M_core5_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce6": [
+            {
+                "name": "level2_M_core6_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_read_ce7": [
+            {
+                "name": "level2_M_core7_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue0": [
+            {
+                "name": "core0_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue1": [
+            {
+                "name": "core1_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue2": [
+            {
+                "name": "core2_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue3": [
+            {
+                "name": "core3_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue4": [
+            {
+                "name": "core4_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue5": [
+            {
+                "name": "core5_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue6": [
+            {
+                "name": "core6_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_cache_ue7": [
+            {
+                "name": "core7_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce0": [
+            {
+                "name": "level2_M_core0_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce1": [
+            {
+                "name": "level2_M_core1_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce2": [
+            {
+                "name": "level2_M_core2_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce3": [
+            {
+                "name": "level2_M_core3_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce4": [
+            {
+                "name": "level2_M_core4_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce5": [
+            {
+                "name": "level2_M_core5_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce6": [
+            {
+                "name": "level2_M_core6_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l2_dir_read_ce7": [
+            {
+                "name": "level2_M_core7_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce0": [
+            {
+                "name": "level2_M_core0_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce1": [
+            {
+                "name": "level2_M_core1_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce2": [
+            {
+                "name": "level2_M_core2_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce3": [
+            {
+                "name": "level2_M_core3_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce4": [
+            {
+                "name": "level2_M_core4_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce5": [
+            {
+                "name": "level2_M_core5_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce6": [
+            {
+                "name": "level2_M_core6_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_read_ce7": [
+            {
+                "name": "level2_M_core7_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue0": [
+            {
+                "name": "core0_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue1": [
+            {
+                "name": "core1_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue2": [
+            {
+                "name": "core2_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue3": [
+            {
+                "name": "core3_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue4": [
+            {
+                "name": "core4_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue5": [
+            {
+                "name": "core5_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue6": [
+            {
+                "name": "core6_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_cache_ue7": [
+            {
+                "name": "core7_M_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce0": [
+            {
+                "name": "level2_M_core0_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce1": [
+            {
+                "name": "level2_M_core1_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce2": [
+            {
+                "name": "level2_M_core2_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce3": [
+            {
+                "name": "level2_M_core3_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce4": [
+            {
+                "name": "level2_M_core4_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce5": [
+            {
+                "name": "level2_M_core5_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce6": [
+            {
+                "name": "level2_M_core6_L_th_1",
+                "type": "action"
+            }
+        ],
+        "l3_dir_read_ce7": [
+            {
+                "name": "level2_M_core7_L_th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M": [
+            {
+                "name": "LEVEL2",
+                "priority": "MED",
+                "type": "callout_procedure"
+            }
+        ],
+        "level2_M_compute_chip_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "priority": "LOW",
+                "type": "callout_self"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core0_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core0",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core1_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core1",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core2_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core2",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core3_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core3",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core4_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core4",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core5_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core5",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core6_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core6",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_core7_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "core7",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_eq0_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "eq0",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_eq1_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "eq1",
+                "priority": "LOW",
+                "type": "callout_unit"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_hub_chip_L_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "guard": false,
+                "name": "tbus",
+                "priority": "LOW",
+                "type": "callout_connected"
+            }
+        ],
+        "level2_M_th_1": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "level2_M_th_core_recovery": [
+            {
+                "name": "level2_M",
+                "type": "action"
+            },
+            {
+                "name": "th_core_recovery",
+                "type": "action"
+            }
+        ],
+        "pb_token_manager": [
+            {
+                "instance": 0,
+                "name": "pb_token_manager",
+                "type": "plugin"
+            }
+        ],
+        "pcb_slave_internal_parity": [],
+        "rcs_error_handling": [],
+        "tbus": [
+            {
+                "guard": true,
+                "priority": "MED_A",
+                "type": "callout_self"
+            },
+            {
+                "guard": true,
+                "name": "tbus",
+                "priority": "MED_A",
+                "type": "callout_connected"
+            },
+            {
+                "guard": false,
+                "name": "tbus",
+                "priority": "LOW",
+                "type": "callout_bus"
+            }
+        ],
+        "tbus_bus_M_th_1": [
+            {
+                "name": "tbus",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "tbus_bus_M_th_32perDay": [
+            {
+                "name": "tbus",
+                "type": "action"
+            },
+            {
+                "name": "th_32perDay",
+                "type": "action"
+            }
+        ],
+        "th_1": [],
+        "th_32perDay": [
+            {
+                "name": "recovered_error",
+                "type": "flag"
+            }
+        ],
+        "th_core_recovery": []
+    },
+    "buses": {
+        "tbus": {
+            "type": "TBUS"
+        }
+    },
+    "model_ec": "20dd0010",
+    "signatures": {
+        "0254": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "compute_chip_M_th_1"
+            },
+            "02": {
+                "00": "compute_chip_M_th_1"
+            },
+            "03": {
+                "00": "tbus_bus_M_th_32perDay"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "compute_chip_M_th_1"
+            },
+            "06": {
+                "00": "compute_chip_M_th_1"
+            },
+            "07": {
+                "00": "tbus_bus_M_th_32perDay"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0a": {
+                "00": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0c": {
+                "00": "level2_M_th_1"
+            },
+            "0d": {
+                "00": "compute_chip_M_th_1"
+            },
+            "0e": {
+                "00": "compute_chip_M_th_1"
+            },
+            "0f": {
+                "00": "compute_chip_M_level2_L_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1"
+            },
+            "11": {
+                "00": "compute_chip_M_level2_L_th_1"
+            },
+            "12": {
+                "00": "compute_chip_M_level2_L_th_1"
+            },
+            "13": {
+                "00": "compute_chip_M_info_only"
+            },
+            "14": {
+                "00": "compute_chip_M_th_1"
+            },
+            "15": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "16": {
+                "00": "level2_M_th_1"
+            },
+            "17": {
+                "00": "compute_chip_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "0985": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "02": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "03": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "07": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "08": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "09": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0a": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0b": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0c": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0d": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0e": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "0f": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "10": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "11": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "12": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "13": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "14": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            },
+            "15": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1"
+            }
+        },
+        "0cb8": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "compute_chip_M_info_only"
+            },
+            "02": {
+                "00": "compute_chip_M_info_only"
+            },
+            "03": {
+                "00": "level2_M_th_1"
+            },
+            "04": {
+                "00": "compute_chip_M_info_only"
+            },
+            "05": {
+                "00": "compute_chip_M_info_only"
+            },
+            "06": {
+                "00": "compute_chip_M_info_only"
+            },
+            "07": {
+                "00": "compute_chip_M_info_only"
+            },
+            "08": {
+                "00": "compute_chip_M_info_only"
+            },
+            "09": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0a": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0b": {
+                "00": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0d": {
+                "00": "level2_M_th_1"
+            },
+            "0e": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "compute_chip_M_info_only"
+            },
+            "11": {
+                "00": "compute_chip_M_info_only"
+            },
+            "12": {
+                "00": "level2_M_th_1"
+            },
+            "13": {
+                "00": "compute_chip_M_info_only"
+            },
+            "14": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "15": {
+                "00": "compute_chip_M_info_only"
+            },
+            "16": {
+                "00": "compute_chip_M_info_only"
+            },
+            "17": {
+                "00": "compute_chip_M_info_only"
+            },
+            "18": {
+                "00": "compute_chip_M_info_only"
+            },
+            "19": {
+                "00": "compute_chip_M_info_only"
+            },
+            "1a": {
+                "00": "compute_chip_M_info_only"
+            },
+            "1b": {
+                "00": "compute_chip_M_info_only"
+            },
+            "1c": {
+                "00": "compute_chip_M_info_only"
+            },
+            "1d": {
+                "00": "compute_chip_M_info_only"
+            },
+            "1e": {
+                "00": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "compute_chip_M_info_only"
+            },
+            "20": {
+                "00": "compute_chip_M_info_only"
+            },
+            "21": {
+                "00": "compute_chip_M_info_only"
+            },
+            "22": {
+                "00": "compute_chip_M_info_only"
+            },
+            "23": {
+                "00": "compute_chip_M_info_only"
+            },
+            "24": {
+                "00": "compute_chip_M_info_only"
+            },
+            "25": {
+                "00": "compute_chip_M_info_only"
+            },
+            "26": {
+                "00": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "0cd3": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "compute_chip_M_info_only"
+            },
+            "02": {
+                "00": "compute_chip_M_info_only"
+            },
+            "03": {
+                "00": "compute_chip_M_info_only"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "compute_chip_M_info_only"
+            },
+            "06": {
+                "00": "compute_chip_M_info_only"
+            },
+            "07": {
+                "00": "compute_chip_M_info_only"
+            },
+            "08": {
+                "00": "compute_chip_M_info_only"
+            },
+            "09": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0a": {
+                "00": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0c": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0d": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0e": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0f": {
+                "00": "compute_chip_M_info_only"
+            },
+            "10": {
+                "00": "compute_chip_M_info_only"
+            },
+            "11": {
+                "00": "compute_chip_M_info_only"
+            },
+            "12": {
+                "00": "compute_chip_M_info_only"
+            },
+            "13": {
+                "00": "compute_chip_M_info_only"
+            },
+            "14": {
+                "00": "compute_chip_M_info_only"
+            },
+            "15": {
+                "00": "compute_chip_M_info_only"
+            },
+            "16": {
+                "00": "compute_chip_M_info_only"
+            },
+            "17": {
+                "00": "compute_chip_M_info_only"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "1f38": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_th_1",
+                "flags": ["external_checkstop"]
+            },
+            "02": {
+                "00": "level2_M_th_1",
+                "flags": ["external_checkstop"]
+            }
+        },
+        "263d": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_th_1"
+            },
+            "02": {
+                "00": "level2_M_th_1"
+            },
+            "03": {
+                "00": "level2_M_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "06": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "07": {
+                "00": "tbus_bus_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "08": {
+                "00": "tbus_bus_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0c": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0d": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0e": {
+                "00": "tbus_bus_M_th_1"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "compute_chip_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "11": {
+                "00": "compute_chip_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "12": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "13": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "14": {
+                "00": "compute_chip_M_th_1"
+            },
+            "15": {
+                "00": "compute_chip_M_th_1"
+            },
+            "16": {
+                "00": "compute_chip_M_th_1"
+            },
+            "17": {
+                "00": "compute_chip_M_th_1"
+            },
+            "18": {
+                "00": "compute_chip_M_th_1"
+            },
+            "19": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1a": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1b": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1c": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1d": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1e": {
+                "00": "compute_chip_M_th_1"
+            },
+            "1f": {
+                "00": "compute_chip_M_th_1"
+            }
+        },
+        "330a": {
+            "00": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "01": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "02": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "03": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "04": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "05": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "06": {
+                "00": "compute_chip_M_info_only"
+            },
+            "07": {
+                "00": "compute_chip_M_info_only"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0b": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0c": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0d": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0e": {
+                "00": "level2_M_th_1"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1"
+            },
+            "12": {
+                "00": "level2_M_th_1"
+            },
+            "13": {
+                "00": "level2_M_th_1"
+            },
+            "14": {
+                "00": "level2_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1"
+            },
+            "21": {
+                "00": "level2_M_th_1"
+            },
+            "22": {
+                "00": "level2_M_th_1"
+            },
+            "23": {
+                "00": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1"
+            },
+            "29": {
+                "00": "level2_M_th_1"
+            },
+            "2a": {
+                "00": "level2_M_th_1"
+            },
+            "2b": {
+                "00": "level2_M_th_1"
+            },
+            "2c": {
+                "00": "level2_M_th_1"
+            },
+            "2d": {
+                "00": "level2_M_th_1"
+            },
+            "2e": {
+                "00": "level2_M_th_1"
+            },
+            "2f": {
+                "00": "level2_M_th_1"
+            },
+            "30": {
+                "00": "level2_M_th_1"
+            },
+            "31": {
+                "00": "level2_M_th_1"
+            },
+            "32": {
+                "00": "level2_M_th_1"
+            },
+            "33": {
+                "00": "level2_M_th_1"
+            },
+            "34": {
+                "00": "level2_M_th_1"
+            },
+            "35": {
+                "00": "level2_M_th_1"
+            },
+            "36": {
+                "00": "level2_M_th_1"
+            },
+            "37": {
+                "00": "level2_M_th_1"
+            },
+            "38": {
+                "00": "level2_M_th_1"
+            },
+            "39": {
+                "00": "level2_M_th_1"
+            },
+            "3a": {
+                "00": "level2_M_th_1"
+            },
+            "3b": {
+                "00": "level2_M_th_1"
+            },
+            "3c": {
+                "00": "level2_M_th_1"
+            },
+            "3d": {
+                "00": "level2_M_th_1"
+            },
+            "3e": {
+                "00": "level2_M_th_1"
+            },
+            "3f": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "458b": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "02": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "03": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1"
+            },
+            "07": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "0a": {
+                "00": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "0d": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "0e": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "0f": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "12": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "13": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "14": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "15": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "16": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "17": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "18": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "19": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1a": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1b": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1c": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1d": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1e": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "1f": {
+                "00": "level2_M_hub_chip_L_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "4d74": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "01": {
+                "00": "l2_cache_read_ce0",
+                "01": "l2_cache_read_ce1",
+                "02": "l2_cache_read_ce2",
+                "03": "l2_cache_read_ce3",
+                "04": "l2_cache_read_ce4",
+                "05": "l2_cache_read_ce5",
+                "06": "l2_cache_read_ce6",
+                "07": "l2_cache_read_ce7"
+            },
+            "02": {
+                "00": "l2_cache_ue0",
+                "01": "l2_cache_ue1",
+                "02": "l2_cache_ue2",
+                "03": "l2_cache_ue3",
+                "04": "l2_cache_ue4",
+                "05": "l2_cache_ue5",
+                "06": "l2_cache_ue6",
+                "07": "l2_cache_ue7",
+                "flags": ["sue_source"]
+            },
+            "03": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["sue_seen"]
+            },
+            "04": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "07": {
+                "00": "l2_dir_read_ce0",
+                "01": "l2_dir_read_ce1",
+                "02": "l2_dir_read_ce2",
+                "03": "l2_dir_read_ce3",
+                "04": "l2_dir_read_ce4",
+                "05": "l2_dir_read_ce5",
+                "06": "l2_dir_read_ce6",
+                "07": "l2_dir_read_ce7"
+            },
+            "08": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "09": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "0a": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "0b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "core0_M_th_32perDay",
+                "01": "core1_M_th_32perDay",
+                "02": "core2_M_th_32perDay",
+                "03": "core3_M_th_32perDay",
+                "04": "core4_M_th_32perDay",
+                "05": "core5_M_th_32perDay",
+                "06": "core6_M_th_32perDay",
+                "07": "core7_M_th_32perDay"
+            },
+            "0d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0f": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1",
+                "02": "level2_M_hub_chip_L_th_1",
+                "03": "level2_M_hub_chip_L_th_1",
+                "04": "level2_M_hub_chip_L_th_1",
+                "05": "level2_M_hub_chip_L_th_1",
+                "06": "level2_M_hub_chip_L_th_1",
+                "07": "level2_M_hub_chip_L_th_1"
+            },
+            "10": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "12": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["sue_source"]
+            },
+            "13": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["sue_source"]
+            },
+            "14": {
+                "00": "compute_chip_M_th_32perDay",
+                "01": "compute_chip_M_th_32perDay",
+                "02": "compute_chip_M_th_32perDay",
+                "03": "compute_chip_M_th_32perDay",
+                "04": "compute_chip_M_th_32perDay",
+                "05": "compute_chip_M_th_32perDay",
+                "06": "compute_chip_M_th_32perDay",
+                "07": "compute_chip_M_th_32perDay"
+            },
+            "15": {
+                "00": "compute_chip_M_th_1",
+                "01": "compute_chip_M_th_1",
+                "02": "compute_chip_M_th_1",
+                "03": "compute_chip_M_th_1",
+                "04": "compute_chip_M_th_1",
+                "05": "compute_chip_M_th_1",
+                "06": "compute_chip_M_th_1",
+                "07": "compute_chip_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "16": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["sue_seen"]
+            },
+            "17": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "19": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "1a": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1d": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "21": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "22": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "23": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            }
+        },
+        "5074": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "02": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "03": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "04": {
+                "00": "core0_M_info_only",
+                "01": "core1_M_info_only",
+                "02": "core2_M_info_only",
+                "03": "core3_M_info_only",
+                "04": "core4_M_info_only",
+                "05": "core5_M_info_only",
+                "06": "core6_M_info_only",
+                "07": "core7_M_info_only"
+            },
+            "05": {
+                "00": "l3_cache_read_ce0",
+                "01": "l3_cache_read_ce1",
+                "02": "l3_cache_read_ce2",
+                "03": "l3_cache_read_ce3",
+                "04": "l3_cache_read_ce4",
+                "05": "l3_cache_read_ce5",
+                "06": "l3_cache_read_ce6",
+                "07": "l3_cache_read_ce7"
+            },
+            "06": {
+                "00": "l3_cache_ue0",
+                "01": "l3_cache_ue1",
+                "02": "l3_cache_ue2",
+                "03": "l3_cache_ue3",
+                "04": "l3_cache_ue4",
+                "05": "l3_cache_ue5",
+                "06": "l3_cache_ue6",
+                "07": "l3_cache_ue7",
+                "flags": ["sue_source"]
+            },
+            "07": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["sue_seen"]
+            },
+            "08": {
+                "00": "core0_M_th_32perDay",
+                "01": "core1_M_th_32perDay",
+                "02": "core2_M_th_32perDay",
+                "03": "core3_M_th_32perDay",
+                "04": "core4_M_th_32perDay",
+                "05": "core5_M_th_32perDay",
+                "06": "core6_M_th_32perDay",
+                "07": "core7_M_th_32perDay"
+            },
+            "09": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "0a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["sue_seen"]
+            },
+            "0b": {
+                "00": "core0_M_th_32perDay",
+                "01": "core1_M_th_32perDay",
+                "02": "core2_M_th_32perDay",
+                "03": "core3_M_th_32perDay",
+                "04": "core4_M_th_32perDay",
+                "05": "core5_M_th_32perDay",
+                "06": "core6_M_th_32perDay",
+                "07": "core7_M_th_32perDay"
+            },
+            "0c": {
+                "00": "l3_cache_ue0",
+                "01": "l3_cache_ue1",
+                "02": "l3_cache_ue2",
+                "03": "l3_cache_ue3",
+                "04": "l3_cache_ue4",
+                "05": "l3_cache_ue5",
+                "06": "l3_cache_ue6",
+                "07": "l3_cache_ue7",
+                "flags": ["sue_source"]
+            },
+            "0d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["sue_seen"]
+            },
+            "0e": {
+                "00": "l3_dir_read_ce0",
+                "01": "l3_dir_read_ce1",
+                "02": "l3_dir_read_ce2",
+                "03": "l3_dir_read_ce3",
+                "04": "l3_dir_read_ce4",
+                "05": "l3_dir_read_ce5",
+                "06": "l3_dir_read_ce6",
+                "07": "l3_dir_read_ce7"
+            },
+            "0f": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "11": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "12": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "13": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "14": {
+                "00": "core0_M_th_32perDay",
+                "01": "core1_M_th_32perDay",
+                "02": "core2_M_th_32perDay",
+                "03": "core3_M_th_32perDay",
+                "04": "core4_M_th_32perDay",
+                "05": "core5_M_th_32perDay",
+                "06": "core6_M_th_32perDay",
+                "07": "core7_M_th_32perDay"
+            },
+            "15": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "18": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "19": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "1a": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "1f": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "21": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            }
+        },
+        "682c": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "01": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "02": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "03": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "04": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "05": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "06": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "07": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "08": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "09": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0b": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "0c": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0e": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1",
+                "flags": ["sue_seen", "cs_possible"]
+            },
+            "0f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "10": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "11": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "12": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "13": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "14": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "15": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "16": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "17": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "18": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "19": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1c": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1d": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "1e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "1f": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "20": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "21": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "22": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "23": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "24": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "25": {
+                "00": "core0_M_th_core_recovery",
+                "01": "core1_M_th_core_recovery",
+                "02": "core2_M_th_core_recovery",
+                "03": "core3_M_th_core_recovery",
+                "04": "core4_M_th_core_recovery",
+                "05": "core5_M_th_core_recovery",
+                "06": "core6_M_th_core_recovery",
+                "07": "core7_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "26": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "27": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "28": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "29": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "2a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "2b": {
+                "00": "core0_M_level2_M_th_core_recovery",
+                "01": "core1_M_level2_M_th_core_recovery",
+                "02": "core2_M_level2_M_th_core_recovery",
+                "03": "core3_M_level2_M_th_core_recovery",
+                "04": "core4_M_level2_M_th_core_recovery",
+                "05": "core5_M_level2_M_th_core_recovery",
+                "06": "core6_M_level2_M_th_core_recovery",
+                "07": "core7_M_level2_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "2c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "2d": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "2e": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "2f": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "30": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "31": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "32": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "33": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "34": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "35": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "36": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "37": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "38": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "39": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "3a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "3b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "3c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "3d": {
+                "00": "level2_M_th_core_recovery",
+                "01": "level2_M_th_core_recovery",
+                "02": "level2_M_th_core_recovery",
+                "03": "level2_M_th_core_recovery",
+                "04": "level2_M_th_core_recovery",
+                "05": "level2_M_th_core_recovery",
+                "06": "level2_M_th_core_recovery",
+                "07": "level2_M_th_core_recovery",
+                "flags": ["cs_possible"]
+            },
+            "3e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            },
+            "3f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1",
+                "flags": ["cs_possible"]
+            }
+        },
+        "8530": {
+            "00": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "01": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "02": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "03": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "04": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "05": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "06": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "07": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "08": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "0b": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "0c": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "0d": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "0e": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "0f": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "10": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "11": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "12": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "13": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "14": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "15": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "16": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "17": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "18": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "19": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "1a": {
+                "00": "eq0_M_info_only",
+                "01": "eq1_M_info_only"
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "21": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "22": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "23": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "29": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "2f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "30": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "31": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "32": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "33": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "34": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "35": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "36": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "37": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "38": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "39": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "3f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            }
+        },
+        "a9aa": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "01": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "02": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1"
+            },
+            "03": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1"
+            },
+            "04": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "05": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "06": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "07": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "08": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "09": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1",
+                "flags": ["sue_source"]
+            },
+            "0a": {
+                "00": "core0_M_info_only",
+                "01": "core1_M_info_only",
+                "02": "core2_M_info_only",
+                "03": "core3_M_info_only",
+                "04": "core4_M_info_only",
+                "05": "core5_M_info_only",
+                "06": "core6_M_info_only",
+                "07": "core7_M_info_only"
+            },
+            "0b": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0c": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "0d": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "0e": {
+                "00": "pb_token_manager",
+                "01": "pb_token_manager",
+                "02": "pb_token_manager",
+                "03": "pb_token_manager",
+                "04": "pb_token_manager",
+                "05": "pb_token_manager",
+                "06": "pb_token_manager",
+                "07": "pb_token_manager"
+            },
+            "0f": {
+                "00": "core0_M_level2_L_th_1",
+                "01": "core1_M_level2_L_th_1",
+                "02": "core2_M_level2_L_th_1",
+                "03": "core3_M_level2_L_th_1",
+                "04": "core4_M_level2_L_th_1",
+                "05": "core5_M_level2_L_th_1",
+                "06": "core6_M_level2_L_th_1",
+                "07": "core7_M_level2_L_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "12": {
+                "00": "core0_M_info_only",
+                "01": "core1_M_info_only",
+                "02": "core2_M_info_only",
+                "03": "core3_M_info_only",
+                "04": "core4_M_info_only",
+                "05": "core5_M_info_only",
+                "06": "core6_M_info_only",
+                "07": "core7_M_info_only"
+            },
+            "13": {
+                "00": "level2_M_hub_chip_L_th_1",
+                "01": "level2_M_hub_chip_L_th_1",
+                "02": "level2_M_hub_chip_L_th_1",
+                "03": "level2_M_hub_chip_L_th_1",
+                "04": "level2_M_hub_chip_L_th_1",
+                "05": "level2_M_hub_chip_L_th_1",
+                "06": "level2_M_hub_chip_L_th_1",
+                "07": "level2_M_hub_chip_L_th_1",
+                "flags": ["cs_possible"]
+            },
+            "14": {
+                "00": "core0_M_th_1",
+                "01": "core1_M_th_1",
+                "02": "core2_M_th_1",
+                "03": "core3_M_th_1",
+                "04": "core4_M_th_1",
+                "05": "core5_M_th_1",
+                "06": "core6_M_th_1",
+                "07": "core7_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1"
+            },
+            "16": {
+                "00": "level2_M_core0_L_th_1",
+                "01": "level2_M_core1_L_th_1",
+                "02": "level2_M_core2_L_th_1",
+                "03": "level2_M_core3_L_th_1",
+                "04": "level2_M_core4_L_th_1",
+                "05": "level2_M_core5_L_th_1",
+                "06": "level2_M_core6_L_th_1",
+                "07": "level2_M_core7_L_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1",
+                "02": "level2_M_th_1",
+                "03": "level2_M_th_1",
+                "04": "level2_M_th_1",
+                "05": "level2_M_th_1",
+                "06": "level2_M_th_1",
+                "07": "level2_M_th_1"
+            }
+        },
+        "c786": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "02": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "03": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "07": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "08": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "09": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0e": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "0f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "12": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "13": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "14": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "1b": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "eq0_M_th_1",
+                "01": "eq1_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "21": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "22": {
+                "00": "eq0_M_th_1",
+                "01": "eq1_M_th_1"
+            },
+            "23": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            }
+        },
+        "c892": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "02": {
+                "00": "level2_M_th_1"
+            },
+            "03": {
+                "00": "level2_M_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1"
+            },
+            "07": {
+                "00": "compute_chip_M_th_1"
+            },
+            "08": {
+                "00": "compute_chip_M_th_1"
+            },
+            "09": {
+                "00": "compute_chip_M_th_1"
+            },
+            "0a": {
+                "00": "compute_chip_M_th_1"
+            },
+            "0b": {
+                "00": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "compute_chip_M_th_1"
+            }
+        },
+        "ca90": {
+            "00": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            },
+            "01": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "02": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "03": {
+                "00": "eq0_M_th_32perDay",
+                "01": "eq1_M_th_32perDay"
+            },
+            "04": {
+                "00": "level2_M_th_1",
+                "01": "level2_M_th_1"
+            }
+        },
+        "df2a": {
+            "00": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "01": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "02": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "03": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "04": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "05": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "06": {
+                "00": "compute_chip_M_info_only"
+            },
+            "07": {
+                "00": "compute_chip_M_info_only"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0b": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0c": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0d": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "0e": {
+                "00": "TBD"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1"
+            },
+            "12": {
+                "00": "level2_M_th_1"
+            },
+            "13": {
+                "00": "level2_M_th_1"
+            },
+            "14": {
+                "00": "level2_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1"
+            },
+            "21": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "22": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "23": {
+                "00": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1"
+            },
+            "29": {
+                "00": "level2_M_th_1"
+            },
+            "2a": {
+                "00": "level2_M_th_1"
+            },
+            "2b": {
+                "00": "level2_M_th_1"
+            },
+            "2c": {
+                "00": "level2_M_th_1"
+            },
+            "2d": {
+                "00": "level2_M_th_1"
+            },
+            "2e": {
+                "00": "level2_M_th_1"
+            },
+            "2f": {
+                "00": "level2_M_th_1"
+            },
+            "30": {
+                "00": "level2_M_th_1"
+            },
+            "31": {
+                "00": "level2_M_th_1"
+            },
+            "32": {
+                "00": "level2_M_th_1"
+            },
+            "33": {
+                "00": "level2_M_th_1"
+            },
+            "34": {
+                "00": "level2_M_th_1"
+            },
+            "35": {
+                "00": "level2_M_th_1"
+            },
+            "36": {
+                "00": "level2_M_th_1"
+            },
+            "37": {
+                "00": "level2_M_th_1"
+            },
+            "38": {
+                "00": "level2_M_th_1"
+            },
+            "39": {
+                "00": "level2_M_th_1"
+            },
+            "3a": {
+                "00": "level2_M_th_1"
+            },
+            "3b": {
+                "00": "level2_M_th_1"
+            },
+            "3c": {
+                "00": "level2_M_th_1"
+            },
+            "3d": {
+                "00": "level2_M_th_1"
+            },
+            "3e": {
+                "00": "level2_M_th_1"
+            },
+            "3f": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "e964": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "hub_chip_M_th_1"
+            },
+            "02": {
+                "00": "compute_chip_M_th_1"
+            },
+            "03": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "04": {
+                "00": "hub_chip_M_th_1"
+            },
+            "05": {
+                "00": "hub_chip_M_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1"
+            },
+            "07": {
+                "00": "compute_chip_M_th_1"
+            },
+            "08": {
+                "00": "compute_chip_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "f9bb": {
+            "00": {
+                "00": "level2_M_th_1"
+            },
+            "01": {
+                "00": "level2_M_th_1"
+            },
+            "02": {
+                "00": "level2_M_th_1"
+            },
+            "03": {
+                "00": "level2_M_th_1"
+            },
+            "04": {
+                "00": "level2_M_th_1"
+            },
+            "05": {
+                "00": "level2_M_th_1"
+            },
+            "06": {
+                "00": "level2_M_th_1"
+            },
+            "07": {
+                "00": "level2_M_th_1"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "level2_M_th_1"
+            },
+            "0b": {
+                "00": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "level2_M_th_1"
+            },
+            "0d": {
+                "00": "level2_M_th_1"
+            },
+            "0e": {
+                "00": "level2_M_th_1"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "compute_chip_M_info_only"
+            },
+            "11": {
+                "00": "level2_M_th_1"
+            },
+            "12": {
+                "00": "level2_M_th_1"
+            },
+            "13": {
+                "00": "level2_M_th_1"
+            },
+            "14": {
+                "00": "level2_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1"
+            },
+            "20": {
+                "00": "compute_chip_M_info_only"
+            },
+            "21": {
+                "00": "compute_chip_M_info_only"
+            },
+            "22": {
+                "00": "compute_chip_M_info_only"
+            },
+            "23": {
+                "00": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1"
+            },
+            "29": {
+                "00": "level2_M_th_1"
+            },
+            "2a": {
+                "00": "level2_M_th_1"
+            },
+            "2b": {
+                "00": "compute_chip_M_info_only"
+            },
+            "2c": {
+                "00": "level2_M_th_1"
+            },
+            "2d": {
+                "00": "level2_M_th_1"
+            },
+            "2e": {
+                "00": "level2_M_th_1"
+            },
+            "2f": {
+                "00": "compute_chip_M_info_only"
+            },
+            "30": {
+                "00": "compute_chip_M_info_only"
+            },
+            "31": {
+                "00": "level2_M_th_1"
+            },
+            "32": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "33": {
+                "00": "compute_chip_M_info_only"
+            },
+            "34": {
+                "00": "compute_chip_M_info_only"
+            },
+            "35": {
+                "00": "compute_chip_M_info_only"
+            },
+            "36": {
+                "00": "compute_chip_M_info_only"
+            },
+            "37": {
+                "00": "level2_M_th_1"
+            },
+            "38": {
+                "00": "level2_M_th_1"
+            },
+            "39": {
+                "00": "level2_M_th_1"
+            },
+            "3a": {
+                "00": "level2_M_th_1"
+            },
+            "3b": {
+                "00": "level2_M_th_1"
+            },
+            "3c": {
+                "00": "level2_M_th_1"
+            },
+            "3d": {
+                "00": "level2_M_th_1"
+            }
+        },
+        "fd25": {
+            "00": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "01": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "02": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "03": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "04": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "05": {
+                "00": "compute_chip_M_th_32perDay"
+            },
+            "06": {
+                "00": "compute_chip_M_info_only"
+            },
+            "07": {
+                "00": "compute_chip_M_info_only"
+            },
+            "08": {
+                "00": "level2_M_th_1"
+            },
+            "09": {
+                "00": "level2_M_th_1"
+            },
+            "0a": {
+                "00": "compute_chip_M_info_only"
+            },
+            "0b": {
+                "00": "level2_M_th_1"
+            },
+            "0c": {
+                "00": "level2_M_th_1"
+            },
+            "0d": {
+                "00": "level2_M_th_1"
+            },
+            "0e": {
+                "00": "level2_M_th_1"
+            },
+            "0f": {
+                "00": "level2_M_th_1"
+            },
+            "10": {
+                "00": "level2_M_th_1"
+            },
+            "11": {
+                "00": "level2_M_th_1"
+            },
+            "12": {
+                "00": "level2_M_th_1"
+            },
+            "13": {
+                "00": "level2_M_th_1"
+            },
+            "14": {
+                "00": "level2_M_th_1"
+            },
+            "15": {
+                "00": "level2_M_th_1"
+            },
+            "16": {
+                "00": "level2_M_th_1"
+            },
+            "17": {
+                "00": "level2_M_th_1"
+            },
+            "18": {
+                "00": "level2_M_th_1"
+            },
+            "19": {
+                "00": "level2_M_th_1"
+            },
+            "1a": {
+                "00": "level2_M_th_1"
+            },
+            "1b": {
+                "00": "level2_M_th_1"
+            },
+            "1c": {
+                "00": "level2_M_th_1"
+            },
+            "1d": {
+                "00": "level2_M_th_1"
+            },
+            "1e": {
+                "00": "level2_M_th_1"
+            },
+            "1f": {
+                "00": "level2_M_th_1"
+            },
+            "20": {
+                "00": "level2_M_th_1"
+            },
+            "21": {
+                "00": "level2_M_th_1"
+            },
+            "22": {
+                "00": "level2_M_th_1"
+            },
+            "23": {
+                "00": "level2_M_th_1"
+            },
+            "24": {
+                "00": "level2_M_th_1"
+            },
+            "25": {
+                "00": "level2_M_th_1"
+            },
+            "26": {
+                "00": "level2_M_th_1"
+            },
+            "27": {
+                "00": "level2_M_th_1"
+            },
+            "28": {
+                "00": "level2_M_th_1"
+            },
+            "29": {
+                "00": "level2_M_th_1"
+            },
+            "2a": {
+                "00": "level2_M_th_1"
+            },
+            "2b": {
+                "00": "level2_M_th_1"
+            },
+            "2c": {
+                "00": "level2_M_th_1"
+            },
+            "2d": {
+                "00": "level2_M_th_1"
+            },
+            "2e": {
+                "00": "level2_M_th_1"
+            },
+            "2f": {
+                "00": "level2_M_th_1"
+            },
+            "30": {
+                "00": "level2_M_th_1"
+            },
+            "31": {
+                "00": "level2_M_th_1"
+            },
+            "32": {
+                "00": "level2_M_th_1"
+            },
+            "33": {
+                "00": "level2_M_th_1"
+            },
+            "34": {
+                "00": "level2_M_th_1"
+            },
+            "35": {
+                "00": "level2_M_th_1"
+            },
+            "36": {
+                "00": "level2_M_th_1"
+            },
+            "37": {
+                "00": "level2_M_th_1"
+            },
+            "38": {
+                "00": "level2_M_th_1"
+            },
+            "39": {
+                "00": "level2_M_th_1"
+            },
+            "3a": {
+                "00": "level2_M_th_1"
+            },
+            "3b": {
+                "00": "level2_M_th_1"
+            },
+            "3c": {
+                "00": "level2_M_th_1"
+            },
+            "3d": {
+                "00": "level2_M_th_1"
+            },
+            "3e": {
+                "00": "level2_M_th_1"
+            },
+            "3f": {
+                "00": "level2_M_th_1"
+            }
+        }
+    },
+    "units": {
+        "core0": "pib/perv32/eq0/fc0/core0",
+        "core1": "pib/perv32/eq0/fc0/core1",
+        "core2": "pib/perv32/eq0/fc1/core0",
+        "core3": "pib/perv32/eq0/fc1/core1",
+        "core4": "pib/perv33/eq1/fc0/core0",
+        "core5": "pib/perv33/eq1/fc0/core1",
+        "core6": "pib/perv33/eq1/fc1/core0",
+        "core7": "pib/perv33/eq1/fc1/core1",
+        "eq0": "pib/perv32/eq0",
+        "eq1": "pib/perv33/eq1"
+    },
+    "version": 2
+}

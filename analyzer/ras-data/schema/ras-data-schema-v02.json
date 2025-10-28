@@ -60,7 +60,7 @@
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": ["SMP_BUS", "OMI_BUS"]
+                            "enum": ["SMP_BUS", "OMI_BUS", "TBUS"]
                         },
                         "unit": {
                             "type": "string",
