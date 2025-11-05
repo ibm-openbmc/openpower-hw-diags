@@ -37,8 +37,7 @@ int find(const std::string& i_interface, std::string& o_path,
 
         auto reply = bus.call(method);
 
-        DBusSubTree response;
-        reply.read(response);
+        auto response = reply.unpack<DBusSubTree>();
 
         if (!response.empty())
         {
@@ -82,8 +81,8 @@ int findService(const std::string& i_interface, const std::string& i_path,
         auto reply = bus.call(method);
 
         // response is a map of service names to their interfaces
-        std::map<DBusService, DBusInterfaceList> response;
-        reply.read(response);
+        auto response =
+            reply.unpack<std::map<DBusService, DBusInterfaceList>>();
 
         if (!response.empty())
         {

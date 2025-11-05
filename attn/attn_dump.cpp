@@ -168,8 +168,7 @@ void requestDump(uint32_t i_logId, const DumpParameters& i_dumpParameters)
             auto response = bus.call(method);
 
             // reply will be type dbus::ObjectPath
-            sdbusplus::message::object_path reply;
-            response.read(reply);
+            auto reply = response.unpack<sdbusplus::message::object_path>();
 
             // monitor dump progress
             monitorDump(reply);
