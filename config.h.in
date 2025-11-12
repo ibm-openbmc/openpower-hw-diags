@@ -20,6 +20,10 @@
 
 #mesondefine CONFIG_PHAL_API
 
+#mesondefine CONFIG_P10
+#mesondefine CONFIG_P11
+#mesondefine CONFIG_P12
+
 // D-Bus path for requesting dumps
 constexpr auto OP_DUMP_OBJ_PATH = @OP_DUMP_OBJ_PATH@;
 

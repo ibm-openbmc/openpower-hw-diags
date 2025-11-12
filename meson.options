@@ -25,3 +25,10 @@ option(
     choices: ['mctp-demux', 'af-mctp'],
     description: 'transport via af-mctp or mctp-demux',
 )
+
+option(
+    'system_config',
+    type: 'combo',
+    choices: ['p10', 'p11', 'p12'],
+    description: 'System configuration to build for',
+)

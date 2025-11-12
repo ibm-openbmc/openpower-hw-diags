@@ -45,6 +45,26 @@ conf.set_quoted('OP_DUMP_OBJ_PATH', get_option('op_dump_obj_path'))
 
 conf.set('CONFIG_PHAL_API', get_option('phal').allowed())
 
+system_config = get_option('system_config')
+
+if system_config == 'p10'
+    conf.set('CONFIG_P10', true)
+else
+    conf.set('CONFIG_P10', false)
+endif
+
+if system_config == 'p11'
+    conf.set('CONFIG_P11', true)
+else
+    conf.set('CONFIG_P11', false)
+endif
+
+if system_config == 'p12'
+    conf.set('CONFIG_P12', true)
+else
+    conf.set('CONFIG_P12', false)
+endif
+
 if (get_option('transport-implementation')) == 'mctp-demux'
     add_project_arguments('-DPLDM_TRANSPORT_WITH_MCTP_DEMUX', language: 'cpp')
 else
