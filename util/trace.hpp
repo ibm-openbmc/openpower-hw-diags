@@ -14,10 +14,6 @@
 namespace trace
 {
 
-#ifndef TEST_TRACE
-constexpr size_t MSG_MAX_LEN = 256;
-#endif
-
 /** @brief Information trace (va_list format). */
 inline void inf(const char* format, va_list args)
 {
@@ -28,9 +24,11 @@ inline void inf(const char* format, va_list args)
 
 #else
 
-    char msg[MSG_MAX_LEN];
-    vsnprintf(msg, MSG_MAX_LEN, format, args);
+    int sz = vsnprintf(nullptr, 0, format, args); // hack to get required size
+    char* msg = new char[sz + 1]();   // allocate room for terminating character
+    vsnprintf(msg, sz, format, args); // print the message
     phosphor::logging::log<phosphor::logging::level::INFO>(msg);
+    delete[] msg;                     // clean up
 
 #endif
 }
@@ -45,9 +43,11 @@ inline void err(const char* format, va_list args)
 
 #else
 
-    char msg[MSG_MAX_LEN];
-    vsnprintf(msg, MSG_MAX_LEN, format, args);
+    int sz = vsnprintf(nullptr, 0, format, args); // hack to get required size
+    char* msg = new char[sz + 1]();   // allocate room for terminating character
+    vsnprintf(msg, sz, format, args); // print the message
     phosphor::logging::log<phosphor::logging::level::ERR>(msg);
+    delete[] msg;                     // clean up
 
 #endif
 }
