@@ -138,7 +138,7 @@ hwdiags_libs = [analyzer_lib, attn_lib, util_lib]
 
 executable(
     'openpower-hw-diags',
-    sources: ['main_nl.cpp', 'cli.cpp', buildinfo, plugins_src],
+    sources: ['main.cpp', 'cli.cpp', buildinfo, plugins_src],
     dependencies: [libhei_dep, nlohmann_json_dep, phosphor_logging_dep],
     link_with: hwdiags_libs,
     install: true,
