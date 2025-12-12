@@ -136,31 +136,13 @@ hwdiags_libs = [analyzer_lib, attn_lib, util_lib]
 # Build the executable
 #-------------------------------------------------------------------------------
 
-no_listener_mode = get_option('nlmode')
-
-if no_listener_mode.allowed()
-    executable(
-        'openpower-hw-diags',
-        sources: ['main_nl.cpp', 'cli.cpp', buildinfo, plugins_src],
-        dependencies: [libhei_dep, nlohmann_json_dep, phosphor_logging_dep],
-        link_with: hwdiags_libs,
-        install: true,
-    )
-else
-    executable(
-        'openpower-hw-diags',
-        sources: ['main.cpp', 'cli.cpp', 'listener.cpp', buildinfo, plugins_src],
-        dependencies: [
-            lrt,
-            pthread,
-            libhei_dep,
-            nlohmann_json_dep,
-            phosphor_logging_dep,
-        ],
-        link_with: hwdiags_libs,
-        install: true,
-    )
-endif
+executable(
+    'openpower-hw-diags',
+    sources: ['main_nl.cpp', 'cli.cpp', buildinfo, plugins_src],
+    dependencies: [libhei_dep, nlohmann_json_dep, phosphor_logging_dep],
+    link_with: hwdiags_libs,
+    install: true,
+)
 
 #-------------------------------------------------------------------------------
 # Test, if configured
