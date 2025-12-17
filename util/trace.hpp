@@ -15,41 +15,45 @@ namespace trace
 {
 
 /** @brief Information trace (va_list format). */
-inline void inf(const char* format, va_list args)
+inline void inf(const char* format, va_list args1)
 {
+    // Need to make a copy of the given va_list because we'll be iterating the
+    // list twice with the vnsprintf() calls below.
+    va_list args2;
+    va_copy(args2, args1);
+
+    int sz = vsnprintf(nullptr, 0, format, args1); // hack to get required size
+    char* msg = new char[sz + 1](); // allocate room for terminating character
+    vsnprintf(msg, sz + 1, format, args2); // print the message
+
 #ifdef TEST_TRACE
-
-    vfprintf(stdout, format, args);
-    fprintf(stdout, "\n");
-
+    fprintf(stdout, "%s\n", msg);
 #else
-
-    int sz = vsnprintf(nullptr, 0, format, args); // hack to get required size
-    char* msg = new char[sz + 1]();   // allocate room for terminating character
-    vsnprintf(msg, sz, format, args); // print the message
     phosphor::logging::log<phosphor::logging::level::INFO>(msg);
-    delete[] msg;                     // clean up
-
 #endif
+
+    delete[] msg; // clean up
 }
 
 /** @brief Error trace (va_list format). */
-inline void err(const char* format, va_list args)
+inline void err(const char* format, va_list args1)
 {
+    // Need to make a copy of the given va_list because we'll be iterating the
+    // list twice with the vnsprintf() calls below.
+    va_list args2;
+    va_copy(args2, args1);
+
+    int sz = vsnprintf(nullptr, 0, format, args1); // hack to get required size
+    char* msg = new char[sz + 1](); // allocate room for terminating character
+    vsnprintf(msg, sz + 1, format, args2); // print the message
+
 #ifdef TEST_TRACE
-
-    vfprintf(stderr, format, args);
-    fprintf(stderr, "\n");
-
+    fprintf(stderr, "%s\n", msg);
 #else
-
-    int sz = vsnprintf(nullptr, 0, format, args); // hack to get required size
-    char* msg = new char[sz + 1]();   // allocate room for terminating character
-    vsnprintf(msg, sz, format, args); // print the message
     phosphor::logging::log<phosphor::logging::level::ERR>(msg);
-    delete[] msg;                     // clean up
-
 #endif
+
+    delete[] msg; // clean up
 }
 
 /** @brief Information trace (printf format). */
