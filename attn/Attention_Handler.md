@@ -90,7 +90,7 @@ used to determine active attentions.
 #### Vital Attention
 
 A vital attention is handled by generating an event log via the phosphor-logging
-inteface and then using the dump manager dbus interface to request a hardware
+interface and then using the dump manager dbus interface to request a hardware
 dump. The attention handler will wait, up to one hour, for the dump to complete
 and then use the systemd interface to request a re-IPL of the host. This type of
 attention indicates that there was a problem with the Self Boot Engine (SBE)
@@ -156,7 +156,7 @@ These attentions indicate that a hardware error has occurred and further
 hardware analyses is required to determine root cause. When servicing a
 checkstop attention the attention handler will call the analyzer and then wait
 for analyses to complete. Once analyses have completed the attention handler
-will use the dbus interface to request a system dump and upon completetion, or
+will use the dbus interface to request a system dump and upon completion, or
 timeout, will request a re-IPL of the host.
 
 ### Configuration

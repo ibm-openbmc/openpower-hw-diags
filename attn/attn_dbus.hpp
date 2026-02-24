@@ -34,7 +34,7 @@ int dbusMethod(const std::string& i_path, const std::string& i_interface,
 void createPelRaw(const std::vector<uint8_t>& i_buffer);
 
 /**
- * Get file descriptor of exisitng PEL
+ * Get file descriptor of existing PEL
  *
  * The backend logging code will search for a PEL having the provided pel id
  * and return a file descriptor of a file containing this pel in raw form.

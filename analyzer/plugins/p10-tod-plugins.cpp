@@ -231,7 +231,7 @@ void collectTodFaultData(pdbg_target* i_chip, Data& o_data)
 
         if (isMasterDrawer && isMasterTod)
         {
-            // The master path selects are sourced from the oscilator reference
+            // The master path selects are sourced from the oscillator reference
             // clocks. So, we'll need to determine which one was used at the
             // time of the failure.
             auto masterPathSelect =

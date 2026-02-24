@@ -367,7 +367,7 @@ uint32_t createPel(const std::string& i_message, const std::string& i_severity,
             sdbusplus::message_t method =
                 bus.new_method_call(service.c_str(), path, interface, function);
 
-            // append additional dbus call paramaters
+            // append additional dbus call parameters
             method.append(i_message, i_severity, io_additional, i_ffdc);
 
             // using system dbus

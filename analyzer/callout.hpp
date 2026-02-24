@@ -13,10 +13,10 @@ namespace callout
  *         required service action. */
 enum class Priority
 {
-    /** Serivce is mandatory. */
+    /** Service is mandatory. */
     HIGH,
 
-    /** Serivce medium priority callouts one at a time, in order, until the
+    /** Service medium priority callouts one at a time, in order, until the
      *  issue is resolved. */
     MED,
 

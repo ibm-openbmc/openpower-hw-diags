@@ -109,7 +109,7 @@ void createPelCustom(std::vector<uint8_t>& i_rawPel,
     auto tiPel = std::make_unique<pel::PelMinimal>(i_rawPel);
 
     // The additional data contains the TI info as well as the value for the
-    // subystem that provided the TI info. Get the subystem from additional
+    // subsystem that provided the TI info. Get the subsystem from additional
     // data and then populate the primary SRC and SRC words for the custom PEL
     // based on the subsystem's TI info.
     std::map<std::string, std::string>::iterator it;
@@ -303,7 +303,7 @@ void createPelCustom(std::vector<uint8_t>& i_rawPel,
  * Basic (non TI) events will generate a standard message-registry based PEL
  *
  * TI events will create two PEL's. One PEL will be informational and will
- * contain trace information relevent to attention handler. The second PEL
+ * contain trace information relevant to attention handler. The second PEL
  * will be specific to the TI type (including the primary SRC) and will be
  * based off of the TI information provided to the attention handler through
  * shared TI info data area.

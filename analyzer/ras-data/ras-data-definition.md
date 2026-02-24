@@ -12,7 +12,7 @@ single chip model and EC level.
 
 ## 1) `model_ec` keyword (required)
 
-The value of this keyword is a `string` representing a 32-bit hexidecimal number
+The value of this keyword is a `string` representing a 32-bit hexadecimal number
 in the format `[0-9A-Fa-f]{8}`. This value is used to determine the chip model
 and EC level in which this data is defined.
 
@@ -86,7 +86,7 @@ Actions with a `priority` keyword can only use the following values (string):
 
 | Priority | Description                                                        |
 | -------- | ------------------------------------------------------------------ |
-| `HIGH`   | Serivce is mandatory.                                              |
+| `HIGH`   | Service is mandatory.                                              |
 | `MED`    | Service one at a time, in order, until issue is resolved.          |
 | `MED_A`  | Same as `MED` except all in group A replaced at the same time.     |
 | `MED_B`  | Same as `MED` except all in group B replaced at the same time.     |

@@ -252,7 +252,7 @@ TEST(util_pdbg, getActiveChips)
      *       show up as PDBG_TARGET_ENABLED. If we remove that check, this test
      *       case works as expected. However, we don't want to do that in
      *       production code.  Instead, we'll need to determine why the OCMBs
-     *       are not enabled in CI test and then reenable this test case.
+     *       are not enabled in CI test and then re-enable this test case.
     auto proc0 = getTrgt("/proc0");
     auto proc1 = getTrgt("/proc1");
 

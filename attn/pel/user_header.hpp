@@ -144,7 +144,7 @@ class UserHeader : public Section
     /**
      * @brief The action flags field.
      */
-    uint16_t _actionFlags; // set by contructor
+    uint16_t _actionFlags; // set by constructor
 
     /**
      * @brief A reserved 4 byte

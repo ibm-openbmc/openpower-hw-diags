@@ -5,7 +5,7 @@ In the event of a system fatal error reported by the internal system hardware
 have the ability to diagnose the root cause of the failure and perform any
 service action needed to avoid repeated system failures.
 
-Aditional details TBD.
+Additional details TBD.
 
 ## Building
 

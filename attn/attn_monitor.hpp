@@ -26,7 +26,7 @@ class AttnMonitor
      * @param line         GPIO line handle
      * @param config       configuration of line
      * @param io           io service
-     * @param i_attnConfig poiner to attention handler configuration object
+     * @param i_attnConfig pointer to attention handler configuration object
      */
     AttnMonitor(gpiod_line* line, gpiod_line_request_config& config,
                 boost::asio::io_context& io, Config* i_attnConfig) :
@@ -42,7 +42,7 @@ class AttnMonitor
     // delete assignment operator
     AttnMonitor& operator=(const AttnMonitor&) = delete;
 
-    // delere move copy consructor
+    // delere move copy constructor
     AttnMonitor(AttnMonitor&&) = delete;
 
     // delete move assignment operator

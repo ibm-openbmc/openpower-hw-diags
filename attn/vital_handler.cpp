@@ -81,7 +81,7 @@ bool attemptSbeRecovery(int sbeInstance)
  *
  * @pre pdbg target associated with proc instance is enabled for fsi access
  *
- * @return true if checkstop acive false otherwise
+ * @return true if checkstop active false otherwise
  * */
 bool checkstopActive(int procInstance)
 {

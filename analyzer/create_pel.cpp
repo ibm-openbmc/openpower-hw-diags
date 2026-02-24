@@ -31,7 +31,7 @@ enum FfdcSubType_t : uint8_t
     FFDC_SCRATCH_SIG = 0x05,
 
     // For the callout section, the value of '0xCA' is required per the
-    // phosphor-logging openpower-pel extention spec.
+    // phosphor-logging openpower-pel extension spec.
     FFDC_CALLOUTS = 0xCA,
 };
 
@@ -209,7 +209,7 @@ void __captureRegisterDump(const libhei::IsolationData& i_isoData,
             auto tmp = libhei::BitString::getMinBytes(reg.data->getBitLen());
             if (255 < tmp)
             {
-                trace::inf("Register data execeeded 255 and was truncated: "
+                trace::inf("Register data exceeded 255 and was truncated: "
                            "regId=0x%06x regInst=%u",
                            regId, regInst);
                 tmp = 255;

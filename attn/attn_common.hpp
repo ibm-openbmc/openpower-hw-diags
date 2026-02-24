@@ -18,7 +18,7 @@ enum ReturnCodes
     RC_DBUS_ERROR = 4
 };
 
-/** @brief Code seciton for error reporing */
+/** @brief Code section for error reporting */
 enum class AttnSection
 {
     reserved = 0x0000,

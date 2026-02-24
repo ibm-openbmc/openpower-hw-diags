@@ -363,7 +363,7 @@ bool fetchSensorInfo(uint16_t stateSetId,
         return false;
     }
 
-    // find the offset of specified sensor withing PDRs
+    // find the offset of specified sensor within PDRs
     bool offsetFound = false;
     auto stateSensorPDR =
         reinterpret_cast<const pldm_state_sensor_pdr*>(pdrs.front().data());
@@ -393,7 +393,7 @@ bool fetchSensorInfo(uint16_t stateSetId,
         return false;
     }
 
-    // map sensor ID to equivelent 16 bit value
+    // map sensor ID to equivalent 16 bit value
     std::map<uint32_t, uint16_t> entityInstMap{};
     for (auto& pdr : pdrs)
     {
@@ -472,7 +472,7 @@ bool fetchEffecterInfo(uint16_t stateSetId,
         return false;
     }
 
-    // map effecter ID to equivelent 16 bit value
+    // map effecter ID to equivalent 16 bit value
     std::map<uint32_t, uint16_t> entityInstMap{};
     for (auto& pdr : pdrs)
     {

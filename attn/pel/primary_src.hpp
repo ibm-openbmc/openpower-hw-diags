@@ -125,7 +125,7 @@ class PrimarySrc : public Section
     /**
      * @brief The hex data word count.
      */
-    uint8_t _wordCount = numSrcWords + 1; // +1 for backward compatability
+    uint8_t _wordCount = numSrcWords + 1; // +1 for backward compatibility
 
     /**
      * @brief Two bytes of reserved data after the hex word count

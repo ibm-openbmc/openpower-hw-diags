@@ -97,7 +97,7 @@ void createPelRaw(const std::vector<uint8_t>& i_buffer)
     }
 }
 
-/** @brief Get file descriptor of exisitng PEL */
+/** @brief Get file descriptor of existing PEL */
 int getPel(const uint32_t i_pelId)
 {
     // GetPEL returns file descriptor (int)

@@ -15,7 +15,7 @@ namespace util
  *
  * @param  journal - The journal to parse
  * @param  field - Field containing the data to retrieve
- * @return Data for the speciefied field
+ * @return Data for the specified field
  */
 std::string sdjGetFieldValue(sd_journal* journal, const char* field)
 {
