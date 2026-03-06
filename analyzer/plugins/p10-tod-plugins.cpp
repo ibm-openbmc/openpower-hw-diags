@@ -138,7 +138,7 @@ bool readRegister(pdbg_target* i_chip, Register i_addr,
     uint64_t scomValue;
     if (util::pdbg::getScom(i_chip, static_cast<uint64_t>(i_addr), scomValue))
     {
-        trace::err("Register read failed: addr=0x%08x chip=%s",
+        trace::err("Register read failed: addr=0x%016" PRIx64 " chip=%s",
                    static_cast<uint64_t>(i_addr), util::pdbg::getPath(i_chip));
         return true; // SCOM failed
     }
@@ -243,7 +243,8 @@ void collectTodFaultData(pdbg_target* i_chip, Data& o_data)
                 trace::inf(
                     "TOD MDMT fault found: top=%u config=%u path=%u chip=%s",
                     static_cast<unsigned int>(top),
-                    static_cast<unsigned int>(topConfig[top]), masterPathSelect,
+                    static_cast<unsigned int>(topConfig[top]),
+                    static_cast<unsigned int>(masterPathSelect),
                     util::pdbg::getPath(i_chip));
 
                 o_data.setMdmtFault(top, i_chip);
@@ -283,8 +284,10 @@ void collectTodFaultData(pdbg_target* i_chip, Data& o_data)
                                "path=%u chip=%s iohs=%u clockSrc=%s",
                                static_cast<unsigned int>(top),
                                static_cast<unsigned int>(topConfig[top]),
-                               slavePathSelect, util::pdbg::getPath(i_chip),
-                               iohsPos, util::pdbg::getPath(chipSourcingClock));
+                               static_cast<unsigned int>(slavePathSelect),
+                               util::pdbg::getPath(i_chip),
+                               static_cast<unsigned int>(iohsPos),
+                               util::pdbg::getPath(chipSourcingClock));
 
                     o_data.setNetworkFault(top, chipSourcingClock, i_chip);
                 }
