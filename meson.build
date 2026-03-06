@@ -43,7 +43,8 @@ conf = configuration_data()
 # OpenPOWER dump object path override
 conf.set_quoted('OP_DUMP_OBJ_PATH', get_option('op_dump_obj_path'))
 
-conf.set('CONFIG_PHAL_API', get_option('phal').allowed())
+phal_backend = get_option('phal_backend')
+conf.set('CONFIG_PHAL_API', get_option('phal_backend') == 'legacy')
 
 system_config = get_option('system_config')
 
@@ -101,9 +102,11 @@ phosphor_logging_dep = dependency(
 sdbusplus_dep = dependency('sdbusplus', version: '>=1.0')
 dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
 
-libpdbg_dep = dependency('pdbg')
+if phal_backend != 'next'
+    libpdbg_dep = dependency('pdbg')
+endif
 
-if get_option('phal').allowed()
+if phal_backend == 'legacy'
     libphal_dep = cmplr.find_library('phal')
 endif
 
@@ -125,82 +128,85 @@ endif
 #-------------------------------------------------------------------------------
 # Build the local static libraries
 #-------------------------------------------------------------------------------
+#TODO After transition to hostfw targeting this check to be removed
+if phal_backend != 'next'
 
-subdir('analyzer')
-subdir('attn')
-subdir('util')
+    subdir('analyzer')
+    subdir('attn')
+    subdir('util')
 
-hwdiags_libs = [analyzer_lib, attn_lib, util_lib]
+    hwdiags_libs = [analyzer_lib, attn_lib, util_lib]
 
-#-------------------------------------------------------------------------------
-# Build the executable
-#-------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------
+    # Build the executable
+    #-------------------------------------------------------------------------------
 
-executable(
-    'openpower-hw-diags',
-    sources: ['main.cpp', 'cli.cpp', buildinfo, plugins_src],
-    dependencies: [libhei_dep, nlohmann_json_dep, phosphor_logging_dep],
-    link_with: hwdiags_libs,
-    install: true,
-)
-
-#-------------------------------------------------------------------------------
-# Test, if configured
-#-------------------------------------------------------------------------------
-
-build_tests = get_option('tests')
-
-if build_tests.allowed()
-
-    # IMPORTANT NOTE:
-    # We cannot link the test executables to `util_lib` because:
-    #   - It is built without `-DTEST_TRACE` and any of the util functions that
-    #     use `trace.hpp` will throw a linker error because we don't have access
-    #     to phosphor-logging in test ... yet. This issue will go away once we
-    #     have converted all of our trace to use the `lg2` interfaces.
-    #   - Some functions related to pdbg and dbus simply cannot be built in the
-    #     test environment. Instead, there are alternate implementation of those
-    #     functions to simulate them for testing (see `test/*-sim-only.cpp`).
-    # Instead we will build a `test_util_lib` that will contain the `util` files
-    # that we need in test along with simulated versions of some util functions.
-
-    # IMPORTANT NOTE:
-    # When running GCOV reports, the Jenkins CI script explicitly ignores any
-    # libraries and executables built in the `test/` directory. Therefore, this
-    # `test_util_lib` library must be built here instead in order to get any GCOV
-    # credit for the code.
-
-    test_args = ['-DTEST_TRACE', package_args]
-
-    test_util_srcs = [
-        files(
-            'test/dbus-sim-only.cpp',
-            'test/pdbg-sim-only.cpp',
-            'util/data_file.cpp',
-            'util/ffdc_file.cpp',
-            'util/pdbg.cpp',
-            'util/temporary_file.cpp',
-        ),
-    ]
-
-    test_util_deps = [
-        libhei_dep,
-        libpdbg_dep,
-        nlohmann_json_dep,
-        phosphor_logging_dep,
-        valijson_dep,
-    ]
-
-    test_util_lib = static_library(
-        'test_util_lib',
-        sources: test_util_srcs,
-        include_directories: incdir,
-        dependencies: test_util_deps,
-        cpp_args: test_args,
+    executable(
+        'openpower-hw-diags',
+        sources: ['main.cpp', 'cli.cpp', buildinfo, plugins_src],
+        dependencies: [libhei_dep, nlohmann_json_dep, phosphor_logging_dep],
+        link_with: hwdiags_libs,
         install: true,
     )
 
-    test_libs = [analyzer_lib, attn_lib, test_util_lib]
+    #-------------------------------------------------------------------------------
+    # Test, if configured
+    #-------------------------------------------------------------------------------
 
-    subdir('test')
+    build_tests = get_option('tests')
+
+    if build_tests.allowed()
+
+        # IMPORTANT NOTE:
+        # We cannot link the test executables to `util_lib` because:
+        #   - It is built without `-DTEST_TRACE` and any of the util functions that
+        #     use `trace.hpp` will throw a linker error because we don't have access
+        #     to phosphor-logging in test ... yet. This issue will go away once we
+        #     have converted all of our trace to use the `lg2` interfaces.
+        #   - Some functions related to pdbg and dbus simply cannot be built in the
+        #     test environment. Instead, there are alternate implementation of those
+        #     functions to simulate them for testing (see `test/*-sim-only.cpp`).
+        # Instead we will build a `test_util_lib` that will contain the `util` files
+        # that we need in test along with simulated versions of some util functions.
+
+        # IMPORTANT NOTE:
+        # When running GCOV reports, the Jenkins CI script explicitly ignores any
+        # libraries and executables built in the `test/` directory. Therefore, this
+        # `test_util_lib` library must be built here instead in order to get any GCOV
+        # credit for the code.
+
+        test_args = ['-DTEST_TRACE', package_args]
+
+        test_util_srcs = [
+            files(
+                'test/dbus-sim-only.cpp',
+                'test/pdbg-sim-only.cpp',
+                'util/data_file.cpp',
+                'util/ffdc_file.cpp',
+                'util/pdbg.cpp',
+                'util/temporary_file.cpp',
+            ),
+        ]
+
+        test_util_deps = [
+            libhei_dep,
+            libpdbg_dep,
+            nlohmann_json_dep,
+            phosphor_logging_dep,
+            valijson_dep,
+        ]
+
+        test_util_lib = static_library(
+            'test_util_lib',
+            sources: test_util_srcs,
+            include_directories: incdir,
+            dependencies: test_util_deps,
+            cpp_args: test_args,
+            install: true,
+        )
+
+        test_libs = [analyzer_lib, attn_lib, test_util_lib]
+
+        subdir('test')
+    endif
 endif

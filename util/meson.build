@@ -13,15 +13,17 @@ util_src = files(
 # Library dependencies.
 util_deps = [
     libhei_dep,
-    libpdbg_dep,
     libpldm_dep,
     nlohmann_json_dep,
     phosphor_logging_dep,
     valijson_dep,
 ]
 
-if get_option('phal').allowed()
+if phal_backend == 'legacy'
+    util_deps += libpdbg_dep
     util_deps += dependency('libdt-api')
+elif phal_backend == 'none'
+    util_deps += libpdbg_dep
 endif
 
 # Create static library.

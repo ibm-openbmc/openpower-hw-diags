@@ -12,7 +12,10 @@ libgpiod = dependency('libgpiod', version: '>=1.4.1')
 attn_conf = configuration_data()
 
 # conditionally define ENABLE_PHAL_TRUE
-if (get_option('phal').allowed())
+
+#TODO After transition to hostfw targeting, check for either 'legacy' or 'next'
+phal_backend = get_option('phal_backend')
+if phal_backend == 'legacy'
     attn_conf.set('ENABLE_PHAL_TRUE', '')
 else
     attn_conf.set('ENABLE_PHAL_TRUE', '#')
@@ -66,11 +69,13 @@ pel_src = files(
 )
 
 # Library dependencies.
-attn_deps = [libgpiod, libpdbg_dep, phosphor_logging_dep, sdbusplus_dep]
+attn_deps = [libgpiod, phosphor_logging_dep, sdbusplus_dep]
 
-# conditional library dependencies
-if get_option('phal').allowed()
+if phal_backend == 'legacy'
     attn_deps += libphal_dep
+    attn_deps += libpdbg_dep
+elif phal_backend == 'none'
+    attn_deps += libpdbg_dep
 endif
 
 # Create static library.

@@ -1,10 +1,10 @@
 option('tests', type: 'feature', description: 'Build tests')
 option(
-    'phal',
-    type: 'feature',
-    value: 'disabled',
-    description: '''Enable PHAL APIs for retrieving data from the POWER
-                         Systems device tree''',
+    'phal_backend',
+    type: 'combo',
+    choices: ['legacy', 'next', 'none'],
+    value: 'none',
+    description: 'Select PHAL backend',
 )
 option(
     'attn_config',
