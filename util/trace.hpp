@@ -26,6 +26,8 @@ inline void inf(const char* format, va_list args1)
     char* msg = new char[sz + 1](); // allocate room for terminating character
     vsnprintf(msg, sz + 1, format, args2); // print the message
 
+    va_end(args2);
+
 #ifdef TEST_TRACE
     fprintf(stdout, "%s\n", msg);
 #else
@@ -46,6 +48,8 @@ inline void err(const char* format, va_list args1)
     int sz = vsnprintf(nullptr, 0, format, args1); // hack to get required size
     char* msg = new char[sz + 1](); // allocate room for terminating character
     vsnprintf(msg, sz + 1, format, args2); // print the message
+
+    va_end(args2);
 
 #ifdef TEST_TRACE
     fprintf(stderr, "%s\n", msg);
