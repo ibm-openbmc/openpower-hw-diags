@@ -16,7 +16,7 @@ static const auto dstlfirId = static_cast<libhei::NodeId_t>(
 // Test multiple channel timeouts on at the same time
 TEST(ChnlTimeout, MultipleTimeouts)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip proc0{util::pdbg::getTrgt("/proc0"), P10_20};
 
@@ -84,7 +84,7 @@ TEST(ChnlTimeout, MultipleTimeouts)
 // Test multiple channel timeouts on different MC_DSTL_FIR instances
 TEST(ChnlTimeout, DifferentInst)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip proc0{util::pdbg::getTrgt("/proc0"), P10_20};
 
@@ -152,7 +152,7 @@ TEST(ChnlTimeout, DifferentInst)
 // Test multiple channel timeouts on different processors
 TEST(ChnlTimeout, DifferentProc)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip proc0{util::pdbg::getTrgt("/proc0"), P10_20};
     libhei::Chip proc1{util::pdbg::getTrgt("/proc1"), P10_20};
@@ -223,7 +223,7 @@ TEST(ChnlTimeout, DifferentProc)
 // Test a single channel timeout
 TEST(ChnlTimeout, SingleTimeout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip proc0{util::pdbg::getTrgt("/proc0"), P10_20};
 

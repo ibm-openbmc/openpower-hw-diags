@@ -19,9 +19,10 @@ namespace util
  *
  * @return none
  */
-inline void pdbg_log_callback(const int loglevel, const char* format,
-                              va_list args)
+inline void pdbg_log_callback(const int /*loglevel*/, const char* /*format*/,
+                              va_list /*args*/)
 {
+    /* TODO - remove?
     constexpr size_t MSG_MAX_LEN = 256;
     char msg[MSG_MAX_LEN];
     vsnprintf(msg, MSG_MAX_LEN, format, args);
@@ -47,6 +48,7 @@ inline void pdbg_log_callback(const int loglevel, const char* format,
             phosphor::logging::log<phosphor::logging::level::ERR>(msg);
             break;
     }
+            */
 }
 
 } // namespace util

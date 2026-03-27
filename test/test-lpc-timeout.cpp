@@ -16,7 +16,7 @@ extern bool g_lpcTimeout;
 // Test #1: - no LPC timeout
 TEST(LpcTimeout, TestSet1)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     g_lpcTimeout = false; // no timeout
 
@@ -57,7 +57,7 @@ TEST(LpcTimeout, TestSet1)
 // Test #2: - LPC timeout
 TEST(LpcTimeout, TestSet2)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     g_lpcTimeout = true; // force timeout
 

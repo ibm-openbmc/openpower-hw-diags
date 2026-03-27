@@ -14,11 +14,11 @@ namespace Ody
  * @brief Adds all chips in the OCMB PLL domain with active PLL unlock
  *        attentions to the callout list.
  *
- * An OCMB PLL domain is scoped to just the OCMBs under the same processor chip.
+ * An OCMB PLL domain is scoped to just the OCMBs under the same hub chip.
  * If more than one OCMB within the PLL domain is reporting a PLL unlock
- * attention, the clock source (the processor) is called out with high priority
+ * attention, the clock source (the hub) is called out with high priority
  * and all connected OCMBs are called out with low priority. Otherwise, single
- * OCMB is called out high and the connected processor low.
+ * OCMB is called out high and the connected hub low.
  */
 void pll_unlock(unsigned int, const libhei::Chip& i_ocmbChip,
                 ServiceData& io_servData)
@@ -33,14 +33,14 @@ void pll_unlock(unsigned int, const libhei::Chip& i_ocmbChip,
     std::vector<libhei::Signature> pllList{sigList.size()};
 
     // Copy all signatures PLL signatures that match the node ID and parent
-    // processor chip.
-    auto procTrgt = getParentProcessor(getTrgt(i_ocmbChip));
-    auto itr = std::copy_if(
-        sigList.begin(), sigList.end(), pllList.begin(),
-        [&nodeId, &procTrgt](const auto& s) {
-            return (nodeId == s.getId() &&
-                    procTrgt == getParentProcessor(getTrgt(s.getChip())));
-        });
+    // hub chip.
+    auto hubTrgt = getParentHub(getTrgt(i_ocmbChip));
+    auto itr =
+        std::copy_if(sigList.begin(), sigList.end(), pllList.begin(),
+                     [&nodeId, &hubTrgt](const auto& s) {
+                         return (nodeId == s.getId() &&
+                                 hubTrgt == getParentHub(getTrgt(s.getChip())));
+                     });
 
     // Shrink the size of the PLL list if necessary.
     pllList.resize(std::distance(pllList.begin(), itr));
@@ -54,7 +54,7 @@ void pll_unlock(unsigned int, const libhei::Chip& i_ocmbChip,
     }
 
     // The hardware callouts will be all OCMBs with PLL unlock attentions and
-    // the connected processor chip. The callout priorities are dependent on the
+    // the connected hub chip. The callout priorities are dependent on the
     // number of chips at attention.
     if (1 == pllList.size())
     {
@@ -62,13 +62,13 @@ void pll_unlock(unsigned int, const libhei::Chip& i_ocmbChip,
         // likely in the OCMB.
         io_servData.calloutTarget(getTrgt(pllList.front().getChip()),
                                   callout::Priority::HIGH, true);
-        io_servData.calloutTarget(procTrgt, callout::Priority::LOW, false);
+        io_servData.calloutTarget(hubTrgt, callout::Priority::LOW, false);
     }
     else
     {
         // There are more than one OCMB chip with a PLL unlock. So, the error is
-        // likely the clock source, which is the processor.
-        io_servData.calloutTarget(procTrgt, callout::Priority::HIGH, true);
+        // likely the clock source, which is the hub.
+        io_servData.calloutTarget(hubTrgt, callout::Priority::HIGH, true);
         for (const auto& sig : pllList)
         {
             io_servData.calloutTarget(getTrgt(sig.getChip()),

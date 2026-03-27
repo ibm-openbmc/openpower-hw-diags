@@ -236,7 +236,7 @@ void __captureRegisterDump(const libhei::IsolationData& i_isoData,
 void __captureHostbootScratchRegisters(
     std::vector<util::FFDCFile>& io_userDataFiles)
 {
-    // Get the Hostboot scratch registers from the primary processor.
+    // Get the Hostboot scratch registers from the primary hub.
 
     uint32_t cfamAddr = 0x283C;
     uint32_t cfamValue = 0;
@@ -244,19 +244,19 @@ void __captureHostbootScratchRegisters(
     uint64_t scomAddr = 0x4602F489;
     uint64_t scomValue = 0;
 
-    auto priProc = util::pdbg::getPrimaryProcessor();
-    if (nullptr == priProc)
+    auto priHub = util::pdbg::getPrimaryHub();
+    if (nullptr == priHub)
     {
-        trace::err("Unable to get primary processor");
+        trace::err("Unable to get primary hub");
     }
     else
     {
-        if (0 != util::pdbg::getCfam(priProc, cfamAddr, cfamValue))
+        if (0 != util::pdbg::getCfam(priHub, cfamAddr, cfamValue))
         {
             cfamValue = 0; // just in case
         }
 
-        if (0 != util::pdbg::getScom(priProc, scomAddr, scomValue))
+        if (0 != util::pdbg::getScom(priHub, scomAddr, scomValue))
         {
             scomValue = 0; // just in case
         }
@@ -298,19 +298,19 @@ void __captureScratchRegSignature(std::vector<util::FFDCFile>& io_userDataFiles)
     uint32_t chipId = 0; // stored in reg9
     uint32_t sigId = 0;  // stored in reg10
 
-    auto priProc = util::pdbg::getPrimaryProcessor();
-    if (nullptr == priProc)
+    auto priHub = util::pdbg::getPrimaryHub();
+    if (nullptr == priHub)
     {
-        trace::err("Unable to get primary processor");
+        trace::err("Unable to get primary hub");
     }
     else
     {
-        if (0 != util::pdbg::getCfam(priProc, reg9Addr, chipId))
+        if (0 != util::pdbg::getCfam(priHub, reg9Addr, chipId))
         {
             chipId = 0; // just in case
         }
 
-        if (0 != util::pdbg::getCfam(priProc, reg10Addr, sigId))
+        if (0 != util::pdbg::getCfam(priHub, reg10Addr, sigId))
         {
             sigId = 0; // just in case
         }

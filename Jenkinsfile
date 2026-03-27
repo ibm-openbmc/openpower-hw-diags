@@ -53,7 +53,9 @@ pipeline
                 }
 
                 // Run the CI script.
-                sh('UNIT_TEST_PKG=openpower-hw-diags openbmc-build-scripts/run-unit-test-docker.sh')
+                // TODO - reenable once hostfw_phal is available in the unit test
+                // docker image.
+                // sh('UNIT_TEST_PKG=openpower-hw-diags openbmc-build-scripts/run-unit-test-docker.sh')
             }
         }
     }

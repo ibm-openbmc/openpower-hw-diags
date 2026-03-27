@@ -1,9 +1,3 @@
-extern "C"
-{
-#include <libpdbg.h>
-#include <libpdbg_sbe.h>
-}
-
 #include <config.h>
 
 #ifdef CONFIG_PHAL_API
@@ -83,114 +77,82 @@ void attnHandler(Config* i_config)
 
     uint32_t isr_val, isr_mask;
 
-    // loop through processors looking for active attentions
+    // loop through hubs looking for active attentions
     trace::inf("Attention handler started");
 
-    pdbg_target* target;
-    pdbg_for_each_class_target("proc", target)
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        if (PDBG_TARGET_ENABLED == pdbg_target_probe(target))
+        if (TARGETING::utils::isFunctional(hub))
         {
-            auto proc = pdbg_target_index(target); // get processor number
+            // trace the hub number
+            trace::inf("hub: %u", TARGETING::utils::getPosition(hub));
 
-            // Use PIB target to determine if a processor is enabled
-            char path[16];
-            sprintf(path, "/proc%d/pib", proc);
-            pdbg_target* pibTarget = pdbg_target_from_path(nullptr, path);
+            isr_val = 0xffffffff; // invalid isr value
 
-            // sanity check
-            if (nullptr == pibTarget)
+            // get active attentions on the hub
+            if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x1007, isr_val))
             {
-                trace::inf("pib path or target not found");
+                // log cfam read error
+                trace::err("cfam read 0x1007 FAILED");
+                eventAttentionFail(
+                    (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            }
+            else if (0xffffffff == isr_val)
+            {
+                trace::err("cfam read 0x1007 INVALID");
                 continue;
             }
-
-            // check if pib target is enabled
-            if (PDBG_TARGET_ENABLED == pdbg_target_probe(pibTarget))
+            else
             {
-                // The processor FSI target is required for CFAM read
-                sprintf(path, "/proc%d/fsi", proc);
-                pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, path);
+                // trace isr value
+                trace::inf("cfam 0x1007 = 0x%08x", isr_val);
 
-                // sanity check
-                if (nullptr == fsiTarget)
-                {
-                    trace::inf("fsi path or target not found");
-                    continue;
-                }
+                isr_mask = 0xffffffff; // invalid isr mask
 
-                // trace the proc number
-                trace::inf("proc: %u", proc);
-
-                isr_val = 0xffffffff; // invalid isr value
-
-                // get active attentions on processor
-                if (RC_SUCCESS != fsi_read(fsiTarget, 0x1007, &isr_val))
+                // get interrupt enabled special attentions mask
+                if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x100d, isr_mask))
                 {
                     // log cfam read error
-                    trace::err("cfam read 0x1007 FAILED");
+                    trace::err("cfam read 0x100d FAILED");
                     eventAttentionFail(
                         (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
                 }
-                else if (0xffffffff == isr_val)
+                else if (0xffffffff == isr_mask)
                 {
-                    trace::err("cfam read 0x1007 INVALID");
+                    trace::err("cfam read 0x100d INVALID");
                     continue;
                 }
                 else
                 {
-                    // trace isr value
-                    trace::inf("cfam 0x1007 = 0x%08x", isr_val);
+                    // trace true mask
+                    trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
-                    isr_mask = 0xffffffff; // invalid isr mask
-
-                    // get interrupt enabled special attentions mask
-                    if (RC_SUCCESS != fsi_read(fsiTarget, 0x100d, &isr_mask))
+                    // SBE vital attention active and not masked?
+                    if (true == activeAttn(isr_val, isr_mask, SBE_ATTN))
                     {
-                        // log cfam read error
-                        trace::err("cfam read 0x100d FAILED");
-                        eventAttentionFail(
-                            (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+                        active_attentions.emplace_back(
+                            Attention::Vital, handleVital, hub, i_config);
                     }
-                    else if (0xffffffff == isr_mask)
+
+                    // Checkstop attention active and not masked?
+                    if (true == activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN))
                     {
-                        trace::err("cfam read 0x100d INVALID");
-                        continue;
+                        active_attentions.emplace_back(Attention::Checkstop,
+                                                       handleCheckstop, hub,
+                                                       i_config);
                     }
-                    else
+
+                    // Special attention active and not masked?
+                    if (true == activeAttn(isr_val, isr_mask, SPECIAL_ATTN))
                     {
-                        // trace true mask
-                        trace::inf("cfam 0x100d = 0x%08x", isr_mask);
-
-                        // SBE vital attention active and not masked?
-                        if (true == activeAttn(isr_val, isr_mask, SBE_ATTN))
-                        {
-                            active_attentions.emplace_back(Attention::Vital,
-                                                           handleVital, target,
-                                                           i_config);
-                        }
-
-                        // Checkstop attention active and not masked?
-                        if (true ==
-                            activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN))
-                        {
-                            active_attentions.emplace_back(Attention::Checkstop,
-                                                           handleCheckstop,
-                                                           target, i_config);
-                        }
-
-                        // Special attention active and not masked?
-                        if (true == activeAttn(isr_val, isr_mask, SPECIAL_ATTN))
-                        {
-                            active_attentions.emplace_back(Attention::Special,
-                                                           handleSpecial,
-                                                           target, i_config);
-                        }
-                    } // cfam 0x100d valid
-                } // cfam 0x1007 valid
-            } // fsi target enabled
-        } // pib target enabled
-    } // next processor
+                        active_attentions.emplace_back(
+                            Attention::Special, handleSpecial, hub, i_config);
+                    }
+                } // cfam 0x100d valid
+            } // cfam 0x1007 valid
+        } // target functional
+    } // next hub
 
     // convert to heap, highest priority is at front
     if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
@@ -277,25 +239,28 @@ int handleSpecial(Attention* i_attention)
     int rc = RC_SUCCESS; // assume special attention handled
 
     // The TI info chipop will give us a pointer to the TI info data
-    uint8_t* tiInfo = nullptr;                        // ptr to TI info data
-    uint32_t tiInfoLen = 0;                           // length of TI info data
-    pdbg_target* attnProc = i_attention->getTarget(); // proc with attention
+    uint8_t* tiInfo = nullptr; // ptr to TI info data
 
-    bool tiInfoStatic = false; // assume TI info was provided (not created)
+    // TODO - reenable
+    // uint32_t tiInfoLen = 0;       // length of TI info data
+    TARGETING::TargetPtr attnHub =
+        i_attention->getTarget(); // hub with attention
+
+    bool tiInfoStatic = false;    // assume TI info was provided (not created)
 
     // need proc target to get dynamic TI info
-    if (nullptr != attnProc)
+    if (nullptr != attnHub)
     {
-#ifdef CONFIG_PHAL_API
         trace::inf("using libphal to get TI info");
 
-        // phal library uses proc target for get ti info
-        if (PDBG_TARGET_ENABLED == pdbg_target_probe(attnProc))
+        // phal library uses hub target for get ti info
+        if (TARGETING::utils::isFunctional(attnHub))
         {
+            /* TODO - new TI info function?
             try
             {
                 // get dynamic TI info
-                openpower::phal::sbe::getTiInfo(attnProc, &tiInfo, &tiInfoLen);
+                openpower::phal::sbe::getTiInfo(attnHub, &tiInfo, &tiInfoLen);
             }
             catch (openpower::phal::exception::SbeError& sbeError)
             {
@@ -305,26 +270,27 @@ int handleSpecial(Attention* i_attention)
                 // commands are defined in the sbefifo library source code
                 // but do not seem to be exported/installed for consumption
                 // externally.
-                uint32_t procNum = pdbg_target_index(attnProc);
+                uint32_t procNum = TARGETING::utils::getPosition(attnHub);
+                // TODO - update?
                 phalSbeExceptionHandler(sbeError, procNum, 0xa904);
-            }
+            }*/
         }
-#else
         trace::inf("using libpdbg to get TI info");
 
+        // TODO - likely this will change with the new interface
         // pdbg library uses pib target for get ti info
         char path[16];
-        sprintf(path, "/proc%d/pib", pdbg_target_index(attnProc));
-        pdbg_target* tiInfoTarget = pdbg_target_from_path(nullptr, path);
+        sprintf(path, "/hub%d/pib", TARGETING::utils::getPosition(attnHub));
+        TARGETING::TargetPtr tiInfoTarget = util::pdbg::getTrgt(path);
 
         if (nullptr != tiInfoTarget)
         {
-            if (PDBG_TARGET_ENABLED == pdbg_target_probe(tiInfoTarget))
+            if (TARGETING::utils::isFunctional(tiInfoTarget))
             {
-                sbe_mpipl_get_ti_info(tiInfoTarget, &tiInfo, &tiInfoLen);
+                // TODO - update interface?
+                // sbe_mpipl_get_ti_info(tiInfoTarget, &tiInfo, &tiInfoLen);
             }
         }
-#endif
     }
 
     // dynamic TI info is not available
@@ -551,23 +517,19 @@ void clearAttnInterrupts()
 {
     trace::inf("Clearing attention interrupts");
 
-    // loop through processors clearing attention interrupts
-    pdbg_target* procTarget;
-    pdbg_for_each_class_target("proc", procTarget)
+    // loop through hubs clearing attention interrupts
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        // active processors only
-        if (PDBG_TARGET_ENABLED !=
-            pdbg_target_probe(util::pdbg::getPibTrgt(procTarget)))
+        // active hubs only
+        if (!TARGETING::utils::isFunctional(hub))
         {
             continue;
         }
 
-        // get cfam is an fsi read
-        pdbg_target* fsiTarget = util::pdbg::getFsiTrgt(procTarget);
+        // get attention interrupts on the hub
         uint32_t int_val;
-
-        // get attention interrupts on processor
-        if (RC_SUCCESS == fsi_read(fsiTarget, 0x100b, &int_val))
+        if (RC_SUCCESS == util::pdbg::getCfam(hub, 0x100b, int_val))
         {
             // trace int value
             trace::inf("cfam 0x100b = 0x%08x", int_val);
@@ -575,8 +537,8 @@ void clearAttnInterrupts()
             int_val &= ~(ANY_ATTN | CHECKSTOP_ATTN | SPECIAL_ATTN |
                          RECOVERABLE_ATTN | SBE_ATTN);
 
-            // clear attention interrupts on processor
-            if (RC_SUCCESS != fsi_write(fsiTarget, 0x100b, int_val))
+            // clear attention interrupts on the hub
+            if (RC_SUCCESS != util::pdbg::putCfam(hub, 0x100b, int_val))
             {
                 // log cfam write error
                 trace::err("cfam write 0x100b FAILED");

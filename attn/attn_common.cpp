@@ -1,5 +1,3 @@
-#include <libpdbg.h>
-
 #include <attn/attn_common.hpp>
 #include <attn/attn_handler.hpp>
 #include <attn/attn_logging.hpp>
@@ -17,63 +15,62 @@ namespace attn
 /** @brief Traces some regs for hostboot */
 void addHbStatusRegs()
 {
+    /* TODO - remove or update for P12?
     // Only do this for P10 systems
-    if (util::pdbg::queryHardwareAnalysisSupported())
+
+    // We only need this for PRIMARY processor
+    pdbg_target* pibTarget = pdbg_target_from_path(nullptr, "/proc0/pib");
+    pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, "/proc0/fsi");
+
+    uint32_t l_cfamData = 0xFFFFFFFF;
+    uint64_t l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
+    uint64_t l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
+    uint32_t l_cfamAddr = 0x283C;
+    uint64_t l_scomAddr1 = 0x4602F489;
+    uint64_t l_scomAddr2 = 0x4602F487;
+
+    if ((nullptr != fsiTarget) && (nullptr != pibTarget))
     {
-        // We only need this for PRIMARY processor
-        pdbg_target* pibTarget = pdbg_target_from_path(nullptr, "/proc0/pib");
-        pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, "/proc0/fsi");
-
-        uint32_t l_cfamData = 0xFFFFFFFF;
-        uint64_t l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
-        uint64_t l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
-        uint32_t l_cfamAddr = 0x283C;
-        uint64_t l_scomAddr1 = 0x4602F489;
-        uint64_t l_scomAddr2 = 0x4602F487;
-
-        if ((nullptr != fsiTarget) && (nullptr != pibTarget))
+        // get first debug reg (CFAM)
+        if (RC_SUCCESS != fsi_read(fsiTarget, l_cfamAddr, &l_cfamData))
         {
-            // get first debug reg (CFAM)
-            if (RC_SUCCESS != fsi_read(fsiTarget, l_cfamAddr, &l_cfamData))
-            {
-                trace::err("cfam read error: 0x%08x", l_cfamAddr);
-                l_cfamData = 0xFFFFFFFF;
-            }
-
-            // Get SCOM regs next (just 2 of them)
-            if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr1, &l_scomData1))
-            {
-                trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr1);
-                l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
-            }
-
-            if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr2, &l_scomData2))
-            {
-                trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr2);
-                l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
-            }
+            trace::err("cfam read error: 0x%08x", l_cfamAddr);
+            l_cfamData = 0xFFFFFFFF;
         }
 
-        // Trace out the results here of all 3 regs
-        // (Format should resemble FSP: HostBoot Reg:0000283C  Data:AA801504
-        // 00000000  Proc:00050001 )
-        trace::inf("HostBoot Reg:%08x Data:%08x Proc:00000000", l_cfamAddr,
-                   l_cfamData);
-        trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64
-                   " Proc:00000000",
-                   l_scomAddr1, l_scomData1);
-        trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64
-                   " Proc:00000000",
-                   l_scomAddr2, l_scomData2);
+        // Get SCOM regs next (just 2 of them)
+        if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr1, &l_scomData1))
+        {
+            trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr1);
+            l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
+        }
+
+        if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr2, &l_scomData2))
+        {
+            trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr2);
+            l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
+        }
     }
+
+    // Trace out the results here of all 3 regs
+    // (Format should resemble FSP: HostBoot Reg:0000283C  Data:AA801504
+    // 00000000  Proc:00050001 )
+    trace::inf("HostBoot Reg:%08x Data:%08x Proc:00000000", l_cfamAddr,
+               l_cfamData);
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Proc:00000000",
+               l_scomAddr1, l_scomData1);
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Proc:00000000",
+               l_scomAddr2, l_scomData2);
+    */
 
     return;
 
 } // end addHbStatusRegs
 
 /** @brief Capture some scratch registers for PRD */
-void addPrdScratchRegs(std::vector<util::FFDCFile>& o_files)
+void addPrdScratchRegs(std::vector<util::FFDCFile>& /*o_files*/)
 {
+    /* TODO - update for P12
     // Get primary processor FSI target for CFAM reads
     pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, "/proc0/fsi");
 
@@ -135,7 +132,7 @@ void addPrdScratchRegs(std::vector<util::FFDCFile>& o_files)
                 trace::inf(e.what());
             }
         }
-    }
+    }*/
 
     return;
 }
@@ -145,64 +142,36 @@ bool recoverableErrors()
 {
     bool recoverableErrors = false; // assume no recoverable attentions
 
-    pdbg_target* target;
-    pdbg_for_each_class_target("proc", target)
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        if (PDBG_TARGET_ENABLED == pdbg_target_probe(target))
+        // Active hubs only.
+        if (TARGETING::utils::isFunctional(hub))
         {
-            auto proc = pdbg_target_index(target); // get processor number
+            uint32_t isr_val = 0xffffffff; // invalid isr value
 
-            // Use PIB target to determine if a processor is enabled
-            char path[16];
-            sprintf(path, "/proc%d/pib", proc);
-            pdbg_target* pibTarget = pdbg_target_from_path(nullptr, path);
-
-            // sanity check
-            if (nullptr == pibTarget)
+            // get active attentions on processor
+            if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x1007, isr_val))
             {
-                trace::inf("pib path or target not found");
+                // log cfam read error
+                trace::err("cfam read 0x1007 FAILED");
+                eventAttentionFail(
+                    (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            }
+            // check for invalid/stale value
+            else if (0xffffffff == isr_val)
+            {
+                trace::err("cfam read 0x1007 INVALID");
                 continue;
             }
-
-            // check if pib target is enabled - indicates proc is enabled
-            if (PDBG_TARGET_ENABLED == pdbg_target_probe(pibTarget))
+            // check recoverable error status bit
+            else if (0 != (isr_val & RECOVERABLE_ATTN))
             {
-                // The processor FSI target is required for CFAM read
-                sprintf(path, "/proc%d/fsi", proc);
-                pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, path);
-
-                // sanity check
-                if (nullptr == fsiTarget)
-                {
-                    trace::inf("fsi path or target not found");
-                    continue;
-                }
-
-                uint32_t isr_val = 0xffffffff; // invalid isr value
-
-                // get active attentions on processor
-                if (RC_SUCCESS != fsi_read(fsiTarget, 0x1007, &isr_val))
-                {
-                    // log cfam read error
-                    trace::err("cfam read 0x1007 FAILED");
-                    eventAttentionFail(
-                        (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
-                }
-                // check for invalid/stale value
-                else if (0xffffffff == isr_val)
-                {
-                    trace::err("cfam read 0x1007 INVALID");
-                    continue;
-                }
-                // check recoverable error status bit
-                else if (0 != (isr_val & RECOVERABLE_ATTN))
-                {
-                    recoverableErrors = true;
-                    break;
-                }
-            } // fsi target enabled
-        } // pib target enabled
-    } // next processor
+                recoverableErrors = true;
+                break;
+            }
+        } // functional hub
+    } // next hub chip
 
     return recoverableErrors;
 }

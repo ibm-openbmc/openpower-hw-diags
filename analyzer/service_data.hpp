@@ -92,13 +92,13 @@ class ServiceData
     }
 
     /**
-     * @brief Add callout for a pdbg_target.
+     * @brief Add callout for a target.
      * @param i_target   The chip or unit target to add to the callout list.
      * @param i_priority The callout priority.
      * @param i_guard    True if guard is required. False, otherwise.
      */
-    void calloutTarget(pdbg_target* i_target, callout::Priority i_priority,
-                       bool i_guard);
+    void calloutTarget(TARGETING::TargetPtr i_target,
+                       callout::Priority i_priority, bool i_guard);
 
     /**
      * @brief Add callout for a connected target on the other side of a bus.
@@ -107,7 +107,7 @@ class ServiceData
      * @param i_priority The callout priority.
      * @param i_guard    True if guard is required. False, otherwise.
      */
-    void calloutConnected(pdbg_target* i_rxTarget,
+    void calloutConnected(TARGETING::TargetPtr i_rxTarget,
                           const callout::BusType& i_busType,
                           callout::Priority i_priority, bool i_guard);
 
@@ -118,7 +118,8 @@ class ServiceData
      * @param i_priority The callout priority.
      * @param i_guard    True if guard is required. False, otherwise.
      */
-    void calloutBus(pdbg_target* i_rxTarget, const callout::BusType& i_busType,
+    void calloutBus(TARGETING::TargetPtr i_rxTarget,
+                    const callout::BusType& i_busType,
                     callout::Priority i_priority, bool i_guard);
 
     /**
@@ -199,8 +200,8 @@ class ServiceData
      * @param i_priority The callout priority.
      * @param i_guard    True if guard is required. False, otherwise.
      */
-    void addTargetCallout(pdbg_target* i_target, callout::Priority i_priority,
-                          bool i_guard);
+    void addTargetCallout(TARGETING::TargetPtr i_target,
+                          callout::Priority i_priority, bool i_guard);
 
     /**
      * @brief A simple helper function for all the callout functions that need
@@ -226,7 +227,7 @@ class ServiceData
      * @brief Returns the appropriate SRC subsystem based on the input target.
      * @param i_trgt The given pdbg target.
      */
-    callout::SrcSubsystem getTargetSubsystem(pdbg_target* i_target);
+    callout::SrcSubsystem getTargetSubsystem(TARGETING::TargetPtr i_target);
 
     /** The SRC subsystem field (2nd byte of the primary SRC) is based on the
      *  callouts the PEL. As callouts are to the service data, we'll need to

@@ -34,37 +34,39 @@ namespace pdbg
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getTrgt(const libhei::Chip& i_chip)
+TARGETING::TargetPtr getTrgt(const libhei::Chip& i_chip)
 {
-    return (pdbg_target*)i_chip.getChip();
+    return (TARGETING::TargetPtr)i_chip.getChip();
 }
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getTrgt(const std::string& i_path)
+TARGETING::TargetPtr getTrgt(const std::string& /*i_path*/)
 {
-    return pdbg_target_from_path(nullptr, i_path.c_str());
+    /* TODO - make version to get target from type and pos
+    return TARGETING::TargetService::toTarget(
+        TARGETING::EntityPath(i_path.c_str()));
+    */
+    return nullptr;
 }
 
 //------------------------------------------------------------------------------
 
-const char* getPath(pdbg_target* i_trgt)
+const std::string getPath(TARGETING::TargetPtr i_target)
 {
-    return pdbg_target_path(i_trgt);
+    return TARGETING::utils::getPhysicalPath(i_target);
 }
 
-const char* getPath(const libhei::Chip& i_chip)
+const std::string getPath(const libhei::Chip& i_chip)
 {
     return getPath(getTrgt(i_chip));
 }
 
 //------------------------------------------------------------------------------
 
-uint32_t getChipPos(pdbg_target* i_trgt)
+uint32_t getChipPos(TARGETING::TargetPtr i_target)
 {
-    uint32_t attr = 0;
-    pdbg_target_get_attribute(i_trgt, "ATTR_FAPI_POS", 4, 1, &attr);
-    return attr;
+    return i_target->getAttr<TARGETING::ATTR_FAPI_POS>();
 }
 
 uint32_t getChipPos(const libhei::Chip& i_chip)
@@ -74,20 +76,16 @@ uint32_t getChipPos(const libhei::Chip& i_chip)
 
 //------------------------------------------------------------------------------
 
-uint8_t getUnitPos(pdbg_target* i_trgt)
+uint8_t getUnitPos(TARGETING::TargetPtr i_target)
 {
-    uint8_t attr = 0;
-    pdbg_target_get_attribute(i_trgt, "ATTR_CHIP_UNIT_POS", 1, 1, &attr);
-    return attr;
+    return TARGETING::utils::getChipUnitPos(i_target);
 }
 
 //------------------------------------------------------------------------------
 
-uint8_t getTrgtType(pdbg_target* i_trgt)
+uint8_t getTrgtType(TARGETING::TargetPtr i_target)
 {
-    uint8_t attr = 0;
-    pdbg_target_get_attribute(i_trgt, "ATTR_TYPE", 1, 1, &attr);
-    return attr;
+    return i_target->getAttr<TARGETING::ATTR_TYPE>();
 }
 
 uint8_t getTrgtType(const libhei::Chip& i_chip)
@@ -97,24 +95,35 @@ uint8_t getTrgtType(const libhei::Chip& i_chip)
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getParentChip(pdbg_target* i_unitTarget)
+TARGETING::TargetPtr getParentChip(TARGETING::TargetPtr i_unitTarget)
 {
     assert(nullptr != i_unitTarget);
 
     // Check if the given target is already a chip.
     auto targetType = getTrgtType(i_unitTarget);
-    if (TYPE_PROC == targetType || TYPE_OCMB == targetType)
+    if (TARGETING::TYPE_HUB_CHIP == targetType ||
+        TARGETING::TYPE_OCMB_CHIP == targetType ||
+        TARGETING::TYPE_COMPUTE_CHIP == targetType)
     {
         return i_unitTarget; // simply return the given target
     }
 
     // Check if this unit is on an OCMB.
-    pdbg_target* parentChip = pdbg_target_parent("ocmb", i_unitTarget);
+    TARGETING::TargetPtr parentChip = TARGETING::utils::getParentTarget(
+        i_unitTarget, TARGETING::TYPE_OCMB_CHIP);
 
-    // If not on the OCMB, check if this unit is on a PROC.
+    // If not on the OCMB, check if this unit is on a HUB.
     if (nullptr == parentChip)
     {
-        parentChip = pdbg_target_parent("proc", i_unitTarget);
+        parentChip = TARGETING::utils::getParentTarget(
+            i_unitTarget, TARGETING::TYPE_HUB_CHIP);
+    }
+
+    // If not on an OCMB or HUB, check if this unit is on a COMPUTE chip.
+    if (nullptr == parentChip)
+    {
+        parentChip = TARGETING::utils::getParentTarget(
+            i_unitTarget, TARGETING::TYPE_COMPUTE_CHIP);
     }
 
     // There should always be a parent chip. Throw an error if not found.
@@ -129,18 +138,19 @@ pdbg_target* getParentChip(pdbg_target* i_unitTarget)
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getParentProcessor(pdbg_target* i_target)
+TARGETING::TargetPtr getParentHub(TARGETING::TargetPtr i_target)
 {
     assert(nullptr != i_target);
 
     // Check if the given target is already a processor chip.
-    if (TYPE_PROC == getTrgtType(i_target))
+    if (TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target))
     {
         return i_target; // simply return the given target
     }
 
     // Get the parent processor chip.
-    pdbg_target* parentChip = pdbg_target_parent("proc", i_target);
+    TARGETING::TargetPtr parentChip =
+        TARGETING::utils::getParentTarget(i_target, TARGETING::TYPE_HUB_CHIP);
 
     // There should always be a parent chip. Throw an error if not found.
     if (nullptr == parentChip)
@@ -154,68 +164,25 @@ pdbg_target* getParentProcessor(pdbg_target* i_target)
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getChipUnit(pdbg_target* i_parentChip, TargetType_t i_unitType,
-                         uint8_t i_unitPos)
+TARGETING::TargetPtr getChipUnit(TARGETING::TargetPtr i_parentChip,
+                                 TARGETING::TYPE i_unitType, uint8_t i_unitPos)
 {
     assert(nullptr != i_parentChip);
 
-    auto parentType = getTrgtType(i_parentChip);
-
-    std::string devTreeType{};
-
-    if (TYPE_PROC == parentType)
-    {
-        // clang-format off
-        static const std::map<TargetType_t, std::string> m =
-        {
-            {TYPE_MC,     "mc"      },
-            {TYPE_MCC,    "mcc"     },
-            {TYPE_OMI,    "omi"     },
-            {TYPE_OMIC,   "omic"    },
-            {TYPE_PAUC,   "pauc"    },
-            {TYPE_PAU,    "pau"     },
-            {TYPE_NMMU,   "nmmu"    },
-            {TYPE_IOHS,   "iohs"    },
-            {TYPE_IOLINK, "smpgroup"},
-            {TYPE_EQ,     "eq"      },
-            {TYPE_CORE,   "core"    },
-            {TYPE_PEC,    "pec"     },
-            {TYPE_PHB,    "phb"     },
-            {TYPE_NX,     "nx"      },
-        };
-        // clang-format on
-
-        devTreeType = m.at(i_unitType);
-    }
-    else if (TYPE_OCMB == parentType)
-    {
-        // clang-format off
-        static const std::map<TargetType_t, std::string> m =
-        {
-            {TYPE_MEM_PORT, "mem_port"},
-        };
-        // clang-format on
-
-        devTreeType = m.at(i_unitType);
-    }
-    else
-    {
-        throw std::logic_error(
-            "Unexpected parent chip: " + std::string{getPath(i_parentChip)});
-    }
-
     // Iterate all children of the parent and match the unit position.
-    pdbg_target* unitTarget = nullptr;
-    pdbg_for_each_target(devTreeType.c_str(), i_parentChip, unitTarget)
+    TARGETING::TargetPtr unitTarget = nullptr;
+    for (const auto& u :
+         TARGETING::utils::getChildTargets(i_parentChip, i_unitType))
     {
-        if (nullptr != unitTarget && i_unitPos == getUnitPos(unitTarget))
+        if (nullptr != u && i_unitPos == getUnitPos(u))
         {
+            unitTarget = u;
             break; // found it
         }
     }
 
     // Print a warning if the target unit is not found, but don't throw an
-    // error.  Instead let the calling code deal with the it.
+    // error.  Instead let the calling code deal with it.
     if (nullptr == unitTarget)
     {
         trace::err("No unit target found: i_parentChip=%s i_unitType=0x%02x "
@@ -228,70 +195,17 @@ pdbg_target* getChipUnit(pdbg_target* i_parentChip, TargetType_t i_unitType,
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getTargetAcrossBus(pdbg_target* i_rxTarget)
+TARGETING::TargetPtr getTargetAcrossBus(TARGETING::TargetPtr i_rxTarget)
 {
     assert(nullptr != i_rxTarget);
 
-    // Validate target type
-    auto rxType = util::pdbg::getTrgtType(i_rxTarget);
-    assert(util::pdbg::TYPE_IOLINK == rxType ||
-           util::pdbg::TYPE_IOHS == rxType);
+    TARGETING::TargetPtr o_peerTarget = nullptr;
 
-    pdbg_target* o_peerTarget;
-    fs::path filePath;
-
-    // Open the appropriate data file depending on machine type
-    util::dbus::MachineType machineType = util::dbus::getMachineType();
-    switch (machineType)
+    TARGETING::EntityPath peerPath;
+    if (i_rxTarget->tryGetAttr<TARGETING::ATTR_PEER_PATH>(peerPath))
     {
-        // Rainier/Blue Ridge 4U
-        case util::dbus::MachineType::Rainier_2S4U:
-        case util::dbus::MachineType::Rainier_1S4U:
-        case util::dbus::MachineType::BlueRidge_2S4U:
-        case util::dbus::MachineType::BlueRidge_1S4U:
-            filePath =
-                fs::path{PACKAGE_DIR "util-data/peer-targets-rainier-4u.json"};
-            break;
-        // Rainier/Blue Ridge 2U
-        case util::dbus::MachineType::Rainier_2S2U:
-        case util::dbus::MachineType::Rainier_1S2U:
-        case util::dbus::MachineType::BlueRidge_2S2U:
-            filePath =
-                fs::path{PACKAGE_DIR "util-data/peer-targets-rainier-2u.json"};
-            break;
-        // Everest/Fuji
-        case util::dbus::MachineType::Everest:
-        case util::dbus::MachineType::Fuji:
-            filePath =
-                fs::path{PACKAGE_DIR "util-data/peer-targets-everest.json"};
-            break;
-        // Bonnell/Balcones
-        case util::dbus::MachineType::Bonnell:
-        case util::dbus::MachineType::Balcones:
-            filePath =
-                fs::path{PACKAGE_DIR "util-data/peer-targets-bonnell.json"};
-            break;
-        default:
-            trace::err("Invalid machine type found %d",
-                       static_cast<uint8_t>(machineType));
-            break;
-    }
-
-    std::ifstream file{filePath};
-    assert(file.good());
-
-    try
-    {
-        auto trgtMap = nlohmann::json::parse(file);
-        std::string rxPath = util::pdbg::getPath(i_rxTarget);
-        std::string peerPath = trgtMap.at(rxPath).get<std::string>();
-
-        o_peerTarget = util::pdbg::getTrgt(peerPath);
-    }
-    catch (...)
-    {
-        trace::err("Failed to parse file: %s", filePath.string().c_str());
-        throw;
+        auto& targetService = TARGETING::TargetService::instance();
+        o_peerTarget = targetService.toTarget(peerPath);
     }
 
     return o_peerTarget;
@@ -299,18 +213,18 @@ pdbg_target* getTargetAcrossBus(pdbg_target* i_rxTarget)
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getConnectedTarget(pdbg_target* i_rxTarget,
-                                const callout::BusType& i_busType)
+TARGETING::TargetPtr getConnectedTarget(TARGETING::TargetPtr i_rxTarget,
+                                        const callout::BusType& i_busType)
 {
     assert(nullptr != i_rxTarget);
 
-    pdbg_target* txTarget = nullptr;
+    TARGETING::TargetPtr txTarget = nullptr;
 
     auto rxType = util::pdbg::getTrgtType(i_rxTarget);
     std::string rxPath = util::pdbg::getPath(i_rxTarget);
 
     if (callout::BusType::SMP_BUS == i_busType &&
-        util::pdbg::TYPE_IOLINK == rxType)
+        TARGETING::TYPE_SMPGROUP == rxType)
     {
         txTarget = getTargetAcrossBus(i_rxTarget);
     }
@@ -322,19 +236,8 @@ pdbg_target* getConnectedTarget(pdbg_target* i_rxTarget,
     else if (callout::BusType::OMI_BUS == i_busType &&
              util::pdbg::TYPE_OMI == rxType)
     {
-        // This is a bit clunky. The pdbg APIs only give us the ability to
-        // iterate over the children instead of just returning a list. So
-        // we'll push all the children to a list and go from there.
-        std::vector<pdbg_target*> childList;
-
-        pdbg_target* childTarget = nullptr;
-        pdbg_for_each_target("ocmb", i_rxTarget, childTarget)
-        {
-            if (nullptr != childTarget)
-            {
-                childList.push_back(childTarget);
-            }
-        }
+        TARGETING::TargetPtrList childList = TARGETING::utils::getChildTargets(
+            i_rxTarget, TARGETING::TYPE_OCMB_CHIP);
 
         // We know there should only be one OCMB per OMI.
         if (1 != childList.size())
@@ -346,9 +249,10 @@ pdbg_target* getConnectedTarget(pdbg_target* i_rxTarget,
         txTarget = childList.front();
     }
     else if (callout::BusType::OMI_BUS == i_busType &&
-             util::pdbg::TYPE_OCMB == rxType)
+             TARGETING::TYPE_OCMB_CHIP == rxType)
     {
-        txTarget = pdbg_target_parent("omi", i_rxTarget);
+        txTarget =
+            TARGETING::utils::getParentTarget(i_rxTarget, TARGETING::TYPE_OMI);
         if (nullptr == txTarget)
         {
             throw std::logic_error("No parent OMI found for " + rxPath);
@@ -368,17 +272,18 @@ pdbg_target* getConnectedTarget(pdbg_target* i_rxTarget,
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getPibTrgt(pdbg_target* i_procTrgt)
+TARGETING::TargetPtr getPibTrgt(TARGETING::TargetPtr i_procTrgt)
 {
+    // TODO - remove if unneeded?
     // The input target must be a processor.
     assert(TYPE_PROC == getTrgtType(i_procTrgt));
 
     // Get the pib path.
     char path[16];
-    sprintf(path, "/proc%d/pib", pdbg_target_index(i_procTrgt));
+    sprintf(path, "/proc%d/pib", TARGETING::utils::getPosition(i_procTrgt));
 
     // Return the pib target.
-    pdbg_target* pibTrgt = pdbg_target_from_path(nullptr, path);
+    TARGETING::TargetPtr pibTrgt = util::pdbg::getTrgt(path);
     assert(nullptr != pibTrgt);
 
     return pibTrgt;
@@ -386,17 +291,18 @@ pdbg_target* getPibTrgt(pdbg_target* i_procTrgt)
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getFsiTrgt(pdbg_target* i_procTrgt)
+TARGETING::TargetPtr getFsiTrgt(TARGETING::TargetPtr i_procTrgt)
 {
+    // TODO - remove if unneeded?
     // The input target must be a processor.
     assert(TYPE_PROC == getTrgtType(i_procTrgt));
 
     // Get the fsi path.
     char path[16];
-    sprintf(path, "/proc%d/fsi", pdbg_target_index(i_procTrgt));
+    sprintf(path, "/proc%d/fsi", TARGETING::utils::getPosition(i_procTrgt));
 
     // Return the fsi target.
-    pdbg_target* fsiTrgt = pdbg_target_from_path(nullptr, path);
+    TARGETING::TargetPtr fsiTrgt = util::pdbg::getTrgt(path);
     assert(nullptr != fsiTrgt);
 
     return fsiTrgt;
@@ -408,30 +314,29 @@ pdbg_target* getFsiTrgt(pdbg_target* i_procTrgt)
 // The ATTR_CHIP_ID attribute will be synced from Hostboot to the BMC at
 // some point during the IPL. It is possible that this information is needed
 // before the sync occurs, in which case the value will return 0.
-uint32_t __getChipId(pdbg_target* i_trgt)
+uint32_t __getChipId(TARGETING::TargetPtr i_target)
 {
-    uint32_t attr = 0;
-    pdbg_target_get_attribute(i_trgt, "ATTR_CHIP_ID", 4, 1, &attr);
-    return attr;
+    return i_target->getAttr<TARGETING::ATTR_CHIP_ID>();
 }
 
 // IMPORTANT:
 // The ATTR_EC attribute will be synced from Hostboot to the BMC at some
 // point during the IPL. It is possible that this information is needed
 // before the sync occurs, in which case the value will return 0.
-uint8_t __getChipEc(pdbg_target* i_trgt)
+uint8_t __getChipEc(TARGETING::TargetPtr /*i_target*/)
 {
-    uint8_t attr = 0;
-    pdbg_target_get_attribute(i_trgt, "ATTR_EC", 1, 1, &attr);
-    return attr;
+    // TODO - needs some new equivalent
+    // return i_target->getAttr<TARGETING::ATTR_EC>();
+    return 0;
 }
 
-uint32_t __getChipIdEc(pdbg_target* i_trgt)
+uint32_t __getChipIdEc(TARGETING::TargetPtr i_target)
 {
-    auto chipId = __getChipId(i_trgt);
-    auto chipEc = __getChipEc(i_trgt);
+    auto chipId = __getChipId(i_target);
+    auto chipEc = __getChipEc(i_target);
 
-    if (((0 == chipId) || (0 == chipEc)) && (TYPE_PROC == getTrgtType(i_trgt)))
+    if (((0 == chipId) || (0 == chipEc)) &&
+        (TYPE_PROC == getTrgtType(i_target)))
     {
         // There is a special case where the model/level attributes have not
         // been initialized in the devtree. This is possible on the epoch
@@ -441,7 +346,7 @@ uint32_t __getChipIdEc(pdbg_target* i_trgt)
         // processor) via the CFAM chip ID register.
 
         uint32_t val = 0;
-        if (0 == getCfam(i_trgt, 0x100a, val))
+        if (0 == getCfam(i_target, 0x100a, val))
         {
             chipId = ((val & 0x0F0FF000) >> 12);
             chipEc = ((val & 0xF0000000) >> 24) | ((val & 0x00F00000) >> 20);
@@ -451,13 +356,13 @@ uint32_t __getChipIdEc(pdbg_target* i_trgt)
     return ((chipId & 0xffff) << 16) | (chipEc & 0xff);
 }
 
-void __addChip(std::vector<libhei::Chip>& o_chips, pdbg_target* i_trgt,
-               libhei::ChipType_t i_type)
+void __addChip(std::vector<libhei::Chip>& o_chips,
+               TARGETING::TargetPtr i_target, libhei::ChipType_t i_type)
 {
     // Trace each chip for debug. It is important to show the type just in
     // case the model/EC does not exist. See note below.
     trace::inf("Chip found: type=0x%08" PRIx32 " chip=%s", i_type,
-               getPath(i_trgt));
+               getPath(i_target));
 
     if (0 == i_type)
     {
@@ -467,32 +372,31 @@ void __addChip(std::vector<libhei::Chip>& o_chips, pdbg_target* i_trgt,
     }
     else
     {
-        o_chips.emplace_back(i_trgt, i_type);
+        o_chips.emplace_back(i_target, i_type);
     }
 }
 
 // Should ignore OCMBs that have been masked on the processor side of the bus.
 bool __isMaskedOcmb(const libhei::Chip& i_chip)
 {
-    // TODO: This function only works for P10 processors will need to update for
-    // subsequent chips.
-
     // Map of MCC target position to DSTL_FIR_MASK address.
     static const std::map<unsigned int, uint64_t> addrs = {
-        {0, 0x0C010D03}, {1, 0x0C010D43}, {2, 0x0D010D03}, {3, 0x0D010D43},
-        {4, 0x0E010D03}, {5, 0x0E010D43}, {6, 0x0F010D03}, {7, 0x0F010D43},
+        {0, 0x08011842},  {1, 0x08011A42},  {2, 0x08011C42},  {3, 0x08011E42},
+        {4, 0x09011842},  {5, 0x09011A42},  {6, 0x09011C42},  {7, 0x09011E42},
+        {8, 0x0A011842},  {9, 0x0A011A42},  {10, 0x0A011C42}, {11, 0x0A011E42},
+        {12, 0x0B011842}, {13, 0x0B011A42}, {14, 0x0B011C42}, {15, 0x0B011E42},
     };
 
     auto ocmb = getTrgt(i_chip);
 
     // Confirm this chip is an OCMB.
-    if (TYPE_OCMB != getTrgtType(ocmb))
+    if (TARGETING::TYPE_OCMB_CHIP != getTrgtType(ocmb))
     {
         return false;
     }
 
     // Get the connected MCC target on the processor chip.
-    auto mcc = pdbg_target_parent("mcc", ocmb);
+    auto mcc = TARGETING::utils::getParentTarget(ocmb, TARGETING::TYPE_MCC);
     if (nullptr == mcc)
     {
         throw std::logic_error(
@@ -510,8 +414,8 @@ bool __isMaskedOcmb(const libhei::Chip& i_chip)
     // The DSTL_FIR has bits for each of the two memory channels on the MCC.
     auto chnlPos = getChipPos(ocmb) % 2;
 
-    // Channel 0 => bits 0-3, channel 1 => bits 4-7.
-    auto mask = (val >> (60 - (4 * chnlPos))) & 0xf;
+    // Channel 0 => bits 1-4, channel 1 => bits 5-8.
+    auto mask = (val >> (59 - (4 * chnlPos))) & 0xf;
 
     // Return true if the mask is set to all 1's.
     if (0xf == mask)
@@ -527,36 +431,33 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
 {
     o_chips.clear();
 
-    // Iterate each processor.
-    pdbg_target* procTrgt;
-    pdbg_for_each_class_target("proc", procTrgt)
+    // Iterate each hub.
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        // We cannot use the proc target to determine if the chip is active.
-        // There is some design limitation in pdbg that requires the proc
-        // targets to always be active. Instead, we must get the associated
-        // pib target and check if it is active.
-
-        // Active processors only.
-        if (PDBG_TARGET_ENABLED != pdbg_target_probe(getPibTrgt(procTrgt)))
+        // Active hubs only.
+        if (!TARGETING::utils::isFunctional(hub))
             continue;
 
-        // Add the processor to the list.
-        __addChip(o_chips, procTrgt, __getChipIdEc(procTrgt));
+        // Add the hub to the list.
+        __addChip(o_chips, hub, __getChipIdEc(hub));
 
         // Iterate the connected OCMBs, if they exist.
-        pdbg_target* ocmbTrgt;
-        pdbg_for_each_target("ocmb", procTrgt, ocmbTrgt)
+        TARGETING::TargetPtrList ocmbList =
+            TARGETING::utils::getChildTargets(hub, TARGETING::TYPE_OCMB_CHIP);
+        for (const auto& ocmb : ocmbList)
         {
             // Active OCMBs only.
-            if (PDBG_TARGET_ENABLED != pdbg_target_probe(ocmbTrgt))
+            if (!TARGETING::utils::isFunctional(ocmb))
                 continue;
 
             // Add the OCMB to the list.
-            __addChip(o_chips, ocmbTrgt, __getChipIdEc(ocmbTrgt));
+            __addChip(o_chips, ocmb, __getChipIdEc(ocmb));
         }
     }
 
-    // Ignore OCMBs that have been masked on the processor side of the bus.
+    // Ignore OCMBs that have been masked on the hub side of the bus.
     o_chips.erase(
         std::remove_if(o_chips.begin(), o_chips.end(), __isMaskedOcmb),
         o_chips.end());
@@ -564,132 +465,85 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
 
 //------------------------------------------------------------------------------
 
-void getActiveProcessorChips(std::vector<pdbg_target*>& o_chips)
+void getActiveProcessorChips(TARGETING::TargetPtrList& o_chips)
 {
+    // TODO - only used in P10 TOD plugin currently. Update for hub chips if
+    // needed for P12, else remove, or just use TARGETING::utils::getTargets
+    // directly.
     o_chips.clear();
 
-    pdbg_target* procTrgt;
-    pdbg_for_each_class_target("proc", procTrgt)
+    TARGETING::TargetPtrList procList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_PROC);
+    for (const auto& proc : procList)
     {
-        // We cannot use the proc target to determine if the chip is active.
-        // There is some design limitation in pdbg that requires the proc
-        // targets to always be active. Instead, we must get the associated pib
-        // target and check if it is active.
-
-        if (PDBG_TARGET_ENABLED != pdbg_target_probe(getPibTrgt(procTrgt)))
+        if (!TARGETING::utils::isFunctional(proc))
             continue;
 
-        o_chips.push_back(procTrgt);
+        o_chips.push_back(proc);
     }
 }
 
 //------------------------------------------------------------------------------
 
-pdbg_target* getPrimaryProcessor()
+TARGETING::TargetPtr getPrimaryHub()
 {
-    // TODO: For at least P10, the primary processor (the one connected
-    // directly
-    //       to the BMC), will always be PROC 0. We will need to update this
-    //       later if we ever support an alternate primary processor.
-    return getTrgt("/proc0");
+    // TODO: For at least P10, the primary processor (the one connected directly
+    // to the BMC), will always be PROC 0. We will need to update this later if
+    // we ever support an alternate primary processor.
+    return getTrgt("/hub0");
 }
 
 //------------------------------------------------------------------------------
 
-bool queryHardwareAnalysisSupported()
+std::string getLocationCode(TARGETING::TargetPtr i_target)
 {
-    // Hardware analysis is only supported on P10 systems and up.
-    return (PDBG_PROC_P9 < pdbg_get_proc());
-}
-
-//------------------------------------------------------------------------------
-
-std::string getLocationCode(pdbg_target* trgt)
-{
-    if (nullptr == trgt)
+    if (nullptr == i_target)
     {
         // Either the path is wrong or the attribute doesn't exist.
         return std::string{};
     }
 
-#ifdef CONFIG_PHAL_API
-
-    ATTR_LOCATION_CODE_Type val;
-    if (DT_GET_PROP(ATTR_LOCATION_CODE, trgt, val))
+    TARGETING::ATTR_LOCATION_CODE_type val;
+    if (!i_target->tryGetAttr<TARGETING::ATTR_LOCATION_CODE>(val))
     {
         // Get the immediate parent in the devtree path and try again.
-        return getLocationCode(pdbg_target_parent(nullptr, trgt));
+        auto& targetService = TARGETING::TargetService::instance();
+        return getLocationCode(targetService.getParentOf(i_target));
     }
 
     // Attribute found.
     return std::string{val};
-
-#else
-
-    return std::string{getPath(trgt)};
-
-#endif
 }
 
 //------------------------------------------------------------------------------
 
-std::string getPhysDevPath(pdbg_target* trgt)
+std::vector<uint8_t> getPhysBinPath(TARGETING::TargetPtr i_target)
 {
-    if (nullptr == trgt)
+    if (nullptr != i_target)
     {
-        // Either the path is wrong or the attribute doesn't exist.
-        return std::string{};
-    }
-
-#ifdef CONFIG_PHAL_API
-
-    ATTR_PHYS_DEV_PATH_Type val;
-    if (DT_GET_PROP(ATTR_PHYS_DEV_PATH, trgt, val))
-    {
-        // Get the immediate parent in the devtree path and try again.
-        return getPhysDevPath(pdbg_target_parent(nullptr, trgt));
-    }
-
-    // Attribute found.
-    return std::string{val};
-
-#else
-
-    return std::string{getPath(trgt)};
-
-#endif
-}
-
-//------------------------------------------------------------------------------
-
-std::vector<uint8_t> getPhysBinPath(pdbg_target* target)
-{
-    std::vector<uint8_t> binPath;
-
-    if (nullptr != target)
-    {
-#ifdef CONFIG_PHAL_API
-
-        ATTR_PHYS_BIN_PATH_Type value;
-        if (DT_GET_PROP(ATTR_PHYS_BIN_PATH, target, value))
+        TARGETING::EntityPath value;
+        if (!i_target->tryGetAttr<TARGETING::ATTR_PHYS_PATH>(value))
         {
-            // The attrirbute for this target does not exist. Get the
+            // The attribute for this target does not exist. Get the
             // immediate parent in the devtree path and try again. Note that
             // if there is no parent target, nullptr will be returned and
             // that will be checked above.
-            return getPhysBinPath(pdbg_target_parent(nullptr, target));
+            auto& targetService = TARGETING::TargetService::instance();
+            return getPhysBinPath(targetService.getParentOf(i_target));
         }
 
         // Attribute was found. Copy the attribute array to the returned
         // vector. Note that the reason we return the vector instead of just
         // returning the array is because the array type and details only
         // exists in this specific configuration.
-        binPath.insert(binPath.end(), value, value + sizeof(value));
-
-#endif
+        const uint8_t* binVal = reinterpret_cast<const uint8_t*>(&value);
+        std::vector<uint8_t> binPath(binVal,
+                                     binVal + sizeof(TARGETING::EntityPath));
+        return binPath;
     }
 
-    return binPath;
+    // input target was null
+    return std::vector<uint8_t>();
 }
 
 //------------------------------------------------------------------------------

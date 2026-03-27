@@ -23,7 +23,7 @@ using namespace analyzer;
 
 TEST(Resolution, TestSet1)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     // Create a few resolutions
     auto c1 = std::make_shared<HardwareCalloutResolution>(
@@ -142,7 +142,7 @@ TEST(Resolution, TestSet1)
 
 TEST(Resolution, HardwareCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<HardwareCalloutResolution>(
         omi_str, callout::Priority::MED_A, true);
@@ -191,7 +191,7 @@ TEST(Resolution, HardwareCallout)
 
 TEST(Resolution, ConnectedCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<ConnectedCalloutResolution>(
         callout::BusType::SMP_BUS, iolink_str, callout::Priority::MED_A, true);
@@ -282,7 +282,7 @@ TEST(Resolution, ConnectedCallout)
 
 TEST(Resolution, BusCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<HardwareCalloutResolution>(
         omi_str, callout::Priority::MED_A, true);
@@ -383,7 +383,7 @@ TEST(Resolution, BusCallout)
 
 TEST(Resolution, ClockCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<ClockCalloutResolution>(
         callout::ClockType::OSC_REF_CLOCK_1, callout::Priority::HIGH, false);
@@ -429,7 +429,7 @@ TEST(Resolution, ClockCallout)
 
 TEST(Resolution, ProcedureCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<ProcedureCalloutResolution>(
         callout::Procedure::NEXTLVL, callout::Priority::LOW);
@@ -473,7 +473,7 @@ TEST(Resolution, ProcedureCallout)
 
 TEST(Resolution, PartCallout)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto c1 = std::make_shared<PartCalloutResolution>(callout::PartType::PNOR,
                                                       callout::Priority::MED);

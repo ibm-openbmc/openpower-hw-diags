@@ -138,7 +138,7 @@ void callout_attached_dimms(unsigned int i_instance, const libhei::Chip& i_chip,
     // Get the OMI target for this instance
     auto procTarget = util::pdbg::getTrgt(i_chip);
     auto omiTarget =
-        util::pdbg::getChipUnit(procTarget, util::pdbg::TYPE_OMI, i_instance);
+        util::pdbg::getChipUnit(procTarget, TARGETING::TYPE_OMI, i_instance);
 
     if (nullptr != omiTarget)
     {
@@ -147,14 +147,14 @@ void callout_attached_dimms(unsigned int i_instance, const libhei::Chip& i_chip,
             omiTarget, callout::BusType::OMI_BUS);
 
         // Loop through all DIMMs connected to the OCMB
-        pdbg_target* dimmTarget = nullptr;
-        pdbg_for_each_target("dimm", ocmbTarget, dimmTarget)
+        auto dimmList =
+            TARGETING::utils::getChildTargets(ocmbTarget, TARGETING::TYPE_DIMM);
+        for (const auto& dimm : dimmList)
         {
-            if (nullptr != dimmTarget)
+            if (nullptr != dimm)
             {
                 // Call out the DIMM, medium priority and guard
-                io_servData.calloutTarget(dimmTarget, callout::Priority::MED,
-                                          true);
+                io_servData.calloutTarget(dimm, callout::Priority::MED, true);
             }
         }
     }
@@ -169,7 +169,7 @@ void channel_timeout(unsigned int i_instance, const libhei::Chip& i_chip,
     // Get the OMI target for this instance
     auto procTarget = util::pdbg::getTrgt(i_chip);
     auto omiTarget =
-        util::pdbg::getChipUnit(procTarget, util::pdbg::TYPE_OMI, i_instance);
+        util::pdbg::getChipUnit(procTarget, TARGETING::TYPE_OMI, i_instance);
 
     if (nullptr != omiTarget)
     {

@@ -99,12 +99,6 @@ uint32_t analyzeHardware(AnalysisType i_type, attn::DumpParameters& o_dump)
 {
     uint32_t o_plid = 0; // default, zero indicates PEL was not created
 
-    if (!util::pdbg::queryHardwareAnalysisSupported())
-    {
-        trace::err("Hardware error analysis is not supported on this system");
-        return o_plid;
-    }
-
     trace::inf(">>> enter analyzeHardware(%s)", __analysisType(i_type));
 
     // Initialize the isolator and get all of the chips to be analyzed.

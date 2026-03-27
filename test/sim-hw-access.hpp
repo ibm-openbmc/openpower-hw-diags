@@ -32,10 +32,10 @@ class ScomAccess
 
   private:
     /** The SCOM values for each chip and address. */
-    std::map<pdbg_target*, std::map<uint64_t, uint64_t>> iv_values;
+    std::map<TARGETING::TargetPtr, std::map<uint64_t, uint64_t>> iv_values;
 
     /** All addresses that will return a SCOM error. */
-    std::map<pdbg_target*, std::map<uint64_t, bool>> iv_errors;
+    std::map<TARGETING::TargetPtr, std::map<uint64_t, bool>> iv_errors;
 
   public:
     /**
@@ -44,7 +44,7 @@ class ScomAccess
      * @param i_addr   A SCOM address on the given chip.
      * @param i_val    The value of the given address.
      */
-    void add(pdbg_target* i_target, uint64_t i_addr, uint64_t i_val)
+    void add(TARGETING::TargetPtr i_target, uint64_t i_addr, uint64_t i_val)
     {
         assert(nullptr != i_target);
 
@@ -57,7 +57,7 @@ class ScomAccess
      * @param i_target The target chip.
      * @param i_addr   A SCOM address on the given chip.
      */
-    void error(pdbg_target* i_target, uint64_t i_addr)
+    void error(TARGETING::TargetPtr i_target, uint64_t i_addr)
     {
         assert(nullptr != i_target);
 
@@ -82,7 +82,7 @@ class ScomAccess
      * @return Will return 1 if the target address exists in iv_errors.
      *         Otherwise, will return 0 for a successful SCOM access.
      */
-    int get(pdbg_target* i_target, uint64_t i_addr, uint64_t& o_val)
+    int get(TARGETING::TargetPtr i_target, uint64_t i_addr, uint64_t& o_val)
     {
         assert(nullptr != i_target);
 
@@ -122,10 +122,10 @@ class CfamAccess
 
   private:
     /** The CFAM values for each chip and address. */
-    std::map<pdbg_target*, std::map<uint32_t, uint32_t>> iv_values;
+    std::map<TARGETING::TargetPtr, std::map<uint32_t, uint32_t>> iv_values;
 
     /** All addresses that will return a CFAM error. */
-    std::map<pdbg_target*, std::map<uint32_t, bool>> iv_errors;
+    std::map<TARGETING::TargetPtr, std::map<uint32_t, bool>> iv_errors;
 
   public:
     /**
@@ -134,7 +134,7 @@ class CfamAccess
      * @param i_addr   A CFAM address on the given chip.
      * @param i_val    The value of the given address.
      */
-    void add(pdbg_target* i_target, uint32_t i_addr, uint32_t i_val)
+    void add(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t i_val)
     {
         assert(nullptr != i_target);
 
@@ -147,7 +147,7 @@ class CfamAccess
      * @param i_target The target chip.
      * @param i_addr   A CFAM address on the given chip.
      */
-    void error(pdbg_target* i_target, uint32_t i_addr)
+    void error(TARGETING::TargetPtr i_target, uint32_t i_addr)
     {
         assert(nullptr != i_target);
 
@@ -172,7 +172,7 @@ class CfamAccess
      * @return Will return 1 if the target address exists in iv_errors.
      *         Otherwise, will return 0 for a successful CFAM access.
      */
-    int get(pdbg_target* i_target, uint32_t i_addr, uint32_t& o_val)
+    int get(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t& o_val)
     {
         assert(nullptr != i_target);
 

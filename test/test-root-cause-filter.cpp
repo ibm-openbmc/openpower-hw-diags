@@ -43,7 +43,7 @@ static const auto odp_fir =
 
 TEST(RootCauseFilter, Filter1)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     RasDataParser rasData{};
 

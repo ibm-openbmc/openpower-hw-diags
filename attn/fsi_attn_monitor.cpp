@@ -69,19 +69,20 @@ void FsiAttnMonitor::configureFsiEvent()
 
     // One "/dev/scom#" file will exist per hub. Each one needs to be monitored
     // for attentions, so loop through all active hubs.
-    pdbg_target* hubTarget;
-    pdbg_for_each_class_target("hub", hubTarget)
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
         // Active hubs only.
-        if (PDBG_TARGET_ENABLED !=
-            pdbg_target_probe(util::pdbg::getPibTrgt(hubTarget)))
+        if (!TARGETING::utils::isFunctional(hub))
             continue;
 
-        uint32_t fapiPos = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(hubTarget, "ATTR_FAPI_POS", 4, 1, &fapiPos);
+        uint32_t fapiPos = hub->getAttr<TARGETING::ATTR_FAPI_POS>();
 
+        // The /dev/scom files start at /dev/scom1, so add one to the FAPI_POS
+        // to get the correct position.
         char scomName[64];
-        sprintf(scomName, "/dev/scom%d", fapiPos);
+        sprintf(scomName, "/dev/scom%d", fapiPos + 1);
+
         int fd = open(scomName, O_RDWR);
 
         if (fd < 0)

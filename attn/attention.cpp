@@ -6,7 +6,7 @@ namespace attn
 
 /** @brief Main constructor. */
 Attention::Attention(AttentionType i_type, int (*i_handler)(Attention*),
-                     pdbg_target* i_target, Config* i_config) :
+                     TARGETING::TargetPtr i_target, Config* i_config) :
     iv_type(i_type), iv_handler(i_handler), iv_target(i_target),
     iv_config(i_config)
 
@@ -31,7 +31,7 @@ int Attention::handle()
 }
 
 /* @brief Get attention handler target */
-pdbg_target* Attention::getTarget() const
+TARGETING::TargetPtr Attention::getTarget() const
 {
     return iv_target;
 }

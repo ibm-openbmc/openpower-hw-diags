@@ -5,7 +5,6 @@
 
 #include <assert.h>
 #include <inttypes.h>
-#include <libpdbg.h>
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -37,62 +36,6 @@ const char* __regType(RegisterType_t i_regType)
 
 //------------------------------------------------------------------------------
 
-bool __readProc(pdbg_target* i_procTrgt, RegisterType_t i_regType,
-                uint64_t i_address, uint64_t& o_value)
-{
-    bool accessFailure = false;
-
-    // The processor PIB target is required for SCOM access.
-    pdbg_target* scomTrgt = util::pdbg::getPibTrgt(i_procTrgt);
-
-    switch (i_regType)
-    {
-        case REG_TYPE_SCOM:
-        case REG_TYPE_ID_SCOM:
-            // Read the 64-bit SCOM register.
-            accessFailure = (0 != pib_read(scomTrgt, i_address, &o_value));
-            break;
-
-        default:
-            trace::err("Unsupported register type: trgt=%s regType=0x%02x "
-                       "addr=0x%0" PRIx64,
-                       util::pdbg::getPath(i_procTrgt), i_regType, i_address);
-            assert(0); // an unsupported register type
-    }
-
-    return accessFailure;
-}
-
-//------------------------------------------------------------------------------
-
-bool __readOcmb(pdbg_target* i_obmcTrgt, RegisterType_t i_regType,
-                uint64_t i_address, uint64_t& o_value)
-{
-    bool accessFailure = false;
-
-    // The OCMB target is used for SCOM access.
-    pdbg_target* scomTrgt = i_obmcTrgt;
-
-    switch (i_regType)
-    {
-        case REG_TYPE_SCOM:
-        case REG_TYPE_ID_SCOM:
-            // Read the 64-bit SCOM register.
-            accessFailure = (0 != ocmb_getscom(scomTrgt, i_address, &o_value));
-            break;
-
-        default:
-            trace::err("Unsupported register type: trgt=%s regType=0x%02x "
-                       "addr=0x%0" PRIx64,
-                       util::pdbg::getPath(i_obmcTrgt), i_regType, i_address);
-            assert(0);
-    }
-
-    return accessFailure;
-}
-
-//------------------------------------------------------------------------------
-
 bool registerRead(const Chip& i_chip, RegisterType_t i_regType,
                   uint64_t i_address, uint64_t& o_value)
 {
@@ -100,21 +43,19 @@ bool registerRead(const Chip& i_chip, RegisterType_t i_regType,
 
     auto trgt = util::pdbg::getTrgt(i_chip);
 
-    uint8_t trgtType = util::pdbg::getTrgtType(trgt);
-
-    switch (trgtType)
+    switch (i_regType)
     {
-        case 0x05: // PROC
-            accessFailure = __readProc(trgt, i_regType, i_address, o_value);
-            break;
-
-        case 0x4b: // OCMB_CHIP
-            accessFailure = __readOcmb(trgt, i_regType, i_address, o_value);
+        case REG_TYPE_SCOM:
+        case REG_TYPE_ID_SCOM:
+            // Read the 64-bit SCOM register.
+            accessFailure =
+                (0 != util::pdbg::getScom(trgt, i_address, o_value));
             break;
 
         default:
-            trace::err("Unsupported target type: trgt=%s trgtType=0x%02x",
-                       util::pdbg::getPath(trgt), trgtType);
+            trace::err("Unsupported register type: trgt=%s regType=0x%02x "
+                       "addr=0x%0" PRIx64,
+                       util::pdbg::getPath(trgt), i_regType, i_address);
             assert(0);
     }
 

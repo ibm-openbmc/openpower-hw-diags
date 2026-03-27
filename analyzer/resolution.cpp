@@ -9,7 +9,7 @@ namespace analyzer
 //------------------------------------------------------------------------------
 
 // Helper function to get the root cause chip target from the service data.
-pdbg_target* __getRootCauseChipTarget(const ServiceData& i_sd)
+TARGETING::TargetPtr __getRootCauseChipTarget(const ServiceData& i_sd)
 {
     auto target = util::pdbg::getTrgt(i_sd.getRootCause().getChip());
     assert(nullptr != target); // This would be a really bad bug.
@@ -21,8 +21,8 @@ pdbg_target* __getRootCauseChipTarget(const ServiceData& i_sd)
 // Helper function to get a unit target from the given unit path, which is a
 // devtree path relative the the containing chip. An empty string indicates the
 // chip target should be returned.
-pdbg_target* __getUnitTarget(pdbg_target* i_chipTarget,
-                             const std::string& i_unitPath)
+TARGETING::TargetPtr __getUnitTarget(TARGETING::TargetPtr i_chipTarget,
+                                     const std::string& i_unitPath)
 {
     assert(nullptr != i_chipTarget);
 

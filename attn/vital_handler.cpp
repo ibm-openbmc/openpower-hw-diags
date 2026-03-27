@@ -31,24 +31,20 @@ bool attemptSbeRecovery(int sbeInstance)
     // try to clear attention interrupts
     clearAttnInterrupts();
 
-    // loop through processors checking attention interrupts
+    // loop through hubs checking attention interrupts
     bool recovered = true;
-    pdbg_target* procTarget;
-    pdbg_for_each_class_target("proc", procTarget)
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        // active processors only
-        if (PDBG_TARGET_ENABLED !=
-            pdbg_target_probe(util::pdbg::getPibTrgt(procTarget)))
+        // active hubs only
+        if (!TARGETING::utils::isFunctional(hub))
         {
             continue;
         }
 
-        // get cfam is an fsi read
-        pdbg_target* fsiTarget = util::pdbg::getFsiTrgt(procTarget);
         uint32_t int_val;
-
-        // get attention interrupts on processor
-        if (RC_SUCCESS == fsi_read(fsiTarget, 0x100b, &int_val))
+        // get attention interrupts on the hub
+        if (RC_SUCCESS == util::pdbg::getCfam(hub, 0x100b, int_val))
         {
             if (int_val & SBE_ATTN)
             {
@@ -77,41 +73,42 @@ bool attemptSbeRecovery(int sbeInstance)
 /**
  * @brief Check for active checkstop attention
  *
- * @param procInstance - proc to check for attentions
+ * @param hubInstance - hub to check for attentions
  *
- * @pre pdbg target associated with proc instance is enabled for fsi access
+ * @pre pdbg target associated with hub instance is enabled for fsi access
  *
  * @return true if checkstop acive false otherwise
  * */
-bool checkstopActive(int procInstance)
+bool checkstopActive(int hubInstance)
 {
-    // get fsi target
+    // get target
     char path[16];
-    sprintf(path, "/proc%d/fsi", procInstance);
-    pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, path);
-    if (nullptr == fsiTarget)
+    // TODO - update with new interface that takes type and pos instead of str
+    sprintf(path, "/hub%d", hubInstance);
+    TARGETING::TargetPtr hub = util::pdbg::getTrgt(path);
+    if (nullptr == hub)
     {
-        trace::inf("fsi path or target not found");
+        trace::inf("hub%d target not found", hubInstance);
         return false;
     }
 
     // check for active checkstop attention
-    int r;
+    int rc;
     uint32_t isr_val, isr_mask;
 
     isr_val = 0xffffffff;
-    r = fsi_read(fsiTarget, 0x1007, &isr_val);
-    if ((RC_SUCCESS != r) || (0xffffffff == isr_val))
+    rc = util::pdbg::getCfam(hub, 0x1007, isr_val);
+    if ((RC_SUCCESS != rc) || (0xffffffff == isr_val))
     {
-        trace::err("cfam 1007 read error");
+        trace::err("cfam 1007 read error on hub%d", hubInstance);
         return false;
     }
 
     isr_mask = 0xffffffff;
-    r = fsi_read(fsiTarget, 0x100d, &isr_mask);
-    if ((RC_SUCCESS != r) || (0xffffffff == isr_mask))
+    rc = util::pdbg::getCfam(hub, 0x100d, isr_mask);
+    if ((RC_SUCCESS != rc) || (0xffffffff == isr_mask))
     {
-        trace::err("cfam 100d read error");
+        trace::err("cfam 100d read error on hub%d", hubInstance);
         return false;
     }
 
@@ -145,8 +142,8 @@ int handleVital(Attention* i_attention)
     }
 
     // if no checkstop and host is running
-    int instance =
-        pdbg_target_index(i_attention->getTarget()); // get processor number
+    // get hub number
+    int instance = TARGETING::utils::getPosition(i_attention->getTarget());
 
     if (!checkstopActive(instance) &&
         util::dbus::HostRunningState::Started == util::dbus::hostRunningState())

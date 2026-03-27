@@ -25,7 +25,7 @@ static const auto nodeId =
 // Sub-test #1 - single PLL unlock attention on proc 1, clock 1
 TEST(PllUnlock, TestSet1)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip chip1{util::pdbg::getTrgt("/proc1"), P10_20};
 
@@ -81,7 +81,7 @@ TEST(PllUnlock, TestSet1)
 //               only to proc 1 clock 0 PLL unlock attentions.
 TEST(PllUnlock, TestSet2)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip chip0{util::pdbg::getTrgt("/proc0"), P10_20};
     libhei::Chip chip1{util::pdbg::getTrgt("/proc1"), P10_20};
@@ -159,7 +159,7 @@ TEST(PllUnlock, TestSet2)
 // Sub-test #3 - PLL unlock on single OCMB.
 TEST(PllUnlock, TestSet3)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip ocmb0{
         util::pdbg::getTrgt("/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0"),
@@ -219,7 +219,7 @@ TEST(PllUnlock, TestSet3)
 // Sub-test #4 - PLL unlock on multiple OCMBs in the same domain.
 TEST(PllUnlock, TestSet4)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip ocmb0{
         util::pdbg::getTrgt("/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0"),
@@ -297,7 +297,7 @@ TEST(PllUnlock, TestSet4)
 // Sub-test #5 - PLL unlock on multiple OCMBs in different domains.
 TEST(PllUnlock, TestSet5)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip ocmb0{
         util::pdbg::getTrgt("/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0"),
@@ -363,7 +363,7 @@ TEST(PllUnlock, TestSet5)
 // Sub-test #6 - PLL unlock on mixed PROCs and OCMBs.
 TEST(PllUnlock, TestSet6)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     libhei::Chip proc0{util::pdbg::getTrgt("/proc0"), P10_20};
     libhei::Chip proc1{util::pdbg::getTrgt("/proc1"), P10_20};

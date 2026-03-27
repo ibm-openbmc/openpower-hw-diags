@@ -114,7 +114,7 @@ class AttentionTestProc : public testing::Test
     void SetUp()
     {
         pdbg_targets_init(nullptr);
-        target = getPrimaryProcessor();
+        target = getPrimaryHub();
 
         EXPECT_NE(nullptr, target);
 

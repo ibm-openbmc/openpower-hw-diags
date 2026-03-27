@@ -1,5 +1,3 @@
-#include <libpdbg.h>
-
 #include <analyzer/analyzer_main.hpp>
 #include <attn/attention.hpp>
 #include <attn/attn_config.hpp>
@@ -9,6 +7,7 @@
 #include <buildinfo.hpp>
 #include <cli.hpp>
 #include <hei_buildinfo.hpp>
+#include <util/pdbg.hpp> // for PHAL targeting
 #include <util/pdbg_callback.hpp>
 
 /**
@@ -40,15 +39,15 @@ int main(int argc, char* argv[])
     else
     {
         // set PDBG log callback function.
-        pdbg_set_logfunc(util::pdbg_log_callback);
+        // TODO - remove?
+        // pdbg_set_logfunc(util::pdbg_log_callback);
 
         // Pdbg targets should only be initialized once according to
         // libpdbg documentation. Initializing them here will make sure
         // they are initialized for the attention handler, invocation of
         // the analyzer via attention handler and direct invocation of
         // the analyzer via command line (--analyze).
-
-        pdbg_targets_init(nullptr); // nullptr == use default fdt
+        TARGETING::utils::targetingInit();
 
         // Either analyze (application mode) or daemon mode
         if (true == getCliOption(argv, argv + argc, "--analyze"))

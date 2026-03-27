@@ -5,7 +5,7 @@ namespace analyzer
 
 //------------------------------------------------------------------------------
 
-void ServiceData::calloutTarget(pdbg_target* i_target,
+void ServiceData::calloutTarget(TARGETING::TargetPtr i_target,
                                 callout::Priority i_priority, bool i_guard)
 {
     // Add the target to the callout list.
@@ -14,7 +14,7 @@ void ServiceData::calloutTarget(pdbg_target* i_target,
     // Add the callout FFDC.
     nlohmann::json ffdc;
     ffdc["Callout Type"] = "Hardware Callout";
-    ffdc["Target"] = util::pdbg::getPhysDevPath(i_target);
+    ffdc["Target"] = util::pdbg::getPath(i_target);
     ffdc["Priority"] = callout::getStringFFDC(i_priority);
     ffdc["Guard"] = i_guard;
     addCalloutFFDC(ffdc);
@@ -23,7 +23,7 @@ void ServiceData::calloutTarget(pdbg_target* i_target,
 
 //------------------------------------------------------------------------------
 
-void ServiceData::calloutConnected(pdbg_target* i_rxTarget,
+void ServiceData::calloutConnected(TARGETING::TargetPtr i_rxTarget,
                                    const callout::BusType& i_busType,
                                    callout::Priority i_priority, bool i_guard)
 {
@@ -37,8 +37,8 @@ void ServiceData::calloutConnected(pdbg_target* i_rxTarget,
     nlohmann::json ffdc;
     ffdc["Callout Type"] = "Connected Callout";
     ffdc["Bus Type"] = i_busType.getString();
-    ffdc["RX Target"] = util::pdbg::getPhysDevPath(i_rxTarget);
-    ffdc["TX Target"] = util::pdbg::getPhysDevPath(txTarget);
+    ffdc["RX Target"] = util::pdbg::getPath(i_rxTarget);
+    ffdc["TX Target"] = util::pdbg::getPath(txTarget);
     ffdc["Priority"] = callout::getStringFFDC(i_priority);
     ffdc["Guard"] = i_guard;
     addCalloutFFDC(ffdc);
@@ -47,7 +47,7 @@ void ServiceData::calloutConnected(pdbg_target* i_rxTarget,
 
 //------------------------------------------------------------------------------
 
-void ServiceData::calloutBus(pdbg_target* i_rxTarget,
+void ServiceData::calloutBus(TARGETING::TargetPtr i_rxTarget,
                              const callout::BusType& i_busType,
                              callout::Priority i_priority, bool i_guard)
 {
@@ -68,8 +68,8 @@ void ServiceData::calloutBus(pdbg_target* i_rxTarget,
     nlohmann::json ffdc;
     ffdc["Callout Type"] = "Bus Callout";
     ffdc["Bus Type"] = i_busType.getString();
-    ffdc["RX Target"] = util::pdbg::getPhysDevPath(i_rxTarget);
-    ffdc["TX Target"] = util::pdbg::getPhysDevPath(txTarget);
+    ffdc["RX Target"] = util::pdbg::getPath(i_rxTarget);
+    ffdc["TX Target"] = util::pdbg::getPath(txTarget);
     ffdc["Priority"] = callout::getStringFFDC(i_priority);
     ffdc["Guard"] = i_guard;
     addCalloutFFDC(ffdc);
@@ -208,7 +208,7 @@ void ServiceData::addCallout(const nlohmann::json& i_callout)
 
 //------------------------------------------------------------------------------
 
-void ServiceData::addTargetCallout(pdbg_target* i_target,
+void ServiceData::addTargetCallout(TARGETING::TargetPtr i_target,
                                    callout::Priority i_priority, bool i_guard)
 {
     nlohmann::json callout;
@@ -285,7 +285,8 @@ void ServiceData::setSrcSubsystem(callout::SrcSubsystem i_subsystem,
 
 //------------------------------------------------------------------------------
 
-callout::SrcSubsystem ServiceData::getTargetSubsystem(pdbg_target* i_target)
+callout::SrcSubsystem ServiceData::getTargetSubsystem(
+    TARGETING::TargetPtr i_target)
 {
     using TargetType_t = util::pdbg::TargetType_t;
 

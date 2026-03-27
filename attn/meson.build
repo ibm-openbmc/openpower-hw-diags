@@ -69,7 +69,7 @@ pel_src = files(
 )
 
 # Library dependencies.
-attn_deps = [libgpiod, phosphor_logging_dep, sdbusplus_dep]
+attn_deps = [libgpiod, phosphor_logging_dep, sdbusplus_dep, phal_dep]
 
 if phal_backend == 'legacy'
     attn_deps += libphal_dep

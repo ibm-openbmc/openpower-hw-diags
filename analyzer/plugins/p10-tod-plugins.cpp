@@ -42,13 +42,13 @@ class Data
 
   private:
     /** The MDMT chips at fault (only one per topology). */
-    std::map<Topology, pdbg_target*> iv_mdmtFaultList;
+    std::map<Topology, TARGETING::TargetPtr> iv_mdmtFaultList;
 
     /** All chips with internal path faults. */
-    std::map<Topology, std::vector<pdbg_target*>> iv_internalFaultList;
+    std::map<Topology, TARGETING::TargetPtrList> iv_internalFaultList;
 
     /** The chips sourcing the clocks to non-MDMT chips with faults. */
-    std::map<Topology, std::vector<pdbg_target*>> iv_networkFaultList;
+    std::map<Topology, TARGETING::TargetPtrList> iv_networkFaultList;
 
   public:
     /**
@@ -56,7 +56,7 @@ class Data
      * @param i_topology    Target topology.
      * @param i_chipAtFault The chip reporting step check fault.
      */
-    void setMdmtFault(Topology i_topology, pdbg_target* i_chipAtFault)
+    void setMdmtFault(Topology i_topology, TARGETING::TargetPtr i_chipAtFault)
     {
         assert(nullptr != i_chipAtFault);
         iv_mdmtFaultList[i_topology] = i_chipAtFault;
@@ -66,7 +66,7 @@ class Data
      * @param  i_topology Target topology.
      * @return The MDMT chip for this topology, if at fault. Otherwise, nullptr.
      */
-    pdbg_target* getMdmtFault(Topology i_topology)
+    TARGETING::TargetPtr getMdmtFault(Topology i_topology)
     {
         return iv_mdmtFaultList[i_topology];
     }
@@ -76,7 +76,8 @@ class Data
      * @param i_topology    Target topology.
      * @param i_chipAtFault The chip reporting a step check fault.
      */
-    void setInternalFault(Topology i_topology, pdbg_target* i_chipAtFault)
+    void setInternalFault(Topology i_topology,
+                          TARGETING::TargetPtr i_chipAtFault)
     {
         assert(nullptr != i_chipAtFault);
         iv_internalFaultList[i_topology].push_back(i_chipAtFault);
@@ -86,7 +87,7 @@ class Data
      * @param  i_topology Target topology.
      * @return The list of all chips with internal faults.
      */
-    const std::vector<pdbg_target*>& getInteralFaults(Topology i_topology)
+    const TARGETING::TargetPtrList& getInteralFaults(Topology i_topology)
     {
         return iv_internalFaultList[i_topology];
     }
@@ -99,8 +100,9 @@ class Data
      *                            fault.
      * @param i_chipAtFault       The chip reporting the fault.
      */
-    void setNetworkFault(Topology i_topology, pdbg_target* i_chipSourcingClock,
-                         pdbg_target* i_chipAtFault)
+    void setNetworkFault(Topology i_topology,
+                         TARGETING::TargetPtr i_chipSourcingClock,
+                         TARGETING::TargetPtr i_chipAtFault)
     {
         assert(nullptr != i_chipSourcingClock);
         iv_networkFaultList[i_topology].push_back(i_chipSourcingClock);
@@ -114,7 +116,7 @@ class Data
      * @return The list of all chips sourcing the clocks for the non-MDMT chips
      *         with step check faults.
      */
-    const std::vector<pdbg_target*>& getNetworkFaults(Topology i_topology)
+    const TARGETING::TargetPtrList& getNetworkFaults(Topology i_topology)
     {
         return iv_networkFaultList[i_topology];
     }
@@ -130,7 +132,7 @@ enum class Register
     TOD_SEC_PORT_1_CTRL = 0x00040004,
 };
 
-bool readRegister(pdbg_target* i_chip, Register i_addr,
+bool readRegister(TARGETING::TargetPtr i_chip, Register i_addr,
                   libhei::BitStringBuffer& o_val)
 {
     assert(64 == o_val.getBitLen());
@@ -148,12 +150,12 @@ bool readRegister(pdbg_target* i_chip, Register i_addr,
     return false; // no failures
 }
 
-pdbg_target* getChipSourcingClock(pdbg_target* i_chipReportingError,
-                                  unsigned int i_iohsPos)
+TARGETING::TargetPtr getChipSourcingClock(
+    TARGETING::TargetPtr i_chipReportingError, unsigned int i_iohsPos)
 {
     using namespace util::pdbg;
 
-    pdbg_target* chipSourcingClock = nullptr;
+    TARGETING::TargetPtr chipSourcingClock = nullptr;
 
     // Given the chip reporting the error and the IOHS position within that
     // chip, we must get
@@ -162,7 +164,8 @@ pdbg_target* getChipSourcingClock(pdbg_target* i_chipReportingError,
     //  - Finally, the chip containing the IOHS target on the other side of the
     //    bus.
 
-    auto iohsUnit = getChipUnit(i_chipReportingError, TYPE_IOHS, i_iohsPos);
+    auto iohsUnit =
+        getChipUnit(i_chipReportingError, TARGETING::TYPE_IOHS, i_iohsPos);
     if (nullptr != iohsUnit)
     {
         auto clockSourceUnit =
@@ -179,7 +182,7 @@ pdbg_target* getChipSourcingClock(pdbg_target* i_chipReportingError,
 /**
  * @brief Collects TOD fault data for each processor chip.
  */
-void collectTodFaultData(pdbg_target* i_chip, Data& o_data)
+void collectTodFaultData(TARGETING::TargetPtr i_chip, Data& o_data)
 {
     // TODO: We should use a register cache captured by the isolator so that
     //       this code is using the same values the isolator used.  However, at
@@ -317,7 +320,7 @@ void tod_step_check_fault(unsigned int, const libhei::Chip& i_chip,
 {
     // Query hardware for TOD fault data from all active processors.
     tod::Data data{};
-    std::vector<pdbg_target*> chipList;
+    TARGETING::TargetPtrList chipList;
     util::pdbg::getActiveProcessorChips(chipList);
     for (const auto& chip : chipList)
     {

@@ -66,10 +66,10 @@ bool __findPllUnlock(const std::vector<libhei::Signature>& i_list,
 
     auto nodeId = libhei::hash<libhei::NodeId_t>("PLL_UNLOCK");
 
-    // First, look for any PLL unlock attentions reported by a processsor chip.
+    // First, look for any PLL unlock attentions reported by a hub chip.
     auto itr1 = std::find_if(i_list.begin(), i_list.end(), [&](const auto& t) {
         return (nodeId == t.getId() &&
-                TYPE_PROC == getTrgtType(getTrgt(t.getChip())));
+                TARGETING::TYPE_HUB_CHIP == getTrgtType(t.getChip()));
     });
 
     if (i_list.end() != itr1)
@@ -82,8 +82,7 @@ bool __findPllUnlock(const std::vector<libhei::Signature>& i_list,
     // is specifically for Odyssey, which are the only OCMBs that would report
     // PLL unlock attentions.
     auto itr2 = std::find_if(i_list.begin(), i_list.end(), [&](const auto& t) {
-        return (nodeId == t.getId() &&
-                TYPE_OCMB == getTrgtType(getTrgt(t.getChip())));
+        return (nodeId == t.getId() && TYPE_OCMB == getTrgtType(t.getChip()));
     });
 
     if (i_list.end() != itr2)
@@ -113,7 +112,7 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
     // First, look for any chip checkstops from the connected OCMBs.
     for (const auto& s : i_list)
     {
-        if (TYPE_OCMB != getTrgtType(getTrgt(s.getChip())))
+        if (TYPE_OCMB != getTrgtType(s.getChip()))
         {
             continue; // OCMBs only
         }
@@ -130,13 +129,13 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
         }
     }
 
-    // Now, look for any channel failure attentions on the processor side of the
+    // Now, look for any channel failure attentions on the hub side of the
     // memory bus.
     for (const auto& s : i_list)
     {
-        if (TYPE_PROC != getTrgtType(getTrgt(s.getChip())))
+        if (TARGETING::TYPE_HUB_CHIP != getTrgtType(s.getChip()))
         {
-            continue; // processors only
+            continue; // hubs only
         }
 
         // Any unit checkstop attentions that originated from the MC_DSTL_FIR or
@@ -248,7 +247,7 @@ bool __findOcmbAttnBits(const std::vector<libhei::Signature>& i_list,
     // was successful and the ATTN_FROM_OCMB flag does not need to be checked.
     for (const auto& s : i_list)
     {
-        if (TYPE_OCMB == getTrgtType(getTrgt(s.getChip())))
+        if (TYPE_OCMB == getTrgtType(s.getChip()))
         {
             return false;
         }
@@ -277,13 +276,13 @@ bool __findNonExternalCs(const std::vector<libhei::Signature>& i_list,
 
     for (const auto& s : i_list)
     {
-        const auto targetType = getTrgtType(getTrgt(s.getChip()));
+        const auto targetType = getTrgtType(s.getChip());
         const auto id = s.getId();
         const auto attnType = s.getAttnType();
 
-        // Find any processor with chip checkstop attention that did not
+        // Find any hub with chip checkstop attention that did not
         // originate from the PB_EXT_FIR.
-        if ((TYPE_PROC == targetType) &&
+        if ((TARGETING::TYPE_HUB_CHIP == targetType) &&
             (libhei::ATTN_TYPE_CHIP_CS == attnType) && (pb_ext_fir != id))
         {
             o_rootCause = s;

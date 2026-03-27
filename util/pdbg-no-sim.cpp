@@ -8,11 +8,6 @@
 
 #include <assert.h>
 
-extern "C"
-{
-#include <libpdbg_sbe.h>
-}
-
 #include <util/log.hpp>
 #include <util/pdbg.hpp>
 #include <util/trace.hpp>
@@ -27,17 +22,18 @@ namespace pdbg
 
 //------------------------------------------------------------------------------
 
-bool queryLpcTimeout(pdbg_target* target)
+bool queryLpcTimeout(TARGETING::TargetPtr i_target)
 {
-    // Must be a processor target.
-    assert(TYPE_PROC == getTrgtType(target));
+    // Must be a hub target.
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));
 
     uint32_t result = 0;
-    if (0 != sbe_lpc_timeout(util::pdbg::getPibTrgt(target), &result))
+    /* TODO - updated interface?
+    if (0 != sbe_lpc_timeout(util::pdbg::getPibTrgt(i_target), &result))
     {
-        trace::err("sbe_lpc_timeout() failed: target=%s", getPath(target));
+        trace::err("sbe_lpc_timeout() failed: i_target=%s", getPath(i_target));
         result = 0; // just in case
-    }
+    }*/
 
     // 0 if no timeout, 1 if LPC timeout occurred.
     return (0 != result);
@@ -45,34 +41,31 @@ bool queryLpcTimeout(pdbg_target* target)
 
 //------------------------------------------------------------------------------
 
-int getScom(pdbg_target* i_target, uint64_t i_addr, uint64_t& o_val)
+int getScom(TARGETING::TargetPtr i_target, uint64_t i_addr, uint64_t& o_val)
 {
     assert(nullptr != i_target);
 
     int rc = 0;
 
-    auto targetType = getTrgtType(i_target);
-
-    if (TYPE_PROC == targetType)
+    try
     {
-        rc = pib_read(getPibTrgt(i_target), i_addr, &o_val);
+        rc = hwaccess::HwAccessIntf::getScomRegister(i_target, i_addr, o_val);
+        if (0 != rc)
+        {
+            lg2::error(
+                "SCOM read failure: target={SCOM_TARGET} addr={SCOM_ADDRESS}",
+                "SCOM_TARGET", getPath(i_target), "SCOM_ADDRESS",
+                (lg2::hex | lg2::field64), i_addr, "SCOM_ACCESS_RC", rc);
+        }
     }
-    else if (TYPE_OCMB == targetType)
-    {
-        rc = ocmb_getscom(i_target, i_addr, &o_val);
-    }
-    else
-    {
-        throw std::logic_error("Invalid type for SCOM operation: target=" +
-                               std::string{getPath(i_target)});
-    }
-
-    if (0 != rc)
+    catch (const std::exception& e)
     {
         lg2::error(
-            "SCOM read failure: target={SCOM_TARGET} addr={SCOM_ADDRESS}",
+            "SCOM read exception: target={SCOM_TARGET} addr={SCOM_ADDRESS}",
             "SCOM_TARGET", getPath(i_target), "SCOM_ADDRESS",
-            (lg2::hex | lg2::field64), i_addr, "SCOM_ACCESS_RC", rc);
+            (lg2::hex | lg2::field64), i_addr);
+        lg2::error(e.what());
+        return -1;
     }
 
     return rc;
@@ -80,19 +73,65 @@ int getScom(pdbg_target* i_target, uint64_t i_addr, uint64_t& o_val)
 
 //------------------------------------------------------------------------------
 
-int getCfam(pdbg_target* i_target, uint32_t i_addr, uint32_t& o_val)
+int getCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t& o_val)
 {
     assert(nullptr != i_target);
-    assert(TYPE_PROC == getTrgtType(i_target));
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));
 
-    int rc = fsi_read(getFsiTrgt(i_target), i_addr, &o_val);
+    int rc = 0;
 
-    if (0 != rc)
+    try
+    {
+        rc = hwaccess::HwAccessIntf::getCfamRegister(i_target, i_addr, o_val);
+        if (0 != rc)
+        {
+            lg2::error(
+                "CFAM read failure: target={CFAM_TARGET} addr={CFAM_ADDRESS}",
+                "CFAM_TARGET", getPath(i_target), "CFAM_ADDRESS",
+                (lg2::hex | lg2::field32), i_addr, "CFAM_ACCESS_RC", rc);
+        }
+    }
+    catch (const std::exception& e)
     {
         lg2::error(
-            "CFAM read failure: target={CFAM_TARGET} addr={CFAM_ADDRESS}",
+            "CFAM read exception: target={CFAM_TARGET} addr={CFAM_ADDRESS}",
             "CFAM_TARGET", getPath(i_target), "CFAM_ADDRESS",
-            (lg2::hex | lg2::field32), i_addr, "CFAM_ACCESS_RC", rc);
+            (lg2::hex | lg2::field32), i_addr);
+        lg2::error(e.what());
+        return -1;
+    }
+
+    return rc;
+}
+
+//------------------------------------------------------------------------------
+
+int putCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t i_val)
+{
+    assert(nullptr != i_target);
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));
+
+    int rc = 0;
+
+    try
+    {
+        rc = hwaccess::HwAccessIntf::putCfamRegister(i_target, i_addr, i_val);
+        if (0 != rc)
+        {
+            lg2::error(
+                "CFAM write failure: target={CFAM_TARGET} addr={CFAM_ADDRESS}",
+                "CFAM_TARGET", getPath(i_target), "CFAM_ADDRESS",
+                (lg2::hex | lg2::field32), i_addr, "CFAM_ACCESS_RC", rc);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "CFAM write exception: target={CFAM_TARGET} addr={CFAM_ADDRESS}",
+            "CFAM_TARGET", getPath(i_target), "CFAM_ADDRESS",
+            (lg2::hex | lg2::field32), i_addr);
+        lg2::error(e.what());
+        return -1;
     }
 
     return rc;

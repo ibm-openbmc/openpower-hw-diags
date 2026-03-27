@@ -17,6 +17,7 @@ util_deps = [
     nlohmann_json_dep,
     phosphor_logging_dep,
     valijson_dep,
+    phal_dep,
 ]
 
 if phal_backend == 'legacy'

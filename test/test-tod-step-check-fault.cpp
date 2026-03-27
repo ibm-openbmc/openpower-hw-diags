@@ -15,7 +15,7 @@ static const auto nodeId =
 
 TEST(TodStepCheckFault, MdmtFault)
 {
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     auto proc0 = util::pdbg::getTrgt("/proc0");
     auto proc1 = util::pdbg::getTrgt("/proc1");

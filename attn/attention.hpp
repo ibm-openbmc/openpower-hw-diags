@@ -1,8 +1,7 @@
 #pragma once
 
-#include <libpdbg.h>
-
 #include <attn/attn_config.hpp>
+#include <util/pdbg.hpp>
 
 #include <bitset>
 
@@ -38,7 +37,7 @@ class Attention
 
     /** @brief Main constructors */
     Attention(AttentionType i_type, int (*i_handler)(Attention*),
-              pdbg_target* i_target, Config* i_config);
+              TARGETING::TargetPtr i_target, Config* i_config);
 
     /** @brief Destructor */
     ~Attention() = default;
@@ -53,7 +52,7 @@ class Attention
     int handle();
 
     /* @brief Get attention handler target */
-    pdbg_target* getTarget() const;
+    TARGETING::TargetPtr getTarget() const;
 
     /** @brief Copy constructor. */
     Attention(const Attention&) = default;
@@ -65,10 +64,10 @@ class Attention
     bool operator<(const Attention& right) const;
 
   private:
-    AttentionType iv_type;         // attention type
-    int (*iv_handler)(Attention*); // handler function
-    pdbg_target* iv_target;        // handler function target
-    Config* iv_config;             // configuration flags
+    AttentionType iv_type;          // attention type
+    int (*iv_handler)(Attention*);  // handler function
+    TARGETING::TargetPtr iv_target; // handler function target
+    Config* iv_config;              // configuration flags
 };
 
 } // namespace attn
