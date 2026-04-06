@@ -48,13 +48,15 @@ TEST(PllUnlock, TestSet1)
         "Deconfigured": false,
         "Guarded": false,
         "LocationCode": "P0",
-        "Priority": "M"
+        "Priority": "A"
     },
     {
         "Deconfigured": false,
-        "Guarded": false,
+        "EntityPath": [],
+        "GuardType": "GARD_Unrecoverable",
+        "Guarded": true,
         "LocationCode": "/proc1",
-        "Priority": "M"
+        "Priority": "A"
     }
 ])";
     EXPECT_EQ(s, j.dump(4));
@@ -65,12 +67,12 @@ TEST(PllUnlock, TestSet1)
     {
         "Callout Type": "Clock Callout",
         "Clock Type": "OSC_REF_CLOCK_1",
-        "Priority": "medium"
+        "Priority": "medium_group_A"
     },
     {
         "Callout Type": "Hardware Callout",
-        "Guard": false,
-        "Priority": "medium",
+        "Guard": true,
+        "Priority": "medium_group_A",
         "Target": "/proc1"
     }
 ])";
