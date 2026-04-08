@@ -77,8 +77,28 @@ void pll_unlock(unsigned int, const libhei::Chip& i_ocmbChip,
     }
 }
 
+//------------------------------------------------------------------------------
+
+/**
+ * @brief Adds all DIMMs under a MEM_PORT to the callout list.
+ */
+void dimms_H_under_port(unsigned int i_portNum, const libhei::Chip& i_ocmbChip,
+                        ServiceData& io_servData)
+{
+    auto memport = util::pdbg::getChipUnit(util::pdbg::getTrgt(i_ocmbChip),
+                                           TARGETING::TYPE_MEM_PORT, i_portNum);
+    TARGETING::TargetPtrList dimmList =
+        TARGETING::utils::getChildTargets(memport, TARGETING::TYPE_DIMM);
+
+    for (const auto& dimm : dimmList)
+    {
+        io_servData.calloutTarget(dimm, callout::Priority::HIGH, true);
+    }
+}
+
 } // namespace Ody
 
 PLUGIN_DEFINE_NS(ODYSSEY_10, Ody, pll_unlock);
+PLUGIN_DEFINE_NS(ODYSSEY_10, Ody, dimms_H_under_port);
 
 } // namespace analyzer

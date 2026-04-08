@@ -1,5 +1,6 @@
 #include <analyzer/ras-data/ras-data-parser.hpp>
 #include <util/data_file.hpp>
+#include <util/pdbg.hpp>
 #include <util/trace.hpp>
 
 #include <filesystem>
@@ -291,6 +292,43 @@ void RasDataParser::initDataFiles()
 
 //------------------------------------------------------------------------------
 
+std::pair<TARGETING::TYPE, uint8_t> RasDataParser::parseUnit(
+    const nlohmann::json& i_data, const std::string& i_unitName)
+{
+    const auto& unitData = i_data.at("units").at(i_unitName);
+
+    std::string typeStr = unitData["type"];
+    uint8_t position = unitData["position"];
+
+    // clang-format off
+    static const std::map<std::string, TARGETING::TYPE> m =
+    {
+        {"TYPE_NX",       TARGETING::TYPE_NX},
+        {"TYPE_PAU",      TARGETING::TYPE_PAU},
+        {"TYPE_PAX",      TARGETING::TYPE_PAX},
+        {"TYPE_PAXO",     TARGETING::TYPE_PAXO},
+        {"TYPE_SMP_LINK", TARGETING::TYPE_SMPGROUP},
+        {"TYPE_PEC69",    TARGETING::TYPE_PEC6P},
+        {"TYPE_PHB248X",  TARGETING::TYPE_PHB248X},
+        {"TYPE_PHB16X",   TARGETING::TYPE_PHB16X},
+        {"TYPE_MC",       TARGETING::TYPE_MC},
+        {"TYPE_MI",       TARGETING::TYPE_MI},
+        {"TYPE_MCC",      TARGETING::TYPE_MCC},
+        {"TYPE_OMI",      TARGETING::TYPE_OMI},
+        {"TYPE_TBUSC",    TARGETING::TYPE_TBUSC},
+        {"TYPE_TBUSL",    TARGETING::TYPE_TBUSL},
+        {"TYPE_EQ",       TARGETING::TYPE_EQ},
+        {"TYPE_CORE",     TARGETING::TYPE_CORE},
+        {"TYPE_MEM_PORT", TARGETING::TYPE_MEM_PORT},
+        {"TYPE_DIMM",     TARGETING::TYPE_DIMM},
+    };
+    // clang-format on
+
+    return {m.at(typeStr), position};
+}
+
+//------------------------------------------------------------------------------
+
 std::string RasDataParser::parseSignature(
     const nlohmann::json& i_data, const libhei::Signature& i_signature) const
 {
@@ -327,7 +365,7 @@ std::string RasDataParser::parseSignature(
 
 //------------------------------------------------------------------------------
 
-std::tuple<callout::BusType, std::string> RasDataParser::parseBus(
+std::tuple<callout::BusType, TARGETING::TYPE, uint8_t> RasDataParser::parseBus(
     const nlohmann::json& i_data, const std::string& i_name)
 {
     auto bus = i_data.at("buses").at(i_name);
@@ -342,14 +380,15 @@ std::tuple<callout::BusType, std::string> RasDataParser::parseBus(
 
     auto busType = m.at(bus.at("type").get<std::string>());
 
-    std::string unitPath{}; // default empty if unit does not exist
+    // Default to TYPE_NA if unit does not exist (calls out the chip itself)
+    std::pair<TARGETING::TYPE, uint8_t> unitInfo = {TARGETING::TYPE_NA, 0};
     if (bus.contains("unit"))
     {
         auto unit = bus.at("unit").get<std::string>();
-        unitPath = i_data.at("units").at(unit).get<std::string>();
+        unitInfo = parseUnit(i_data, unit);
     }
 
-    return std::make_tuple(busType, unitPath);
+    return std::make_tuple(busType, unitInfo.first, unitInfo.second);
 }
 
 //------------------------------------------------------------------------------
@@ -381,10 +420,12 @@ std::shared_ptr<Resolution> RasDataParser::parseAction(
             auto priority = a.at("priority").get<std::string>();
             auto guard = a.at("guard").get<bool>();
 
-            std::string path{}; // Must be empty to callout the chip.
+            // Unit type must be TYPE_NA to indicate to callout the chip.
+            TARGETING::TYPE unitType = TARGETING::TYPE_NA;
+            uint8_t unitPos = 0;
 
             o_list->push(std::make_shared<HardwareCalloutResolution>(
-                path, getPriority(priority), guard));
+                unitType, unitPos, getPriority(priority), guard));
         }
         else if ("callout_unit" == type)
         {
@@ -392,10 +433,10 @@ std::shared_ptr<Resolution> RasDataParser::parseAction(
             auto priority = a.at("priority").get<std::string>();
             auto guard = a.at("guard").get<bool>();
 
-            auto path = i_data.at("units").at(name).get<std::string>();
+            auto [unitType, unitPos] = parseUnit(i_data, name);
 
             o_list->push(std::make_shared<HardwareCalloutResolution>(
-                path, getPriority(priority), guard));
+                unitType, unitPos, getPriority(priority), guard));
         }
         else if ("callout_connected" == type)
         {
@@ -407,7 +448,7 @@ std::shared_ptr<Resolution> RasDataParser::parseAction(
 
             o_list->push(std::make_shared<ConnectedCalloutResolution>(
                 std::get<0>(busData), std::get<1>(busData),
-                getPriority(priority), guard));
+                std::get<2>(busData), getPriority(priority), guard));
         }
         else if ("callout_bus" == type)
         {
@@ -419,7 +460,7 @@ std::shared_ptr<Resolution> RasDataParser::parseAction(
 
             o_list->push(std::make_shared<BusCalloutResolution>(
                 std::get<0>(busData), std::get<1>(busData),
-                getPriority(priority), guard));
+                std::get<2>(busData), getPriority(priority), guard));
         }
         else if ("callout_clock" == type)
         {

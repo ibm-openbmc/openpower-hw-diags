@@ -30,20 +30,24 @@ class HardwareCalloutResolution : public Resolution
   public:
     /**
      * @brief Constructor from components.
-     * @param i_unitPath The devtree path of a guardable unit relative to a
-     *                   chip. An empty string refers to the chip itself.
+     * @param i_unitType The unit type. TYPE_NA refers to the chip itself.
+     * @param i_unitPos  The unit position relative to the chip.
      * @param i_priority The callout priority.
      * @param i_guard    True, if guard is required. False, otherwise.
      */
-    HardwareCalloutResolution(const std::string& i_unitPath,
+    HardwareCalloutResolution(TARGETING::TYPE i_unitType, uint8_t i_unitPos,
                               callout::Priority i_priority, bool i_guard) :
-        iv_unitPath(i_unitPath), iv_priority(i_priority), iv_guard(i_guard)
+        iv_unitType(i_unitType), iv_unitPos(i_unitPos), iv_priority(i_priority),
+        iv_guard(i_guard)
     {}
 
   private:
-    /** The devtree path of a guardable unit relative to a chip. An empty string
-     *  refers to the chip itself. */
-    const std::string iv_unitPath;
+    /** The unit type (e.g., TYPE_CORE, TYPE_EQ, etc.). A value of 0 refers to
+     *  the chip itself. */
+    const TARGETING::TYPE iv_unitType;
+
+    /** The unit position relative to the chip. */
+    const uint8_t iv_unitPos;
 
     /** The callout priority. */
     const callout::Priority iv_priority;
@@ -62,27 +66,29 @@ class ConnectedCalloutResolution : public Resolution
     /**
      * @brief Constructor from components.
      * @param i_busType  The bus type.
-     * @param i_unitPath The path of the chip unit that is connected to the
-     *                   other chip. An empty string refers to the chip itself,
-     *                   which generally means this chip is a child of another.
+     * @param i_unitType The unit type. TYPE_NA refers to the chip itself.
+     * @param i_unitPos  The unit position relative to the chip.
      * @param i_priority The callout priority.
      * @param i_guard    The guard type for this callout.
      */
     ConnectedCalloutResolution(const callout::BusType& i_busType,
-                               const std::string& i_unitPath,
+                               TARGETING::TYPE i_unitType, uint8_t i_unitPos,
                                callout::Priority i_priority, bool i_guard) :
-        iv_busType(i_busType), iv_unitPath(i_unitPath), iv_priority(i_priority),
-        iv_guard(i_guard)
+        iv_busType(i_busType), iv_unitType(i_unitType), iv_unitPos(i_unitPos),
+        iv_priority(i_priority), iv_guard(i_guard)
     {}
 
   private:
     /** The bus type. */
     const callout::BusType iv_busType;
 
-    /** The devtree path the chip unit that is connected to the other chip. An
-     *  empty string refers to the chip itself, which generally means this chip
-     *  is a child of the other chip. */
-    const std::string iv_unitPath;
+    /** The unit type that is connected to the other chip. TYPE_NA will be used
+     * to refer to the chip itself, which generally means this chip is a child
+     * of the other chip. */
+    const TARGETING::TYPE iv_unitType;
+
+    /** The unit position relative to the chip. */
+    const uint8_t iv_unitPos;
 
     /** The callout priority. */
     const callout::Priority iv_priority;
@@ -104,27 +110,29 @@ class BusCalloutResolution : public Resolution
     /**
      * @brief Constructor from components.
      * @param i_busType  The bus type.
-     * @param i_unitPath The path of the chip unit that is connected to the
-     *                   other chip. An empty string refers to the chip itself,
-     *                   which generally means this chip is a child of another.
+     * @param i_unitType The unit type. TYPE_NA refers to the chip itself.
+     * @param i_unitPos  The unit position relative to the chip.
      * @param i_priority The callout priority.
      * @param i_guard    The guard type for this callout.
      */
     BusCalloutResolution(const callout::BusType& i_busType,
-                         const std::string& i_unitPath,
+                         TARGETING::TYPE i_unitType, uint8_t i_unitPos,
                          callout::Priority i_priority, bool i_guard) :
-        iv_busType(i_busType), iv_unitPath(i_unitPath), iv_priority(i_priority),
-        iv_guard(i_guard)
+        iv_busType(i_busType), iv_unitType(i_unitType), iv_unitPos(i_unitPos),
+        iv_priority(i_priority), iv_guard(i_guard)
     {}
 
   private:
     /** The bus type. */
     const callout::BusType iv_busType;
 
-    /** The devtree path the chip unit that is connected to the other chip. An
-     *  empty string refers to the chip itself, which generally means this chip
-     *  is a child of the other chip. */
-    const std::string iv_unitPath;
+    /** The unit type that is connected to the other chip. TYPE_NA will be used
+     * to refer to the chip itself, which generally means this chip is a child
+     * of the other chip. */
+    const TARGETING::TYPE iv_unitType;
+
+    /** The unit position relative to the chip. */
+    const uint8_t iv_unitPos;
 
     /** The callout priority. */
     const callout::Priority iv_priority;

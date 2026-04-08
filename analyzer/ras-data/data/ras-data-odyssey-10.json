@@ -6,12 +6,10 @@
                 "type": "action"
             }
         ],
-        "dimm0_H_mem_port0_L_th_1": [
+        "dimms_H_mem_port0_L_th_1": [
             {
-                "guard": true,
-                "name": "dimm0",
-                "priority": "HIGH",
-                "type": "callout_unit"
+                "name": "dimms_H_under_port0",
+                "type": "action"
             },
             {
                 "guard": false,
@@ -24,12 +22,10 @@
                 "type": "action"
             }
         ],
-        "dimm0_H_mem_port0_L_th_32perDay": [
+        "dimms_H_mem_port0_L_th_32perDay": [
             {
-                "guard": true,
-                "name": "dimm0",
-                "priority": "HIGH",
-                "type": "callout_unit"
+                "name": "dimms_H_under_port0",
+                "type": "action"
             },
             {
                 "guard": false,
@@ -42,30 +38,10 @@
                 "type": "action"
             }
         ],
-        "dimm0_M": [
+        "dimms_H_mem_port1_L_th_1": [
             {
-                "guard": true,
-                "name": "dimm0",
-                "priority": "MED",
-                "type": "callout_unit"
-            }
-        ],
-        "dimm0_M_th_1": [
-            {
-                "name": "dimm0_M",
+                "name": "dimms_H_under_port1",
                 "type": "action"
-            },
-            {
-                "name": "th_1",
-                "type": "action"
-            }
-        ],
-        "dimm1_H_mem_port1_L_th_1": [
-            {
-                "guard": true,
-                "name": "dimm1",
-                "priority": "HIGH",
-                "type": "callout_unit"
             },
             {
                 "guard": false,
@@ -78,12 +54,10 @@
                 "type": "action"
             }
         ],
-        "dimm1_H_mem_port1_L_th_32perDay": [
+        "dimms_H_mem_port1_L_th_32perDay": [
             {
-                "guard": true,
-                "name": "dimm1",
-                "priority": "HIGH",
-                "type": "callout_unit"
+                "name": "dimms_H_under_port1",
+                "type": "action"
             },
             {
                 "guard": false,
@@ -96,17 +70,33 @@
                 "type": "action"
             }
         ],
-        "dimm1_M": [
+        "dimms_H_under_port0": [
             {
-                "guard": true,
-                "name": "dimm1",
-                "priority": "MED",
-                "type": "callout_unit"
+                "instance": 0,
+                "name": "dimms_H_under_port",
+                "type": "plugin"
             }
         ],
-        "dimm1_M_th_1": [
+        "dimms_H_under_port0_th_1": [
             {
-                "name": "dimm1_M",
+                "name": "dimms_H_under_port0",
+                "type": "action"
+            },
+            {
+                "name": "th_1",
+                "type": "action"
+            }
+        ],
+        "dimms_H_under_port1": [
+            {
+                "instance": 1,
+                "name": "dimms_H_under_port",
+                "type": "plugin"
+            }
+        ],
+        "dimms_H_under_port1_th_1": [
+            {
+                "name": "dimms_H_under_port1",
                 "type": "action"
             },
             {
@@ -169,13 +159,13 @@
         ],
         "mainline_iue_handling_0": [
             {
-                "name": "dimm0_M_th_1",
+                "name": "dimms_H_under_port0_th_1",
                 "type": "action"
             }
         ],
         "mainline_iue_handling_1": [
             {
-                "name": "dimm1_M_th_1",
+                "name": "dimms_H_under_port1_th_1",
                 "type": "action"
             }
         ],
@@ -187,37 +177,37 @@
         ],
         "mainline_ue_handling_0": [
             {
-                "name": "dimm0_M_th_1",
+                "name": "dimms_H_under_port0_th_1",
                 "type": "action"
             }
         ],
         "mainline_ue_handling_1": [
             {
-                "name": "dimm1_M_th_1",
+                "name": "dimms_H_under_port1_th_1",
                 "type": "action"
             }
         ],
         "maintenance_aue_handling_0": [
             {
-                "name": "dimm0_H_mem_port0_L_th_1",
+                "name": "dimms_H_mem_port0_L_th_1",
                 "type": "action"
             }
         ],
         "maintenance_aue_handling_1": [
             {
-                "name": "dimm1_H_mem_port1_L_th_1",
+                "name": "dimms_H_mem_port1_L_th_1",
                 "type": "action"
             }
         ],
         "maintenance_iue_handling_0": [
             {
-                "name": "dimm0_M_th_1",
+                "name": "dimms_H_under_port0_th_1",
                 "type": "action"
             }
         ],
         "maintenance_iue_handling_1": [
             {
-                "name": "dimm1_M_th_1",
+                "name": "dimms_H_under_port1_th_1",
                 "type": "action"
             }
         ],
@@ -305,13 +295,13 @@
         ],
         "memory_impe_handling_0": [
             {
-                "name": "dimm0_M_th_1",
+                "name": "dimms_H_under_port0_th_1",
                 "type": "action"
             }
         ],
         "memory_impe_handling_1": [
             {
-                "name": "dimm1_M_th_1",
+                "name": "dimms_H_under_port1_th_1",
                 "type": "action"
             }
         ],
@@ -502,13 +492,13 @@
         ],
         "srq_rcd_parity_error_0": [
             {
-                "name": "dimm0_H_mem_port0_L_th_1",
+                "name": "dimms_H_mem_port0_L_th_1",
                 "type": "action"
             }
         ],
         "srq_rcd_parity_error_1": [
             {
-                "name": "dimm1_H_mem_port1_L_th_1",
+                "name": "dimms_H_mem_port1_L_th_1",
                 "type": "action"
             }
         ],
@@ -769,7 +759,7 @@
                 "flags": ["sue_source"]
             },
             "0d": {
-                "00": "dimm0_H_mem_port0_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
                 "flags": ["sue_source"]
             },
             "0e": {
@@ -864,7 +854,7 @@
                 "flags": ["sue_source"]
             },
             "28": {
-                "00": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port1_L_th_1",
                 "flags": ["sue_source"]
             },
             "29": {
@@ -1331,8 +1321,7 @@
                 "00": "level2_M_th_1"
             },
             "05": {
-                "00": "ocmb_M_info_only_th_1",
-                "flags": ["crc_root_cause", "mask_but_dont_clear"]
+                "00": "level2_M_th_1"
             },
             "06": {
                 "00": "level2_M_th_1"
@@ -1404,8 +1393,7 @@
                 "00": "level2_M_th_1"
             },
             "1a": {
-                "00": "level2_M_ocmb_L_th_32perDay",
-                "flags": ["crc_root_cause", "mask_but_dont_clear"]
+                "00": "level2_M_ocmb_L_th_32perDay"
             },
             "1b": {
                 "00": "level2_M_ocmb_L_th_1",
@@ -1817,8 +1805,8 @@
                 "01": "level2_M_th_1"
             },
             "0e": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1",
                 "flags": ["odp_data_corrupt_side_effect", "sue_source"]
             },
             "0f": {
@@ -1827,13 +1815,13 @@
                 "flags": ["odp_data_corrupt_side_effect", "sue_source"]
             },
             "10": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1",
                 "flags": ["sue_source"]
             },
             "11": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1",
                 "flags": ["odp_data_corrupt_side_effect", "sue_source"]
             },
             "12": {
@@ -1842,8 +1830,8 @@
                 "flags": ["sue_source", "odp_data_corrupt_side_effect"]
             },
             "13": {
-                "00": "dimm0_H_mem_port0_L_th_32perDay",
-                "01": "dimm1_H_mem_port1_L_th_32perDay"
+                "00": "dimms_H_mem_port0_L_th_32perDay",
+                "01": "dimms_H_mem_port1_L_th_32perDay"
             },
             "14": {
                 "00": "memory_impe_handling_0",
@@ -1902,8 +1890,8 @@
                 "01": "level2_M_th_1"
             },
             "22": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1",
                 "flags": ["odp_data_corrupt_side_effect", "sue_source"]
             },
             "23": {
@@ -1911,12 +1899,12 @@
                 "01": "level2_M_th_1"
             },
             "24": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1"
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1"
             },
             "25": {
-                "00": "dimm0_H_mem_port0_L_th_1",
-                "01": "dimm1_H_mem_port1_L_th_1",
+                "00": "dimms_H_mem_port0_L_th_1",
+                "01": "dimms_H_mem_port1_L_th_1",
                 "flags": ["odp_data_corrupt_side_effect", "sue_source"]
             },
             "26": {
@@ -1925,8 +1913,8 @@
                 "flags": ["sue_source", "odp_data_corrupt_side_effect"]
             },
             "27": {
-                "00": "dimm0_H_mem_port0_L_th_32perDay",
-                "01": "dimm1_H_mem_port1_L_th_32perDay"
+                "00": "dimms_H_mem_port0_L_th_32perDay",
+                "01": "dimms_H_mem_port1_L_th_32perDay"
             },
             "28": {
                 "00": "memory_impe_handling_0",
@@ -2029,10 +2017,14 @@
         }
     },
     "units": {
-        "dimm0": "mem_port0/dimm0",
-        "dimm1": "mem_port1/dimm0",
-        "mem_port0": "mem_port0",
-        "mem_port1": "mem_port1"
+        "mem_port0": {
+            "position": 0,
+            "type": "TYPE_MEM_PORT"
+        },
+        "mem_port1": {
+            "position": 1,
+            "type": "TYPE_MEM_PORT"
+        }
     },
-    "version": 2
+    "version": 3
 }

@@ -77,6 +77,17 @@ class RasDataParser
     void initDataFiles();
 
     /**
+     * @brief  Parses a unit object in the given data file and returns the unit
+     *         type and unit position.
+     * @param  i_data The parsed RAS data file associated with the signature's
+     *                chip type.
+     * @param  i_name The name of the target unit.
+     * @return A apir containing the unit type and unit position.
+     */
+    std::pair<TARGETING::TYPE, uint8_t> parseUnit(
+        const nlohmann::json& i_data, const std::string& i_unitName);
+
+    /**
      * @brief  Parses a signature in the given data file and returns a string
      *         representing the target action for the signature.
      * @param  i_data      The parsed RAS data file associated with the
@@ -89,13 +100,13 @@ class RasDataParser
 
     /**
      * @brief  Parses a bus object in the given data file and returns the bus
-     *         type and unit path.
+     *         type, unit type, and unit position.
      * @param  i_data The parsed RAS data file associated with the signature's
      *                chip type.
      * @param  i_name The name of the target bus.
-     * @return A tuple containing the bus type and unit path.
+     * @return A tuple containing the bus type, unit type, and unit position.
      */
-    std::tuple<callout::BusType, std::string> parseBus(
+    std::tuple<callout::BusType, TARGETING::TYPE, uint8_t> parseBus(
         const nlohmann::json& i_data, const std::string& i_name);
 
     /**

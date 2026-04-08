@@ -5027,16 +5027,46 @@
         }
     },
     "units": {
-        "core0": "pib/perv32/eq0/fc0/core0",
-        "core1": "pib/perv32/eq0/fc0/core1",
-        "core2": "pib/perv32/eq0/fc1/core0",
-        "core3": "pib/perv32/eq0/fc1/core1",
-        "core4": "pib/perv33/eq1/fc0/core0",
-        "core5": "pib/perv33/eq1/fc0/core1",
-        "core6": "pib/perv33/eq1/fc1/core0",
-        "core7": "pib/perv33/eq1/fc1/core1",
-        "eq0": "pib/perv32/eq0",
-        "eq1": "pib/perv33/eq1"
+        "core0": {
+            "position": 0,
+            "type": "TYPE_CORE"
+        },
+        "core1": {
+            "position": 1,
+            "type": "TYPE_CORE"
+        },
+        "core2": {
+            "position": 2,
+            "type": "TYPE_CORE"
+        },
+        "core3": {
+            "position": 3,
+            "type": "TYPE_CORE"
+        },
+        "core4": {
+            "position": 4,
+            "type": "TYPE_CORE"
+        },
+        "core5": {
+            "position": 5,
+            "type": "TYPE_CORE"
+        },
+        "core6": {
+            "position": 6,
+            "type": "TYPE_CORE"
+        },
+        "core7": {
+            "position": 7,
+            "type": "TYPE_CORE"
+        },
+        "eq0": {
+            "position": 0,
+            "type": "TYPE_EQ"
+        },
+        "eq1": {
+            "position": 1,
+            "type": "TYPE_EQ"
+        }
     },
-    "version": 2
+    "version": 3
 }
