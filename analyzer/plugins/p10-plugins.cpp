@@ -40,10 +40,17 @@ void pll_unlock(unsigned int i_instance, const libhei::Chip&,
     // Shrink the size of the PLL list if necessary.
     pllList.resize(std::distance(pllList.begin(), itr));
 
-    // The clock callout priority is dependent on the number of chips with PLL
-    // unlock attentions.
-    auto clockPriority =
-        (1 < pllList.size()) ? callout::Priority::HIGH : callout::Priority::MED;
+    // The callout priority is dependent on the number of chips with PLL unlock
+    // attentions.
+    callout::Priority clockPriority = callout::Priority::MED_A;
+    callout::Priority procPriority = callout::Priority::MED_A;
+    bool procGuard = true;
+    if (1 < pllList.size())
+    {
+        clockPriority = callout::Priority::HIGH;
+        procPriority = callout::Priority::MED;
+        procGuard = false;
+    }
 
     // Callout the clock.
     auto clockCallout = (0 == i_instance) ? callout::ClockType::OSC_REF_CLOCK_0
@@ -51,11 +58,11 @@ void pll_unlock(unsigned int i_instance, const libhei::Chip&,
     io_servData.calloutClock(clockCallout, clockPriority, true);
 
     // Callout the processors connected to this clock that are reporting PLL
-    // unlock attentions. Always a medium callout and no guarding.
+    // unlock attentions.
     for (const auto& sig : pllList)
     {
         io_servData.calloutTarget(util::pdbg::getTrgt(sig.getChip()),
-                                  callout::Priority::MED, false);
+                                  procPriority, procGuard);
     }
 }
 
