@@ -1,9 +1,8 @@
-#include <libpdbg.h>
-
 #include <attn/attention.hpp>
 #include <attn/attn_config.hpp>
 #include <attn/attn_handler.hpp>
 #include <cli.hpp>
+#include <util/pdbg.hpp>
 #include <util/trace.hpp>
 
 #include <vector>
@@ -21,8 +20,8 @@ int main(int argc, char* argv[])
 {
     int rc = 0; // return code
 
-    // initialize pdbg targets
-    pdbg_targets_init(nullptr);
+    // initialize phal targets
+    TARGETING::utils::targetingInit();
 
     // create attention handler config object
     attn::Config attnConfig;
@@ -33,32 +32,23 @@ int main(int argc, char* argv[])
     // exercise attention gpio event path
     attn::attnHandler(&attnConfig);
 
-    // Get first enabled proc for testing
-    pdbg_target* target = nullptr;
-    pdbg_for_each_class_target("proc", target)
-    {
-        trace::inf("proc: %u", pdbg_target_index(target));
-        if (PDBG_TARGET_ENABLED == pdbg_target_probe(target))
-        {
-            trace::inf("target enabled");
-            break;
-        }
-    }
+    // Get a hub for testing
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
 
     // Exercise special, checkstop and vital attention handler paths
-    if ((nullptr != target) &&
-        (PDBG_TARGET_ENABLED == pdbg_target_probe(target)))
+    if ((nullptr != hubList[0]) && TARGETING::utils::isFunctional(hubList[0]))
     {
         std::vector<attn::Attention> attentions;
 
         attentions.emplace_back(attn::Attention::AttentionType::Special,
-                                attn::handleSpecial, target, &attnConfig);
+                                attn::handleSpecial, hubList[0], &attnConfig);
 
         attentions.emplace_back(attn::Attention::AttentionType::Checkstop,
-                                attn::handleCheckstop, target, &attnConfig);
+                                attn::handleCheckstop, hubList[0], &attnConfig);
 
         attentions.emplace_back(attn::Attention::AttentionType::Vital,
-                                attn::handleVital, target, &attnConfig);
+                                attn::handleVital, hubList[0], &attnConfig);
 
         std::for_each(std::begin(attentions), std::end(attentions),
                       [](attn::Attention attention) {

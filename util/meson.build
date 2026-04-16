@@ -21,10 +21,7 @@ util_deps = [
 ]
 
 if phal_backend == 'legacy'
-    util_deps += libpdbg_dep
     util_deps += dependency('libdt-api')
-elif phal_backend == 'none'
-    util_deps += libpdbg_dep
 endif
 
 # Create static library.

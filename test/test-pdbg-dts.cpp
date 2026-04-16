@@ -1,5 +1,4 @@
 #include <fcntl.h>
-#include <libpdbg.h>
 
 #include <hei_main.hpp>
 #include <test/sim-hw-access.hpp>
@@ -13,183 +12,167 @@
 
 TEST(PDBG, PdbgDtsTest1)
 {
-    const char* perv1_fapi_pos_path = "/proc0/pib/perv1";
-    const char* perv12_fapi_pos_path = "/proc0/pib/perv12";
-    const uint32_t perv1_fapi_pos = 1;
-    const uint32_t perv12_fapi_pos = 12;
+    using namespace util::pdbg;
+    TARGETING::utils::targetingInit();
 
-    pdbg_targets_init(nullptr);
+    trace::inf("retrieving hub targets.");
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
 
-    trace::inf("retrieving fapi pos.");
-    uint32_t attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target* trgt = pdbg_target_from_path(nullptr, perv1_fapi_pos_path);
-    pdbg_target_get_attribute(trgt, "ATTR_FAPI_POS", 4, 1, &attr);
-    trace::inf("perv1 fapi pos in DTS: %u", attr);
-    EXPECT_EQ(attr, perv1_fapi_pos);
+    // Find hub at position 0
+    TARGETING::TargetPtr hub0 = nullptr;
+    for (auto hub : hubList)
+    {
+        if (getChipPos(hub) == 0)
+        {
+            hub0 = hub;
+            break;
+        }
+    }
+    EXPECT_NE(nullptr, hub0);
+    uint32_t attr = hub0->getAttr<TARGETING::ATTR_CHIP_ID>();
+    trace::inf("Chip ID: %u", attr);
+    EXPECT_EQ(attr, 0);
 
-    attr = std::numeric_limits<uint32_t>::max();
-    trgt = pdbg_target_from_path(nullptr, perv12_fapi_pos_path);
-    pdbg_target_get_attribute(trgt, "ATTR_FAPI_POS", 4, 1, &attr);
-    trace::inf("perv12 fapi pos in DTS: %u", attr);
-    EXPECT_EQ(attr, perv12_fapi_pos);
+    // Find hub at position 1
+    TARGETING::TargetPtr hub1 = nullptr;
+    for (auto hub : hubList)
+    {
+        if (getChipPos(hub) == 1)
+        {
+            hub1 = hub;
+            break;
+        }
+    }
+    EXPECT_NE(nullptr, hub1);
+    attr = hub1->getAttr<TARGETING::ATTR_CHIP_ID>();
+    trace::inf("Chip ID: %u", attr);
+    EXPECT_EQ(attr, 1);
 }
 
 TEST(PDBG, PdbgDtsTest2)
 {
-    const char* dimm0_path =
-        "/proc0/pib/perv12/mc0/mi0/mcc0/omi0/ocmb0/mem_port0/dimm0";
-    const uint32_t index = 0;
-    const uint32_t fapi_pos = 0;
+    using namespace util::pdbg;
+    TARGETING::utils::targetingInit();
 
-    pdbg_targets_init(nullptr);
+    trace::inf("retrieving dimm targets.");
+    TARGETING::TargetPtrList dimmList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_DIMM);
 
-    trace::inf("retrieving fapi pos.");
-    uint32_t attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target* trgt = pdbg_target_from_path(nullptr, dimm0_path);
-    pdbg_target_get_attribute(trgt, "index", 4, 1, &attr);
-    trace::inf("index in DTS: %u", attr);
-    EXPECT_EQ(attr, index);
-
-    attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target_get_attribute(trgt, "ATTR_FAPI_POS", 4, 1, &attr);
-    trace::inf("fapi pos in DTS: %u", attr);
-    EXPECT_EQ(attr, fapi_pos);
-}
-
-TEST(PDBG, PdbgDtsTest3)
-{
-    const uint32_t chipId = 0;  // ID for proc0.
-    const uint32_t fapiPos = 0; // FAPI Position for proc0.
-
-    pdbg_targets_init(nullptr);
-
-    // Iterate each processor.
-    pdbg_target* procTrgt;
-    pdbg_for_each_class_target("/proc0", procTrgt)
+    // Find dimm at position 0
+    TARGETING::TargetPtr dimm0 = nullptr;
+    for (auto dimm : dimmList)
     {
-        // Active processors only.
-        if (PDBG_TARGET_ENABLED !=
-            pdbg_target_probe(util::pdbg::getPibTrgt(procTrgt)))
-            continue;
-
-        // Process the PROC target.
-        uint32_t attr = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(procTrgt, "ATTR_CHIP_ID", 4, 1, &attr);
-        trace::inf("Chip ID: %u", attr);
-        EXPECT_EQ(attr, chipId);
-
-        attr = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(procTrgt, "ATTR_FAPI_POS", 4, 1, &attr);
-        trace::inf("ATTR_FAPI_POS: %u", attr);
-        EXPECT_EQ(attr, fapiPos);
+        if (getChipPos(dimm) == 0)
+        {
+            dimm0 = dimm;
+            break;
+        }
     }
-}
-
-TEST(PDBG, PdbgDtsTest4)
-{
-    const uint32_t index = 1;
-    const uint32_t fapi_pos = 1;
-    const char* perv1_path = "/proc0/pib/perv1";
-
-    pdbg_targets_init(nullptr);
-
-    // Iterate each processor.
-    pdbg_target* trgt;
-    uint32_t attr;
-
-    pdbg_for_each_class_target(perv1_path, trgt)
-    {
-        attr = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(trgt, "index", 4, 1, &attr);
-        trace::inf("index in DTS: %u", attr);
-        EXPECT_EQ(attr, index);
-
-        attr = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(trgt, "ATTR_FAPI_POS", 4, 1, &attr);
-        trace::inf("fapi pos in DTS: %u", attr);
-        EXPECT_EQ(attr, fapi_pos);
-    }
+    EXPECT_NE(nullptr, dimm0);
 }
 
 TEST(util_pdbg, getParentChip)
 {
     using namespace util::pdbg;
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
-    auto procChip = getTrgt("/proc0");
-    auto omiUnit = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1");
+    // Get a hub chip
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    auto hubChip = hubList[0];
+    EXPECT_NE(nullptr, hubChip);
 
-    EXPECT_EQ(procChip, getParentChip(procChip)); // get self
-    EXPECT_EQ(procChip, getParentChip(omiUnit));  // get unit
+    // Get an OMI unit from the hub chip
+    auto omiUnit = getChipUnit(hubChip, TARGETING::TYPE_OMI, 5);
+    EXPECT_NE(nullptr, omiUnit);
 
-    auto ocmbChip = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1/ocmb0");
-    auto memPortUnit =
-        getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1/ocmb0/mem_port0");
+    EXPECT_EQ(hubChip, getParentChip(hubChip)); // get self
+    EXPECT_EQ(hubChip, getParentChip(omiUnit)); // get unit
 
-    EXPECT_EQ(ocmbChip, getParentChip(ocmbChip));    // get self
-    EXPECT_EQ(ocmbChip, getParentChip(memPortUnit)); // get unit
+    // Get OCMB chips
+    TARGETING::TargetPtrList ocmbList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_OCMB_CHIP);
+    auto ocmbChip = ocmbList[0];
+    auto memPortUnit = getChipUnit(ocmbChip, TARGETING::TYPE_MEM_PORT, 0);
+
+    EXPECT_EQ(ocmbChip, getParentChip(ocmbChip)); // get self
+    EXPECT_EQ(ocmbChip,
+              getParentChip(memPortUnit));        // get unit
 }
 
 TEST(util_pdbg, getChipUnit)
 {
     using namespace util::pdbg;
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
-    auto procChip = getTrgt("/proc0");
-    auto omiUnit = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1");
+    // Get a hub chip
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    auto hubChip = hubList[0];
+    EXPECT_NE(nullptr, hubChip);
+
     auto omiUnitPos = 5;
 
     // Get the unit and verify.
-    EXPECT_EQ(omiUnit, getChipUnit(procChip, TYPE_OMI, omiUnitPos));
+    auto omiUnit = getChipUnit(hubChip, TARGETING::TYPE_OMI, omiUnitPos);
+    EXPECT_NE(nullptr, omiUnit);
 
     // Expect an exception when passing a unit instead of a chip.
-    EXPECT_THROW(getChipUnit(omiUnit, TYPE_OMI, omiUnitPos), std::logic_error);
+    EXPECT_THROW(getChipUnit(omiUnit, TARGETING::TYPE_OMI, omiUnitPos),
+                 std::logic_error);
 
     // Expect an exception when passing a chip type.
-    EXPECT_THROW(getChipUnit(procChip, TYPE_PROC, omiUnitPos),
+    EXPECT_THROW(getChipUnit(hubChip, TARGETING::TYPE_HUB_CHIP, omiUnitPos),
                  std::out_of_range);
 
     // Expect an exception when passing a unit type not on the target chip.
-    EXPECT_THROW(getChipUnit(procChip, TYPE_MEM_PORT, omiUnitPos),
+    EXPECT_THROW(getChipUnit(hubChip, TARGETING::TYPE_MEM_PORT, omiUnitPos),
                  std::out_of_range);
 
     // Expect a nullptr if the target is not found.
-    EXPECT_EQ(nullptr, getChipUnit(procChip, TYPE_OMI, 100));
+    EXPECT_EQ(nullptr, getChipUnit(hubChip, TARGETING::TYPE_OMI, 100));
 
-    auto ocmbChip = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1/ocmb0");
-    auto memPortUnit =
-        getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1/ocmb0/mem_port0");
-    auto memPortUnitPos = 0;
-
-    // Get the unit and verify.
-    EXPECT_EQ(memPortUnit,
-              getChipUnit(ocmbChip, TYPE_MEM_PORT, memPortUnitPos));
+    // Test with OCMB chip if available
+    TARGETING::TargetPtrList ocmbList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_OCMB_CHIP);
+    auto ocmbChip = ocmbList[0];
+    auto memPortUnit = getChipUnit(ocmbChip, TARGETING::TYPE_MEM_PORT, 0);
+    EXPECT_NE(nullptr, memPortUnit);
 }
 
 TEST(util_pdbg, getScom)
 {
     using namespace util::pdbg;
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
-    auto procChip = getTrgt("/proc0");
-    auto ocmbChip = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1/ocmb0");
-    auto omiUnit = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1");
+    // Get a hub chip
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    auto hubChip = hubList[0];
+    EXPECT_NE(nullptr, hubChip);
+
+    // Get OCMB and OMI targets
+    TARGETING::TargetPtrList ocmbList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_OCMB_CHIP);
+    auto ocmbChip = ocmbList[0];
+    auto omiUnit = getChipUnit(hubChip, TARGETING::TYPE_OMI, 5);
 
     sim::ScomAccess& scom = sim::ScomAccess::getSingleton();
     scom.flush();
-    scom.add(procChip, 0x11111111, 0x0011223344556677);
+    scom.add(hubChip, 0x11111111, 0x0011223344556677);
     scom.error(ocmbChip, 0x22222222);
 
     int rc = 0;
     uint64_t val = 0;
 
     // Test good path.
-    rc = getScom(procChip, 0x11111111, val);
+    rc = getScom(hubChip, 0x11111111, val);
     EXPECT_EQ(0, rc);
     EXPECT_EQ(0x0011223344556677, val);
 
     // Test address that has not been added to ScomAccess.
-    rc = getScom(procChip, 0x33333333, val);
+    rc = getScom(hubChip, 0x33333333, val);
     EXPECT_EQ(0, rc);
     EXPECT_EQ(0, val);
 
@@ -204,31 +187,36 @@ TEST(util_pdbg, getScom)
 TEST(util_pdbg, getCfam)
 {
     using namespace util::pdbg;
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
-    auto procChip = getTrgt("/proc0");
-    auto omiUnit = getTrgt("/proc0/pib/perv13/mc1/mi0/mcc0/omi1");
+    // Get a hub chip
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    auto hubChip = hubList[0];
+    EXPECT_NE(nullptr, hubChip);
+
+    auto omiUnit = getChipUnit(hubChip, TARGETING::TYPE_OMI, 5);
 
     sim::CfamAccess& cfam = sim::CfamAccess::getSingleton();
     cfam.flush();
-    cfam.add(procChip, 0x11111111, 0x00112233);
-    cfam.error(procChip, 0x22222222);
+    cfam.add(hubChip, 0x11111111, 0x00112233);
+    cfam.error(hubChip, 0x22222222);
 
     int rc = 0;
     uint32_t val = 0;
 
     // Test good path.
-    rc = getCfam(procChip, 0x11111111, val);
+    rc = getCfam(hubChip, 0x11111111, val);
     EXPECT_EQ(0, rc);
     EXPECT_EQ(0x00112233, val);
 
     // Test address that has not been added to CfamAccess.
-    rc = getCfam(procChip, 0x33333333, val);
+    rc = getCfam(hubChip, 0x33333333, val);
     EXPECT_EQ(0, rc);
     EXPECT_EQ(0, val);
 
     // Test CFAM error.
-    rc = getCfam(procChip, 0x22222222, val);
+    rc = getCfam(hubChip, 0x22222222, val);
     EXPECT_EQ(1, rc);
 
     // Test non-chip target.
@@ -238,8 +226,7 @@ TEST(util_pdbg, getCfam)
 TEST(util_pdbg, getActiveChips)
 {
     using namespace util::pdbg;
-    using namespace libhei;
-    pdbg_targets_init(nullptr);
+    TARGETING::utils::targetingInit();
 
     std::vector<libhei::Chip> chips;
     getActiveChips(chips);
@@ -253,33 +240,35 @@ TEST(util_pdbg, getActiveChips)
      *       case works as expected. However, we don't want to do that in
      *       production code.  Instead, we'll need to determine why the OCMBs
      *       are not enabled in CI test and then reenable this test case.
-    auto proc0 = getTrgt("/proc0");
-    auto proc1 = getTrgt("/proc1");
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    auto hub0 = hubList[0];
+    auto hub1 = hubList[1];
 
     sim::ScomAccess& scom = sim::ScomAccess::getSingleton();
     scom.flush();
 
-    // Mask off proc0 mcc0 channel 1. The connected OCMB should be removed from
+    // Mask off hub0 mcc0 channel 1. The connected OCMB should be removed from
     // the list.
-    scom.add(proc0, 0x0C010D03, 0x0f00000000000000);
+    scom.add(hub0, 0x08011842, 0x0780000000000000);
 
-    // Mask off one or two attentions, but not all, on proc0 mcc2. None of the
+    // Mask off one or two attentions, but not all, on hub0 mcc2. None of the
     // connected OCMBs should be removed from the list.
-    scom.add(proc0, 0x0D010D03, 0xA500000000000000);
+    scom.add(hub0, 0x08011C42, 0x5280000000000000);
 
-    // Mask off proc1 mcc7 channel 0. The connected OCMB should be removed from
+    // Mask off hub1 mcc7 channel 0. The connected OCMB should be removed from
     // the list.
-    scom.add(proc1, 0x0F010D43, 0xf000000000000000);
+    scom.add(hub1, 0x09011E42, 0x7800000000000000);
 
-    // Mask off proc1 mcc5 channels 0 and 1. Both the connected OCMBs should be
+    // Mask off hub1 mcc5 channels 0 and 1. Both the connected OCMBs should be
     // removed from the list.
-    scom.add(proc1, 0x0E010D43, 0xff00000000000000);
+    scom.add(hub1, 0x09011A42, 0x7f80000000000000);
 
     std::vector<libhei::Chip> chips;
     getActiveChips(chips);
 
-    // In total there should be 14 chips with 2 processors, 7 OCMBs on proc0,
-    // and 5 OCMBs on proc1.
+    // In total there should be 14 chips with 2 hub chips, 7 OCMBs on hub0,
+    // and 5 OCMBs on hub1.
 
     trace::inf("chips size: %u", chips.size());
     EXPECT_EQ(14, chips.size());

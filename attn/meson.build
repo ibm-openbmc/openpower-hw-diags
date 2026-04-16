@@ -73,9 +73,6 @@ attn_deps = [libgpiod, phosphor_logging_dep, sdbusplus_dep, phal_dep]
 
 if phal_backend == 'legacy'
     attn_deps += libphal_dep
-    attn_deps += libpdbg_dep
-elif phal_backend == 'none'
-    attn_deps += libpdbg_dep
 endif
 
 # Create static library.

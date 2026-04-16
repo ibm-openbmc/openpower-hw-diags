@@ -29,7 +29,7 @@ namespace pdbg
 bool queryLpcTimeout(TARGETING::TargetPtr i_target)
 {
     // Must be a hub target.
-    assert(TYPE_HUB_CHIP == getTrgtType(i_target));
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));
 
     // Instead of the SBE chip-op, use the faked value.
     return g_lpcTimeout;
@@ -40,8 +40,8 @@ bool queryLpcTimeout(TARGETING::TargetPtr i_target)
 int getScom(TARGETING::TargetPtr i_target, uint64_t i_addr, uint64_t& o_val)
 {
     assert(nullptr != i_target);
-    assert(TYPE_HUB_CHIP == getTrgtType(i_target) ||
-           TYPE_OCMB == getTrgtType(i_target));
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target) ||
+           TARGETING::TYPE_OCMB_CHIP == getTrgtType(i_target));
 
     int rc = sim::ScomAccess::getSingleton().get(i_target, i_addr, o_val);
 
@@ -61,7 +61,7 @@ int getScom(TARGETING::TargetPtr i_target, uint64_t i_addr, uint64_t& o_val)
 int getCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t& o_val)
 {
     assert(nullptr != i_target);
-    assert(TYPE_HUB_CHIP == getTrgtType(i_target));
+    assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));
 
     int rc = sim::CfamAccess::getSingleton().get(i_target, i_addr, o_val);
 
@@ -78,7 +78,7 @@ int getCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t& o_val)
 
 //------------------------------------------------------------------------------
 
-int putCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t i_val)
+int putCfam(TARGETING::TargetPtr i_target, uint32_t, uint32_t)
 {
     assert(nullptr != i_target);
     assert(TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target));

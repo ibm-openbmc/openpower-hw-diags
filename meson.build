@@ -102,10 +102,6 @@ phosphor_logging_dep = dependency(
 sdbusplus_dep = dependency('sdbusplus', version: '>=1.0')
 dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
 
-if phal_backend != 'next'
-    libpdbg_dep = dependency('pdbg')
-endif
-
 if phal_backend == 'legacy'
     libphal_dep = cmplr.find_library('phal')
 endif
@@ -191,7 +187,6 @@ if build_tests.allowed()
 
     test_util_deps = [
         libhei_dep,
-        libpdbg_dep,
         nlohmann_json_dep,
         phosphor_logging_dep,
         valijson_dep,
@@ -209,6 +204,5 @@ if build_tests.allowed()
 
     test_libs = [analyzer_lib, attn_lib, test_util_lib]
 
-    # TODO - reenable
-    # subdir('test')
+    subdir('test')
 endif

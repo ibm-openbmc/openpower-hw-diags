@@ -40,8 +40,7 @@ const AttentionFlag gAttnFlag = AttentionFlag::enBreakpoints;
 // Start preparation for UT case #1.
 
 // Global variables for UT #1
-const char* gPosPath = "/proc0/pib/perv12";
-const uint32_t gPos = 12;
+const uint32_t gPos = 1;
 
 /** @brief Fixture class for TEST_F(). */
 class AttentionTestPos : public testing::Test
@@ -51,9 +50,20 @@ class AttentionTestPos : public testing::Test
 
     void SetUp()
     {
-        pdbg_targets_init(nullptr);
+        TARGETING::utils::targetingInit();
 
-        target = pdbg_target_from_path(nullptr, gPosPath);
+        // Get hub1
+        TARGETING::TargetPtrList hubList =
+            TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+        target = nullptr;
+        for (auto hub : hubList)
+        {
+            if (util::pdbg::getChipPos(hub) == gPos)
+            {
+                target = hub;
+                break;
+            }
+        }
         EXPECT_NE(nullptr, target);
 
         config = new Config;
@@ -70,7 +80,7 @@ class AttentionTestPos : public testing::Test
 
     std::unique_ptr<Attention> pAttn;
     Config* config = nullptr;
-    pdbg_target* target = nullptr;
+    TARGETING::TargetPtr target = nullptr;
 };
 
 TEST_F(AttentionTestPos, TestAttnTargetPos)
@@ -80,15 +90,13 @@ TEST_F(AttentionTestPos, TestAttnTargetPos)
 
     // Verify the global target_tmp.
     EXPECT_NE(nullptr, target);
-    uint32_t attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target_get_attribute(target, "ATTR_FAPI_POS", 4, 1, &attr);
+    uint32_t attr = util::pdbg::getChipPos(target);
     EXPECT_EQ(gPos, attr);
 
     // Verify the target in Attention object.
-    attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target* target_tmp = pAttn->getTarget();
+    TARGETING::TargetPtr target_tmp = pAttn->getTarget();
     EXPECT_NE(nullptr, target_tmp);
-    pdbg_target_get_attribute(target_tmp, "ATTR_FAPI_POS", 4, 1, &attr);
+    attr = util::pdbg::getChipPos(target_tmp);
     EXPECT_EQ(gPos, attr);
 
     // Verify the config in Attention object.
@@ -113,16 +121,15 @@ class AttentionTestProc : public testing::Test
 
     void SetUp()
     {
-        pdbg_targets_init(nullptr);
-        target = getPrimaryHub();
+        TARGETING::utils::targetingInit();
+        target = util::pdbg::getPrimaryHub();
 
         EXPECT_NE(nullptr, target);
 
-        attr = getTrgtType(target);
-        EXPECT_EQ(TYPE_PROC, attr);
+        attr = util::pdbg::getTrgtType(target);
+        EXPECT_EQ(TARGETING::TYPE_HUB_CHIP, attr);
 
-        attr = std::numeric_limits<uint32_t>::max();
-        pdbg_target_get_attribute(target, "ATTR_CHIP_ID", 4, 1, &attr);
+        attr = target->getAttr<TARGETING::ATTR_CHIP_ID>();
         EXPECT_EQ(attr, gChipId);
 
         config = new Config;
@@ -139,7 +146,7 @@ class AttentionTestProc : public testing::Test
 
     std::unique_ptr<Attention> pAttn;
     Config* config = nullptr;
-    pdbg_target* target = nullptr;
+    TARGETING::TargetPtr target = nullptr;
     uint32_t attr = std::numeric_limits<uint32_t>::max();
 };
 
@@ -150,13 +157,12 @@ TEST_F(AttentionTestProc, TestAttentionProc)
 
     // Verify the target in Attention object.
     attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target* target_tmp = pAttn->getTarget();
+    TARGETING::TargetPtr target_tmp = pAttn->getTarget();
     EXPECT_NE(nullptr, target_tmp);
-    attr = getTrgtType(target_tmp);
-    EXPECT_EQ(TYPE_PROC, attr);
+    attr = util::pdbg::getTrgtType(target_tmp);
+    EXPECT_EQ(TARGETING::TYPE_HUB_CHIP, attr);
 
-    attr = std::numeric_limits<uint32_t>::max();
-    pdbg_target_get_attribute(target_tmp, "ATTR_CHIP_ID", 4, 1, &attr);
+    attr = target_tmp->getAttr<TARGETING::ATTR_CHIP_ID>();
     EXPECT_EQ(attr, gChipId);
 
     // Verify the config in Attention object.
