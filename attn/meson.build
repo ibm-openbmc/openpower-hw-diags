@@ -11,16 +11,6 @@ libgpiod = dependency('libgpiod', version: '>=1.4.1')
 # get openpower-hw-diags build configuration
 attn_conf = configuration_data()
 
-# conditionally define ENABLE_PHAL_TRUE
-
-#TODO After transition to hostfw targeting, check for either 'legacy' or 'next'
-phal_backend = get_option('phal_backend')
-if phal_backend == 'legacy'
-    attn_conf.set('ENABLE_PHAL_TRUE', '')
-else
-    attn_conf.set('ENABLE_PHAL_TRUE', '#')
-endif
-
 # attention handler default config override
 attn_conf.set('ATTN_CONFIG', get_option('attn_config'))
 
@@ -70,10 +60,6 @@ pel_src = files(
 
 # Library dependencies.
 attn_deps = [libgpiod, phosphor_logging_dep, sdbusplus_dep, phal_dep]
-
-if phal_backend == 'legacy'
-    attn_deps += libphal_dep
-endif
 
 # Create static library.
 attn_lib = static_library(

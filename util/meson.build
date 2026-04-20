@@ -20,10 +20,6 @@ util_deps = [
     phal_dep,
 ]
 
-if phal_backend == 'legacy'
-    util_deps += dependency('libdt-api')
-endif
-
 # Create static library.
 util_lib = static_library(
     'util_lib',
@@ -33,6 +29,3 @@ util_lib = static_library(
     cpp_args: [package_args],
     install: false,
 )
-
-# Install the util data files
-subdir('data')

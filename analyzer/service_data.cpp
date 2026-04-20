@@ -288,32 +288,29 @@ void ServiceData::setSrcSubsystem(callout::SrcSubsystem i_subsystem,
 callout::SrcSubsystem ServiceData::getTargetSubsystem(
     TARGETING::TargetPtr i_target)
 {
-    using TargetType_t = util::pdbg::TargetType_t;
-
     // Default the subsystem to CEC_HARDWARE
     callout::SrcSubsystem o_subSys = callout::SrcSubsystem::CEC_HARDWARE;
 
+    // TODO - update for new types
     // clang-format off
     static const std::map<uint8_t, callout::SrcSubsystem> subSysMap =
     {
-        {TargetType_t::TYPE_DIMM,     callout::SrcSubsystem::MEMORY_DIMM   },
-        {TargetType_t::TYPE_PROC,     callout::SrcSubsystem::PROCESSOR_FRU },
-        {TargetType_t::TYPE_CORE,     callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_NX,       callout::SrcSubsystem::PROCESSOR     },
-        {TargetType_t::TYPE_EQ,       callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_PEC,      callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_PHB,      callout::SrcSubsystem::PHB           },
-        {TargetType_t::TYPE_MC,       callout::SrcSubsystem::MEMORY_CTLR   },
-        {TargetType_t::TYPE_IOLINK,   callout::SrcSubsystem::PROCESSOR_BUS },
-        {TargetType_t::TYPE_OMI,      callout::SrcSubsystem::MEMORY_CTLR   },
-        {TargetType_t::TYPE_MCC,      callout::SrcSubsystem::MEMORY_CTLR   },
-        {TargetType_t::TYPE_OMIC,     callout::SrcSubsystem::MEMORY_CTLR   },
-        {TargetType_t::TYPE_OCMB,     callout::SrcSubsystem::MEMORY_FRU    },
-        {TargetType_t::TYPE_MEM_PORT, callout::SrcSubsystem::MEMORY_CTLR   },
-        {TargetType_t::TYPE_NMMU,     callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_PAU,      callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_IOHS,     callout::SrcSubsystem::PROCESSOR_UNIT},
-        {TargetType_t::TYPE_PAUC,     callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_DIMM,      callout::SrcSubsystem::MEMORY_DIMM   },
+        {TARGETING::TYPE_PROC,      callout::SrcSubsystem::PROCESSOR_FRU },
+        {TARGETING::TYPE_CORE,      callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_NX,        callout::SrcSubsystem::PROCESSOR     },
+        {TARGETING::TYPE_EQ,        callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_PEC,       callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_PHB,       callout::SrcSubsystem::PHB           },
+        {TARGETING::TYPE_MC,        callout::SrcSubsystem::MEMORY_CTLR   },
+        {TARGETING::TYPE_SMPGROUP,  callout::SrcSubsystem::PROCESSOR_BUS },
+        {TARGETING::TYPE_OMI,       callout::SrcSubsystem::MEMORY_CTLR   },
+        {TARGETING::TYPE_MCC,       callout::SrcSubsystem::MEMORY_CTLR   },
+        {TARGETING::TYPE_OCMB_CHIP, callout::SrcSubsystem::MEMORY_FRU    },
+        {TARGETING::TYPE_MEM_PORT,  callout::SrcSubsystem::MEMORY_CTLR   },
+        {TARGETING::TYPE_NMMU,      callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_PAU,       callout::SrcSubsystem::PROCESSOR_UNIT},
+        {TARGETING::TYPE_IOHS,      callout::SrcSubsystem::PROCESSOR_UNIT},
     };
     // clang-format on
 

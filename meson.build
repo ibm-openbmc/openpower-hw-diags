@@ -43,9 +43,6 @@ conf = configuration_data()
 # OpenPOWER dump object path override
 conf.set_quoted('OP_DUMP_OBJ_PATH', get_option('op_dump_obj_path'))
 
-phal_backend = get_option('phal_backend')
-conf.set('CONFIG_PHAL_API', get_option('phal_backend') == 'legacy')
-
 system_config = get_option('system_config')
 
 if system_config == 'p10'
@@ -101,10 +98,6 @@ phosphor_logging_dep = dependency(
 
 sdbusplus_dep = dependency('sdbusplus', version: '>=1.0')
 dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
-
-if phal_backend == 'legacy'
-    libphal_dep = cmplr.find_library('phal')
-endif
 
 phal_dep = dependency('hostfw_phal')
 

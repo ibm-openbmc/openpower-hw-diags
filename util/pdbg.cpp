@@ -18,10 +18,6 @@
 #include <fstream>
 #include <string>
 
-#ifdef CONFIG_PHAL_API
-#include <attributes_info.H>
-#endif
-
 using namespace analyzer;
 
 namespace fs = std::filesystem;
@@ -229,12 +225,12 @@ TARGETING::TargetPtr getConnectedTarget(TARGETING::TargetPtr i_rxTarget,
         txTarget = getTargetAcrossBus(i_rxTarget);
     }
     else if (callout::BusType::SMP_BUS == i_busType &&
-             util::pdbg::TYPE_IOHS == rxType)
+             TARGETING::TYPE_IOHS == rxType)
     {
         txTarget = getTargetAcrossBus(i_rxTarget);
     }
     else if (callout::BusType::OMI_BUS == i_busType &&
-             util::pdbg::TYPE_OMI == rxType)
+             TARGETING::TYPE_OMI == rxType)
     {
         TARGETING::TargetPtrList childList = TARGETING::utils::getChildTargets(
             i_rxTarget, TARGETING::TYPE_OCMB_CHIP);
@@ -272,44 +268,6 @@ TARGETING::TargetPtr getConnectedTarget(TARGETING::TargetPtr i_rxTarget,
 
 //------------------------------------------------------------------------------
 
-TARGETING::TargetPtr getPibTrgt(TARGETING::TargetPtr i_procTrgt)
-{
-    // TODO - remove if unneeded?
-    // The input target must be a processor.
-    assert(TYPE_PROC == getTrgtType(i_procTrgt));
-
-    // Get the pib path.
-    char path[16];
-    sprintf(path, "/proc%d/pib", TARGETING::utils::getPosition(i_procTrgt));
-
-    // Return the pib target.
-    TARGETING::TargetPtr pibTrgt = util::pdbg::getTrgt(path);
-    assert(nullptr != pibTrgt);
-
-    return pibTrgt;
-}
-
-//------------------------------------------------------------------------------
-
-TARGETING::TargetPtr getFsiTrgt(TARGETING::TargetPtr i_procTrgt)
-{
-    // TODO - remove if unneeded?
-    // The input target must be a processor.
-    assert(TYPE_PROC == getTrgtType(i_procTrgt));
-
-    // Get the fsi path.
-    char path[16];
-    sprintf(path, "/proc%d/fsi", TARGETING::utils::getPosition(i_procTrgt));
-
-    // Return the fsi target.
-    TARGETING::TargetPtr fsiTrgt = util::pdbg::getTrgt(path);
-    assert(nullptr != fsiTrgt);
-
-    return fsiTrgt;
-}
-
-//------------------------------------------------------------------------------
-
 // IMPORTANT:
 // The ATTR_CHIP_ID attribute will be synced from Hostboot to the BMC at
 // some point during the IPL. It is possible that this information is needed
@@ -336,7 +294,7 @@ uint32_t __getChipIdEc(TARGETING::TargetPtr i_target)
     auto chipEc = __getChipEc(i_target);
 
     if (((0 == chipId) || (0 == chipEc)) &&
-        (TYPE_PROC == getTrgtType(i_target)))
+        (TARGETING::TYPE_PROC == getTrgtType(i_target)))
     {
         // There is a special case where the model/level attributes have not
         // been initialized in the devtree. This is possible on the epoch

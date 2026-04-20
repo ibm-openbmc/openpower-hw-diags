@@ -1,9 +1,5 @@
 #include <config.h>
 
-#ifdef CONFIG_PHAL_API
-#include <libphal.H>
-#endif
-
 #include <analyzer/analyzer_main.hpp>
 #include <attn/attention.hpp>
 #include <attn/attn_common.hpp>
@@ -46,11 +42,11 @@ int handleCheckstop(Attention* i_attention);
  */
 int handleSpecial(Attention* i_attention);
 
-#ifdef CONFIG_PHAL_API
 /** @brief Handle phal sbe exception */
+/*
 void phalSbeExceptionHandler(openpower::phal::exception::SbeError& e,
                              uint32_t chipPosition, uint32_t command);
-#endif
+*/
 
 /** @brief Get static TI info data based on host state */
 void getStaticTiInfo(uint8_t*& tiInfoPtr);
@@ -403,14 +399,13 @@ bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn)
     return rc;
 }
 
-#ifdef CONFIG_PHAL_API
-
 /**
  * @brief Handle phal sbe exception
  *
  * @param[in] e - exception object
  * @param[in] procNum - processor number associated with sbe exception
  */
+/* TODO - update and reenable
 void phalSbeExceptionHandler(openpower::phal::exception::SbeError& sbeError,
                              uint32_t chipPosition, uint32_t command)
 {
@@ -442,7 +437,7 @@ void phalSbeExceptionHandler(openpower::phal::exception::SbeError& sbeError,
                               levelPelError, additionalData, ffdc);
     }
 }
-#endif
+*/
 
 /**
  * @brief Get static TI info data based on host state

@@ -18,8 +18,6 @@
 // IMPORTANT:
 //   Avoid using #define whenever possible. See note above for reason.
 
-#mesondefine CONFIG_PHAL_API
-
 #mesondefine CONFIG_P10
 #mesondefine CONFIG_P11
 #mesondefine CONFIG_P12

@@ -82,7 +82,8 @@ bool __findPllUnlock(const std::vector<libhei::Signature>& i_list,
     // is specifically for Odyssey, which are the only OCMBs that would report
     // PLL unlock attentions.
     auto itr2 = std::find_if(i_list.begin(), i_list.end(), [&](const auto& t) {
-        return (nodeId == t.getId() && TYPE_OCMB == getTrgtType(t.getChip()));
+        return (nodeId == t.getId() &&
+                TARGETING::TYPE_OCMB_CHIP == getTrgtType(t.getChip()));
     });
 
     if (i_list.end() != itr2)
@@ -112,7 +113,7 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
     // First, look for any chip checkstops from the connected OCMBs.
     for (const auto& s : i_list)
     {
-        if (TYPE_OCMB != getTrgtType(s.getChip()))
+        if (TARGETING::TYPE_OCMB_CHIP != getTrgtType(s.getChip()))
         {
             continue; // OCMBs only
         }
@@ -247,7 +248,7 @@ bool __findOcmbAttnBits(const std::vector<libhei::Signature>& i_list,
     // was successful and the ATTN_FROM_OCMB flag does not need to be checked.
     for (const auto& s : i_list)
     {
-        if (TYPE_OCMB == getTrgtType(s.getChip()))
+        if (TARGETING::TYPE_OCMB_CHIP == getTrgtType(s.getChip()))
         {
             return false;
         }
