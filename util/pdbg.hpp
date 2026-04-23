@@ -28,10 +28,6 @@ namespace pdbg
 /** @return The target associated with the given chip. */
 TARGETING::TargetPtr getTrgt(const libhei::Chip& i_chip);
 
-// TODO - update to take type and pos instead of devtree path
-/** @return The target associated with the given devtree path. */
-TARGETING::TargetPtr getTrgt(const std::string& i_path);
-
 /** @return A string representing the given target's physical path. */
 const std::string getPath(TARGETING::TargetPtr i_target);
 
@@ -110,15 +106,10 @@ int putCfam(TARGETING::TargetPtr i_target, uint32_t i_addr, uint32_t i_val);
 void getActiveChips(std::vector<libhei::Chip>& o_chips);
 
 /**
- * @brief Returns the list of all active processor chips in the system.
+ * @brief Returns the list of all active hub chips in the system.
  * @param o_chips The returned list of chips.
  */
-void getActiveProcessorChips(TARGETING::TargetPtrList& o_chips);
-
-/**
- * @return The primary Hub chip (i.e. the hub connected to the BMC).
- */
-TARGETING::TargetPtr getPrimaryHub();
+void getActiveHubChips(TARGETING::TargetPtrList& o_chips);
 
 /**
  * @return A string containing the FRU location code of the given chip. An empty

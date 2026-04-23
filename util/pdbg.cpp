@@ -37,17 +37,6 @@ TARGETING::TargetPtr getTrgt(const libhei::Chip& i_chip)
 
 //------------------------------------------------------------------------------
 
-TARGETING::TargetPtr getTrgt(const std::string& /*i_path*/)
-{
-    /* TODO - make version to get target from type and pos
-    return TARGETING::TargetService::toTarget(
-        TARGETING::EntityPath(i_path.c_str()));
-    */
-    return nullptr;
-}
-
-//------------------------------------------------------------------------------
-
 const std::string getPath(TARGETING::TargetPtr i_target)
 {
     return TARGETING::utils::getPhysicalPath(i_target);
@@ -281,11 +270,9 @@ uint32_t __getChipId(TARGETING::TargetPtr i_target)
 // The ATTR_EC attribute will be synced from Hostboot to the BMC at some
 // point during the IPL. It is possible that this information is needed
 // before the sync occurs, in which case the value will return 0.
-uint8_t __getChipEc(TARGETING::TargetPtr /*i_target*/)
+uint8_t __getChipEc(TARGETING::TargetPtr i_target)
 {
-    // TODO - needs some new equivalent
-    // return i_target->getAttr<TARGETING::ATTR_EC>();
-    return 0;
+    return i_target->getAttr<TARGETING::ATTR_EC>();
 }
 
 uint32_t __getChipIdEc(TARGETING::TargetPtr i_target)
@@ -423,32 +410,19 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
 
 //------------------------------------------------------------------------------
 
-void getActiveProcessorChips(TARGETING::TargetPtrList& o_chips)
+void getActiveHubChips(TARGETING::TargetPtrList& o_chips)
 {
-    // TODO - only used in P10 TOD plugin currently. Update for hub chips if
-    // needed for P12, else remove, or just use TARGETING::utils::getTargets
-    // directly.
     o_chips.clear();
 
-    TARGETING::TargetPtrList procList =
-        TARGETING::utils::getTargets(TARGETING::TYPE_PROC);
-    for (const auto& proc : procList)
+    TARGETING::TargetPtrList hubList =
+        TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
     {
-        if (!TARGETING::utils::isFunctional(proc))
+        if (!TARGETING::utils::isFunctional(hub))
             continue;
 
-        o_chips.push_back(proc);
+        o_chips.push_back(hub);
     }
-}
-
-//------------------------------------------------------------------------------
-
-TARGETING::TargetPtr getPrimaryHub()
-{
-    // TODO: For at least P10, the primary processor (the one connected directly
-    // to the BMC), will always be PROC 0. We will need to update this later if
-    // we ever support an alternate primary processor.
-    return getTrgt("/hub0");
 }
 
 //------------------------------------------------------------------------------

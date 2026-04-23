@@ -7,6 +7,7 @@
 namespace analyzer
 {
 
+// TODO - update for P12
 namespace P10
 {
 
@@ -124,6 +125,7 @@ class Data
 
 enum class Register
 {
+    // TODO - update for P12
     TOD_ERROR = 0x00040030,
     TOD_PSS_MSS_STATUS = 0x00040008,
     TOD_PRI_PORT_0_CTRL = 0x00040001,
@@ -193,6 +195,8 @@ void collectTodFaultData(TARGETING::TargetPtr i_chip, Data& o_data)
     //       guarantee for TIs, but at the time of this writing, all TOD errors
     //       will trigger a checkstop attention away. So the TI case is not as
     //       important.
+
+    // TODO - update for P12
 
     libhei::BitStringBuffer errorReg{64};
     if (readRegister(i_chip, Register::TOD_ERROR, errorReg))
@@ -321,7 +325,7 @@ void tod_step_check_fault(unsigned int, const libhei::Chip& i_chip,
     // Query hardware for TOD fault data from all active processors.
     tod::Data data{};
     TARGETING::TargetPtrList chipList;
-    util::pdbg::getActiveProcessorChips(chipList);
+    util::pdbg::getActiveHubChips(chipList);
     for (const auto& chip : chipList)
     {
         tod::collectTodFaultData(chip, data);

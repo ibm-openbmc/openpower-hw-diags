@@ -85,9 +85,6 @@ std::vector<util::FFDCFile> createFFDCFiles(char* i_buffer = nullptr,
     // Create trace dump file
     util::createFFDCTraceFiles(files);
 
-    // Add PRD scratch registers
-    addPrdScratchRegs(files);
-
     return files;
 }
 

@@ -122,7 +122,7 @@ class AttentionTestProc : public testing::Test
     void SetUp()
     {
         TARGETING::utils::targetingInit();
-        target = util::pdbg::getPrimaryHub();
+        target = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP)[0];
 
         EXPECT_NE(nullptr, target);
 

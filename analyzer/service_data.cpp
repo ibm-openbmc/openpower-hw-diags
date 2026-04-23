@@ -122,12 +122,13 @@ void ServiceData::calloutProcedure(const callout::Procedure& i_procedure,
 void ServiceData::calloutPart(const callout::PartType& i_part,
                               callout::Priority i_priority)
 {
+    // TODO - update needed
     if (callout::PartType::PNOR == i_part)
     {
         // The PNOR is on the BMC card.
         // TODO: Will need to be modified if we ever support systems with more
         //       than one BMC.
-        addTargetCallout(util::pdbg::getTrgt("/bmc0"), i_priority, false);
+        // addTargetCallout(util::pdbg::getTrgt("/bmc0"), i_priority, false);
     }
     else
     {

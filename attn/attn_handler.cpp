@@ -145,6 +145,9 @@ void attnHandler(Config* i_config)
                         active_attentions.emplace_back(
                             Attention::Special, handleSpecial, hub, i_config);
                     }
+
+                    // TODO - tap attentions
+
                 } // cfam 0x100d valid
             } // cfam 0x1007 valid
         } // target functional
@@ -244,7 +247,7 @@ int handleSpecial(Attention* i_attention)
 
     bool tiInfoStatic = false;    // assume TI info was provided (not created)
 
-    // need proc target to get dynamic TI info
+    // need hub target to get dynamic TI info
     if (nullptr != attnHub)
     {
         trace::inf("using libphal to get TI info");
@@ -271,13 +274,8 @@ int handleSpecial(Attention* i_attention)
                 phalSbeExceptionHandler(sbeError, procNum, 0xa904);
             }*/
         }
+        /* TODO - remove?
         trace::inf("using libpdbg to get TI info");
-
-        // TODO - likely this will change with the new interface
-        // pdbg library uses pib target for get ti info
-        char path[16];
-        sprintf(path, "/hub%d/pib", TARGETING::utils::getPosition(attnHub));
-        TARGETING::TargetPtr tiInfoTarget = util::pdbg::getTrgt(path);
 
         if (nullptr != tiInfoTarget)
         {
@@ -286,7 +284,7 @@ int handleSpecial(Attention* i_attention)
                 // TODO - update interface?
                 // sbe_mpipl_get_ti_info(tiInfoTarget, &tiInfo, &tiInfoLen);
             }
-        }
+        }*/
     }
 
     // dynamic TI info is not available

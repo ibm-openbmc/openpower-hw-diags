@@ -52,18 +52,6 @@ enum AttnCodes
  */
 void addHbStatusRegs();
 
-/** @brief Capture some scratch registers for PRD
- *
- * Capture some scratch register data that PRD can use to handle
- * cases where analysis may have been interrupted. The data will
- * be traced and also written to the user data section of a PEL.
- *
- * @param[out] o_files vector of FFDC files
- *
- * @return nothing
- */
-void addPrdScratchRegs(std::vector<util::FFDCFile>& o_files);
-
 /**
  * @brief Check for recoverable errors present
  *

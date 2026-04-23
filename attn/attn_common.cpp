@@ -15,12 +15,8 @@ namespace attn
 /** @brief Traces some regs for hostboot */
 void addHbStatusRegs()
 {
-    /* TODO - remove or update for P12?
-    // Only do this for P10 systems
-
-    // We only need this for PRIMARY processor
-    pdbg_target* pibTarget = pdbg_target_from_path(nullptr, "/proc0/pib");
-    pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, "/proc0/fsi");
+    // TODO - updates needed
+    auto hub = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP)[0];
 
     uint32_t l_cfamData = 0xFFFFFFFF;
     uint64_t l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
@@ -29,23 +25,23 @@ void addHbStatusRegs()
     uint64_t l_scomAddr1 = 0x4602F489;
     uint64_t l_scomAddr2 = 0x4602F487;
 
-    if ((nullptr != fsiTarget) && (nullptr != pibTarget))
+    if ((nullptr != hub))
     {
         // get first debug reg (CFAM)
-        if (RC_SUCCESS != fsi_read(fsiTarget, l_cfamAddr, &l_cfamData))
+        if (RC_SUCCESS != util::pdbg::getCfam(hub, l_cfamAddr, l_cfamData))
         {
             trace::err("cfam read error: 0x%08x", l_cfamAddr);
             l_cfamData = 0xFFFFFFFF;
         }
 
         // Get SCOM regs next (just 2 of them)
-        if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr1, &l_scomData1))
+        if (RC_SUCCESS != util::pdbg::getScom(hub, l_scomAddr1, l_scomData1))
         {
             trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr1);
             l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
         }
 
-        if (RC_SUCCESS != pib_read(pibTarget, l_scomAddr2, &l_scomData2))
+        if (RC_SUCCESS != util::pdbg::getScom(hub, l_scomAddr2, l_scomData2))
         {
             trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr2);
             l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
@@ -53,89 +49,16 @@ void addHbStatusRegs()
     }
 
     // Trace out the results here of all 3 regs
-    // (Format should resemble FSP: HostBoot Reg:0000283C  Data:AA801504
-    // 00000000  Proc:00050001 )
-    trace::inf("HostBoot Reg:%08x Data:%08x Proc:00000000", l_cfamAddr,
+    trace::inf("HostBoot Reg:%08x Data:%08x Hub:00000000", l_cfamAddr,
                l_cfamData);
-    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Proc:00000000",
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Hub:00000000",
                l_scomAddr1, l_scomData1);
-    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Proc:00000000",
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Hub:00000000",
                l_scomAddr2, l_scomData2);
-    */
 
     return;
 
 } // end addHbStatusRegs
-
-/** @brief Capture some scratch registers for PRD */
-void addPrdScratchRegs(std::vector<util::FFDCFile>& /*o_files*/)
-{
-    /* TODO - update for P12
-    // Get primary processor FSI target for CFAM reads
-    pdbg_target* fsiTarget = pdbg_target_from_path(nullptr, "/proc0/fsi");
-
-    if (nullptr == fsiTarget)
-    {
-        trace::err("error getting scratch register target");
-    }
-    else
-    {
-        uint32_t chipId = 0;
-        uint32_t signatureId = 0;
-
-        // get scratch register 9 (CFAM)
-        if (RC_SUCCESS != fsi_read(fsiTarget, 0x2980, &chipId))
-        {
-            trace::err("error reading scratch register 9");
-            chipId = 0;
-        }
-
-        // get scratch register 10 (CFAM)
-        if (RC_SUCCESS != fsi_read(fsiTarget, 0x2981, &signatureId))
-        {
-            trace::err("error reading scratch register 10");
-            signatureId = 0;
-        }
-
-        // Add data to traces and create user data section
-        if (0 != chipId || 0 != signatureId)
-        {
-            // trace scratch register data
-            trace::inf("PRD scratch Proc0, Chip ID: %08x, Signature ID: %08x",
-                       chipId, signatureId);
-
-            // create ffdc data for user data section
-            try
-            {
-                util::FFDCFile file{util::FFDCFormat::Text};
-                int fd = file.getFileDescriptor();
-                char buffer[150];
-                int len = sprintf(buffer,
-                                  "Scratch Register Error Signature\n"
-                                  "Processor            : 0\n"
-                                  "Chip ID              : %08x\n"
-                                  "Signature ID         : %08x\n",
-                                  chipId, signatureId);
-                if (write(fd, buffer, len) < 0)
-                {
-                    trace::err("error writing scratch register user data");
-                }
-                else
-                {
-                    o_files.push_back(std::move(file));
-                }
-            }
-            catch (const std::exception& e)
-            {
-                trace::err(
-                    "exception when creating scratch register user data");
-                trace::inf(e.what());
-            }
-        }
-    }*/
-
-    return;
-}
 
 /** @brief Check for recoverable errors present */
 bool recoverableErrors()
