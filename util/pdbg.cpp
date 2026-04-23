@@ -427,6 +427,23 @@ void getActiveHubChips(TARGETING::TargetPtrList& o_chips)
 
 //------------------------------------------------------------------------------
 
+TARGETING::TargetPtr getBootHub()
+{
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
+    {
+        if (TARGETING::utils::isFunctional(hub) &&
+            (0x00000001 ==
+             hub->getAttr<TARGETING::ATTR_PROC_SBE_PRIMARY_CHIP>()))
+        {
+            return hub;
+        }
+    }
+    return nullptr;
+}
+
+//------------------------------------------------------------------------------
+
 std::string getLocationCode(TARGETING::TargetPtr i_target)
 {
     if (nullptr == i_target)

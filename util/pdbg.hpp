@@ -111,6 +111,9 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips);
  */
 void getActiveHubChips(TARGETING::TargetPtrList& o_chips);
 
+/** @return The hub chip containing the tap chip Hostboot is booting from. */
+TARGETING::TargetPtr getBootHub();
+
 /**
  * @return A string containing the FRU location code of the given chip. An empty
  *         string indicates the target was null or the attribute does not exist

@@ -236,30 +236,44 @@ void __captureRegisterDump(const libhei::IsolationData& i_isoData,
 void __captureHostbootScratchRegisters(
     std::vector<util::FFDCFile>& io_userDataFiles)
 {
-    // Get the Hostboot scratch registers from the primary hub.
+    // Get the Hostboot scratch registers from the boot hub/compute complex.
 
-    uint32_t cfamAddr = 0x283C;
+    constexpr uint32_t cfamAddr = 0x283C;
     uint32_t cfamValue = 0;
 
-    uint64_t scomAddr = 0x4602F489;
+    constexpr uint64_t scomAddr = 0x4602F489;
     uint64_t scomValue = 0;
 
-    // TODO - update needed
-    auto priHub = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP)[0];
-    if (nullptr == priHub)
+    TARGETING::TargetPtr bootHub = util::pdbg::getBootHub();
+
+    if (!TARGETING::utils::isFunctional(bootHub))
     {
-        trace::err("Unable to get primary hub");
+        trace::err("Unable to get boot hub");
     }
     else
     {
-        if (0 != util::pdbg::getCfam(priHub, cfamAddr, cfamValue))
+        if (0 != util::pdbg::getCfam(bootHub, cfamAddr, cfamValue))
         {
             cfamValue = 0; // just in case
         }
 
-        if (0 != util::pdbg::getScom(priHub, scomAddr, scomValue))
+        auto computeList = TARGETING::utils::getChildTargets(
+            bootHub, TARGETING::TYPE_COMPUTE_CHIP);
+
+        for (const auto& compute : computeList)
         {
-            scomValue = 0; // just in case
+            if (!TARGETING::utils::isFunctional(compute))
+            {
+                continue;
+            }
+
+            if ((0 == util::pdbg::getScom(compute, scomAddr, scomValue)) &&
+                (0 != scomValue))
+            {
+                break;
+            }
+
+            scomValue = 0;
         }
     }
 

@@ -15,46 +15,76 @@ namespace attn
 /** @brief Traces some regs for hostboot */
 void addHbStatusRegs()
 {
-    // TODO - updates needed
-    auto hub = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP)[0];
+    TARGETING::TargetPtr bootHub = util::pdbg::getBootHub();
 
     uint32_t l_cfamData = 0xFFFFFFFF;
     uint64_t l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
     uint64_t l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
-    uint32_t l_cfamAddr = 0x283C;
-    uint64_t l_scomAddr1 = 0x4602F489;
-    uint64_t l_scomAddr2 = 0x4602F487;
+    constexpr uint32_t l_cfamAddr = 0x283C;
+    constexpr uint64_t l_scomAddr1 = 0x4602F489;
+    constexpr uint64_t l_scomAddr2 = 0x4602F487;
+    uint32_t bootHubPos = 0;
+    uint32_t computePos = 0;
 
-    if ((nullptr != hub))
+    if (nullptr != bootHub)
     {
-        // get first debug reg (CFAM)
-        if (RC_SUCCESS != util::pdbg::getCfam(hub, l_cfamAddr, l_cfamData))
+        bootHubPos = util::pdbg::getChipPos(bootHub);
+
+        // Get debug CFAM reg from the boot hub.
+        if (RC_SUCCESS != util::pdbg::getCfam(bootHub, l_cfamAddr, l_cfamData))
         {
             trace::err("cfam read error: 0x%08x", l_cfamAddr);
             l_cfamData = 0xFFFFFFFF;
         }
 
-        // Get SCOM regs next (just 2 of them)
-        if (RC_SUCCESS != util::pdbg::getScom(hub, l_scomAddr1, l_scomData1))
-        {
-            trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr1);
-            l_scomData1 = 0xFFFFFFFFFFFFFFFFull;
-        }
+        // Get SCOM regs from compute chips under the boot hub. Once one
+        // register is non-zero, use both values from that compute chip.
+        auto computeList = TARGETING::utils::getChildTargets(
+            bootHub, TARGETING::TYPE_COMPUTE_CHIP);
 
-        if (RC_SUCCESS != util::pdbg::getScom(hub, l_scomAddr2, l_scomData2))
+        for (const auto& compute : computeList)
         {
-            trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr2);
-            l_scomData2 = 0xFFFFFFFFFFFFFFFFull;
+            if (!TARGETING::utils::isFunctional(compute))
+            {
+                continue;
+            }
+
+            uint64_t scomData1 = 0;
+            uint64_t scomData2 = 0;
+
+            if (RC_SUCCESS !=
+                util::pdbg::getScom(compute, l_scomAddr1, scomData1))
+            {
+                trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr1);
+                scomData1 = 0;
+            }
+
+            if (RC_SUCCESS !=
+                util::pdbg::getScom(compute, l_scomAddr2, scomData2))
+            {
+                trace::err("scom read error: 0x%016" PRIx64 "", l_scomAddr2);
+                scomData2 = 0;
+            }
+
+            if ((0 != scomData1) || (0 != scomData2))
+            {
+                l_scomData1 = scomData1;
+                l_scomData2 = scomData2;
+                computePos = util::pdbg::getChipPos(compute);
+                break;
+            }
         }
     }
 
-    // Trace out the results here of all 3 regs
-    trace::inf("HostBoot Reg:%08x Data:%08x Hub:00000000", l_cfamAddr,
-               l_cfamData);
-    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Hub:00000000",
-               l_scomAddr1, l_scomData1);
-    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64 " Hub:00000000",
-               l_scomAddr2, l_scomData2);
+    // Trace out the results here of all 3 regs.
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%08" PRIx64 " Hub:%08" PRIx64,
+               l_cfamAddr, l_cfamData, bootHubPos);
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64
+               " Compute:%08" PRIx64,
+               l_scomAddr1, l_scomData1, computePos);
+    trace::inf("HostBoot Reg:%08" PRIx64 " Data:%016" PRIx64
+               " Compute:%08" PRIx64,
+               l_scomAddr2, l_scomData2, computePos);
 
     return;
 
