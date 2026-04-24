@@ -14,6 +14,8 @@ plugins_src = files(
     'plugins/ody-plugins.cpp',
     'plugins/p10-plugins.cpp',
     'plugins/p10-tod-plugins.cpp',
+    'plugins/ps-plugins.cpp',
+    'plugins/pt-plugins.cpp',
 )
 
 # Library dependencies.
