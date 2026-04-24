@@ -400,6 +400,20 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
             // Add the OCMB to the list.
             __addChip(o_chips, ocmb, __getChipIdEc(ocmb));
         }
+
+        // Iterate the connected compute chips, if they exist.
+        TARGETING::TargetPtrList computeList =
+            TARGETING::utils::getChildTargets(hub,
+                                              TARGETING::TYPE_COMPUTE_CHIP);
+        for (const auto& compute : computeList)
+        {
+            // Active compute chips only.
+            if (!TARGETING::utils::isFunctional(compute))
+                continue;
+
+            // Add the compute chip to the list.
+            __addChip(o_chips, compute, __getChipIdEc(compute));
+        }
     }
 
     // Ignore OCMBs that have been masked on the hub side of the bus.

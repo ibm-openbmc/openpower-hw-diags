@@ -36,8 +36,12 @@ using PluginFunction =
 constexpr libhei::ChipType_t EXPLORER_11 = 0x60d20011;
 constexpr libhei::ChipType_t EXPLORER_20 = 0x60d20020;
 constexpr libhei::ChipType_t ODYSSEY_10 = 0x60c00010;
+// TODO - remove P10 after plugins are cleaned up
 constexpr libhei::ChipType_t P10_10 = 0x20da0010;
 constexpr libhei::ChipType_t P10_20 = 0x20da0020;
+constexpr libhei::ChipType_t PS_10 = 0x20de0010;
+constexpr libhei::ChipType_t PS_20 = 0x20de0020;
+constexpr libhei::ChipType_t PT_10 = 0x20dd0010;
 
 /**
  * @brief This is simply a global container for all of the registered plugins.

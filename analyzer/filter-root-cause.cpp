@@ -64,6 +64,7 @@ bool __findPllUnlock(const std::vector<libhei::Signature>& i_list,
 
     // TODO: Consider returning all of them instead of one as root cause.
 
+    // TODO - update for P12
     auto nodeId = libhei::hash<libhei::NodeId_t>("PLL_UNLOCK");
 
     // First, look for any PLL unlock attentions reported by a hub chip.
@@ -108,7 +109,8 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
 
     static const auto mc_dstl_fir = __hash("MC_DSTL_FIR");
     static const auto mc_ustl_fir = __hash("MC_USTL_FIR");
-    static const auto mc_omi_dl_err_rpt = __hash("MC_OMI_DL_ERR_RPT");
+    static const auto mc_omi_dl_error_hold = __hash("MC_OMI_DL_ERROR_HOLD");
+    static const auto mc_omi_dl_fir = __hash("MC_OMI_DL_FIR");
 
     // First, look for any chip checkstops from the connected OCMBs.
     for (const auto& s : i_list)
@@ -118,12 +120,7 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
             continue; // OCMBs only
         }
 
-        // TODO: The chip data for Explorer chips currently report chip
-        //       checkstops as unit checkstops. Once the chip data has been
-        //       updated, the check for unit checkstops here will need to be
-        //       removed.
-        if (libhei::ATTN_TYPE_CHIP_CS == s.getAttnType() ||
-            libhei::ATTN_TYPE_UNIT_CS == s.getAttnType())
+        if (libhei::ATTN_TYPE_CHIP_CS == s.getAttnType())
         {
             o_rootCause = s;
             return true;
@@ -139,26 +136,27 @@ bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
             continue; // hubs only
         }
 
-        // Any unit checkstop attentions that originated from the MC_DSTL_FIR or
-        // MC_USTLFIR are considered a channel failure attention.
+        // All bits in the MC_OMI_DL_ERROR_HOLD are channel fails. Check the
+        // error hold register here before the MC_OMI_DL_FIR below to avoid
+        // hitting the bits in that register that point to the error hold.
+        if (mc_omi_dl_error_hold == s.getId())
+        {
+            o_rootCause = s;
+            return true;
+        }
+        // Any unit checkstop attentions that originated from the MC_DSTL_FIR,
+        // MC_USTL_FIR, or MC_OMI_DL_FIR are considered a channel failure
+        // attention.
         // TODO: The "channel failure" designation is actually configurable via
         //       other registers. We just happen to expect anything that is
         //       configured to channel failure to also be configured to unit
         //       checkstop. Eventually, we will need some mechanism to check the
         //       configuration registers for a more accurate analysis.
-        if (libhei::ATTN_TYPE_UNIT_CS == s.getAttnType() &&
-            (mc_dstl_fir == s.getId() || mc_ustl_fir == s.getId()) &&
-            (s.getChip().getType() == analyzer::P10_10 ||
-             s.getChip().getType() == analyzer::P10_20) &&
-            !i_rasData.isFlagSet(s,
-                                 RasDataParser::RasDataFlags::ATTN_FROM_OCMB))
-        {
-            o_rootCause = s;
-            return true;
-        }
-        // Any signatures from MC_OMI_DL_ERR_RPT feed into the only bits in
-        // MC_OMI_DL_FIR that are hardwired to channel failure.
-        else if (mc_omi_dl_err_rpt == s.getId())
+        else if (libhei::ATTN_TYPE_UNIT_CS == s.getAttnType() &&
+                 (mc_dstl_fir == s.getId() || mc_ustl_fir == s.getId() ||
+                  mc_omi_dl_fir == s.getId()) &&
+                 !i_rasData.isFlagSet(
+                     s, RasDataParser::RasDataFlags::ATTN_FROM_OCMB))
         {
             o_rootCause = s;
             return true;
@@ -355,8 +353,8 @@ bool findRootCause(AnalysisType i_type, const libhei::IsolationData& i_isoData,
 
     // First, look for any RCS OSC errors. This must always be first because
     // they can cause downstream PLL unlock attentions.
-    if (__lookForBits(list, o_rootCause, {analyzer::P10_10, analyzer::P10_20},
-                      "TP_LOCAL_FIR", {42, 43}))
+    if (__lookForBits(list, o_rootCause, {analyzer::PS_10, analyzer::PS_20},
+                      "TP_LOCAL_FIR", {60, 61}))
     {
         return true;
     }
@@ -471,20 +469,16 @@ void rootCauseSpecialCases(const libhei::IsolationData& i_isoData,
     // Check for any special cases that exist for specific FIR bits.
 
     // If the channel fail was specifically a firmware initiated channel fail
-    // (SRQFIR[25] for Explorer OCMBs, SRQ_FIR[46] for Odyssey OCMBs) check for
-    // any IUE bits that are on that would have caused the channel fail
-    // (RDFFIR[17,37] for Explorer OCMBs, RDF_FIR_0[18,38] or RDF_FIR_1[18,38]
+    // (SRQ_FIR[46] for Odyssey OCMBs) check for any IUE bits that are on that
+    // would have caused the channel fail (RDF_FIR_0[18,38] or RDF_FIR_1[18,38]
     // for Odyssey OCMBs).
 
-    // Explorer SRQFIR
-    static const auto srqfir = __hash("SRQFIR");
     // Odyssey SRQ_FIR
     static const auto srq_fir = __hash("SRQ_FIR");
 
     std::vector<libhei::Signature> list{i_isoData.getSignatureList()};
 
-    if (((srqfir == o_rootCause.getId() && 25 == o_rootCause.getBit()) ||
-         (srq_fir == o_rootCause.getId() && 46 == o_rootCause.getBit())) &&
+    if (((srq_fir == o_rootCause.getId() && 46 == o_rootCause.getBit())) &&
         __findIueTh(list, o_rootCause))
     {
         // If __findIueTh returned true, o_rootCause was updated, return.

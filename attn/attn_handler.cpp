@@ -145,9 +145,6 @@ void attnHandler(Config* i_config)
                         active_attentions.emplace_back(
                             Attention::Special, handleSpecial, hub, i_config);
                     }
-
-                    // TODO - tap attentions
-
                 } // cfam 0x100d valid
             } // cfam 0x1007 valid
         } // target functional
