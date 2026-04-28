@@ -8,7 +8,6 @@
 #include <cli.hpp>
 #include <hei_buildinfo.hpp>
 #include <util/pdbg.hpp> // for PHAL targeting
-#include <util/pdbg_callback.hpp>
 
 /**
  * @brief Attention handler application main()
@@ -38,10 +37,6 @@ int main(int argc, char* argv[])
     }
     else
     {
-        // set PDBG log callback function.
-        // TODO - remove?
-        // pdbg_set_logfunc(util::pdbg_log_callback);
-
         // Pdbg targets should only be initialized once according to
         // libpdbg documentation. Initializing them here will make sure
         // they are initialized for the attention handler, invocation of
