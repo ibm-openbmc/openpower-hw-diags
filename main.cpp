@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
         {
             if (true == getCliOption(argv, argv + argc, "--daemon"))
             {
+                /* TODO - reenable
                 attn::Config attnConfig; // default config
 
                 // convert remaining cmd line args to config values
@@ -68,7 +69,8 @@ int main(int argc, char* argv[])
 
                 attn::attnHandler(&attnConfig); // handle pending attentions
 
-                attn::attnDaemon(&attnConfig);  // start daemon
+                attn::attnDaemon(&attnConfig);  // start daemon'
+                */
             }
         }
     }
