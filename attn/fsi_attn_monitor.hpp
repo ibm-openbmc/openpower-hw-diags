@@ -55,4 +55,10 @@ class FsiAttnMonitor
     void configureFsiEvent();
 };
 
+/**
+ * @brief Configures the complement mask (0x100C) and true mask (0x100D) for
+ *         all hub chips.
+ */
+void configureFsi2Pib();
+
 } // namespace attn

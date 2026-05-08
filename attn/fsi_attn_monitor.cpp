@@ -18,21 +18,61 @@ struct scom_interrupt
 
 #define FSI_SCOM_SET_INTERRUPT _IOW('s', 0x05, struct scom_interrupt)
 
-int fsi_configure_scom_interrupt(int fd, uint32_t comp_mask, uint32_t true_mask)
+int fsi_configure_scom_interrupt(int i_fd, uint32_t i_comp_mask,
+                                 uint32_t i_true_mask)
 {
     struct scom_interrupt si;
     int rc;
 
     // comp_mask and true_mask for the FSI_SCOM_SET_INTERRUPT here correspond to
     // the complement mask (0x100c) and true mask (0x100d) of fsi2pib.
-    si.comp_mask = comp_mask;
-    si.true_mask = true_mask;
+    si.comp_mask = i_comp_mask;
+    si.true_mask = i_true_mask;
 
-    rc = ioctl(fd, FSI_SCOM_SET_INTERRUPT, &si);
+    rc = ioctl(i_fd, FSI_SCOM_SET_INTERRUPT, &si);
     if (rc < 0)
         return -errno;
 
     return 0;
+}
+
+void configureFsi2Pib()
+{
+    // One "/dev/scom#" file will exist per hub.
+    auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
+    for (const auto& hub : hubList)
+    {
+        // Active hubs only.
+        if (!TARGETING::utils::isFunctional(hub))
+            continue;
+
+        uint32_t fapiPos = util::pdbg::getChipPos(hub);
+
+        // The /dev/scom files start at /dev/scom1, so add one to the FAPI_POS
+        // to get the correct position.
+        char scomName[64];
+        sprintf(scomName, "/dev/scom%d", fapiPos + 1);
+
+        int fd = open(scomName, O_RDWR);
+
+        if (fd < 0)
+        {
+            trace::err("failed to get file descriptor %s", scomName);
+        }
+
+        // FSI2PIB status:
+        // bit 1 - CHIP_CS
+        // bit 2 - SP_ATTN
+        // bit 5 - any TAP chip event
+        if (fsi_configure_scom_interrupt(fd, 0, 0x64000000))
+        {
+            trace::err("FsiAttnMonitor::configureFsiEvent - failure from "
+                       "fsi_configure_scom_interrupt() for %s",
+                       scomName);
+            close(fd);
+            return;
+        }
+    }
 }
 
 /** @brief Register a callback for FSI event */
@@ -76,7 +116,7 @@ void FsiAttnMonitor::configureFsiEvent()
         if (!TARGETING::utils::isFunctional(hub))
             continue;
 
-        uint32_t fapiPos = hub->getAttr<TARGETING::ATTR_FAPI_POS>();
+        uint32_t fapiPos = util::pdbg::getChipPos(hub);
 
         // The /dev/scom files start at /dev/scom1, so add one to the FAPI_POS
         // to get the correct position.
@@ -87,20 +127,7 @@ void FsiAttnMonitor::configureFsiEvent()
 
         if (fd < 0)
         {
-            trace::err("failed to get file descriptor");
-        }
-
-        // FSI2PIB status:
-        // bit 1 - CHIP_CS
-        // bit 2 - SP_ATTN
-        // bit 5 - any TAP chip event
-        if (fsi_configure_scom_interrupt(fd, 0, 0x64000000))
-        {
-            trace::err("FsiAttnMonitor::configureFsiEvent - failure from "
-                       "fsi_configure_scom_interrupt() for %s",
-                       scomName);
-            close(fd);
-            return;
+            trace::err("failed to get file descriptor %s", scomName);
         }
 
         boost::asio::posix::stream_descriptor sd(io);

@@ -4,6 +4,7 @@
 #include <attn/attn_dump.hpp>
 #include <attn/attn_handler.hpp>
 #include <attn/attn_main.hpp>
+#include <attn/fsi_attn_monitor.hpp> // for configureFsi2Pib()
 #include <buildinfo.hpp>
 #include <cli.hpp>
 #include <hei_buildinfo.hpp>
@@ -66,6 +67,8 @@ int main(int argc, char* argv[])
 
                 // convert remaining cmd line args to config values
                 parseConfig(argv, argv + argc, &attnConfig);
+
+                attn::configureFsi2Pib(); // Configure fsi2pib true mask
 
                 attn::attnHandler(&attnConfig); // handle pending attentions
 
