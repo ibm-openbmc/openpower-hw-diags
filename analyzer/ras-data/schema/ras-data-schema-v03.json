@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "RAS Data schema for openpower-hw-diags",
-    "version": 2,
+    "version": 3,
     "type": "object",
     "$defs": {
         "priority": {
@@ -43,9 +43,43 @@
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
-                "^\\w+$": {
-                    "type": "string",
-                    "pattern": "^\\w+(\\/\\w+)*$"
+                "^[\\w#]+$": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["type"],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "pattern": "^[\\w#]+$"
+                        },
+                        "position": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "instances": {
+                            "type": "array",
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "integer",
+                                "minimum": 0
+                            }
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": ["position"],
+                            "not": {
+                                "required": ["instances"]
+                            }
+                        },
+                        {
+                            "required": ["instances"],
+                            "not": {
+                                "required": ["position"]
+                            }
+                        }
+                    ]
                 }
             }
         },
