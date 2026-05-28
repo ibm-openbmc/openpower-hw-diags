@@ -39,8 +39,8 @@ void addHbStatusRegs()
 
         // Get SCOM regs from compute chips under the boot hub. Once one
         // register is non-zero, use both values from that compute chip.
-        auto computeList = TARGETING::utils::getChildTargets(
-            bootHub, TARGETING::TYPE_COMPUTE_CHIP);
+        auto computeList =
+            TARGETING::utils::getFuctionalComputeChipsFromHub(bootHub);
 
         for (const auto& compute : computeList)
         {

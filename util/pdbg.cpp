@@ -172,7 +172,7 @@ TARGETING::TargetPtr getChipUnit(TARGETING::TargetPtr i_parentChip,
     {
         trace::err("No unit target found: i_parentChip=%s i_unitType=0x%02x "
                    "i_unitPos=%u",
-                   getPath(i_parentChip), i_unitType, i_unitPos);
+                   getPath(i_parentChip).c_str(), i_unitType, i_unitPos);
     }
 
     return unitTarget;
@@ -222,7 +222,8 @@ TARGETING::TargetPtr getConnectedTarget(TARGETING::TargetPtr i_rxTarget,
              TARGETING::TYPE_OMI == rxType)
     {
         TARGETING::TargetPtrList childList = TARGETING::utils::getChildTargets(
-            i_rxTarget, TARGETING::TYPE_OCMB_CHIP);
+            i_rxTarget, TARGETING::TYPE_OCMB_CHIP,
+            TARGETING::AssociationType::childByAffinity);
 
         // We know there should only be one OCMB per OMI.
         if (1 != childList.size())
@@ -263,7 +264,24 @@ TARGETING::TargetPtr getConnectedTarget(TARGETING::TargetPtr i_rxTarget,
 // before the sync occurs, in which case the value will return 0.
 uint32_t __getChipId(TARGETING::TargetPtr i_target)
 {
-    return i_target->getAttr<TARGETING::ATTR_CHIP_ID>();
+    // TODO - this attribute is currently not populated in simics for P12
+    //        so hard code values for now for testing purposes
+    if (TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target))
+    {
+        return 0x20de;
+    }
+    else if (TARGETING::TYPE_COMPUTE_CHIP == getTrgtType(i_target))
+    {
+        return 0x20dd;
+    }
+    else if (TARGETING::TYPE_OCMB_CHIP == getTrgtType(i_target))
+    {
+        return 0x60c0;
+    }
+    else
+    {
+        return i_target->getAttr<TARGETING::ATTR_CHIP_ID>();
+    }
 }
 
 // IMPORTANT:
@@ -272,7 +290,24 @@ uint32_t __getChipId(TARGETING::TargetPtr i_target)
 // before the sync occurs, in which case the value will return 0.
 uint8_t __getChipEc(TARGETING::TargetPtr i_target)
 {
-    return i_target->getAttr<TARGETING::ATTR_EC>();
+    // TODO - this attribute is currently not populated in simics for P12
+    //        so hard code values for now for testing purposes
+    if (TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target))
+    {
+        return 0x10;
+    }
+    else if (TARGETING::TYPE_COMPUTE_CHIP == getTrgtType(i_target))
+    {
+        return 0x10;
+    }
+    else if (TARGETING::TYPE_OCMB_CHIP == getTrgtType(i_target))
+    {
+        return 0x10;
+    }
+    else
+    {
+        return i_target->getAttr<TARGETING::ATTR_EC>();
+    }
 }
 
 uint32_t __getChipIdEc(TARGETING::TargetPtr i_target)
@@ -281,7 +316,7 @@ uint32_t __getChipIdEc(TARGETING::TargetPtr i_target)
     auto chipEc = __getChipEc(i_target);
 
     if (((0 == chipId) || (0 == chipEc)) &&
-        (TARGETING::TYPE_PROC == getTrgtType(i_target)))
+        (TARGETING::TYPE_HUB_CHIP == getTrgtType(i_target)))
     {
         // There is a special case where the model/level attributes have not
         // been initialized in the devtree. This is possible on the epoch
@@ -306,8 +341,8 @@ void __addChip(std::vector<libhei::Chip>& o_chips,
 {
     // Trace each chip for debug. It is important to show the type just in
     // case the model/EC does not exist. See note below.
-    trace::inf("Chip found: type=0x%08" PRIx32 " chip=%s", i_type,
-               getPath(i_target));
+    trace::inf("Chip found: type=0x%0" PRIx32 " chip=%s", i_type,
+               getPath(i_target).c_str());
 
     if (0 == i_type)
     {
@@ -365,7 +400,8 @@ bool __isMaskedOcmb(const libhei::Chip& i_chip)
     // Return true if the mask is set to all 1's.
     if (0xf == mask)
     {
-        trace::inf("OCMB masked on processor side of bus: %s", getPath(ocmb));
+        trace::inf("OCMB masked on processor side of bus: %s",
+                   getPath(ocmb).c_str());
         return true;
     }
 
@@ -389,8 +425,9 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
         __addChip(o_chips, hub, __getChipIdEc(hub));
 
         // Iterate the connected OCMBs, if they exist.
-        TARGETING::TargetPtrList ocmbList =
-            TARGETING::utils::getChildTargets(hub, TARGETING::TYPE_OCMB_CHIP);
+        TARGETING::TargetPtrList ocmbList = TARGETING::utils::getChildTargets(
+            hub, TARGETING::TYPE_OCMB_CHIP,
+            TARGETING::AssociationType::childByAffinity);
         for (const auto& ocmb : ocmbList)
         {
             // Active OCMBs only.
@@ -403,8 +440,7 @@ void getActiveChips(std::vector<libhei::Chip>& o_chips)
 
         // Iterate the connected compute chips, if they exist.
         TARGETING::TargetPtrList computeList =
-            TARGETING::utils::getChildTargets(hub,
-                                              TARGETING::TYPE_COMPUTE_CHIP);
+            TARGETING::utils::getFuctionalComputeChipsFromHub(hub);
         for (const auto& compute : computeList)
         {
             // Active compute chips only.

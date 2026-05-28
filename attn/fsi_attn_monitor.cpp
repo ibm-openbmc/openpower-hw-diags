@@ -105,8 +105,6 @@ void FsiAttnMonitor::handleFsiEvent(
 /** @brief Configure an FSI line for monitoring attention events */
 void FsiAttnMonitor::configureFsiEvent()
 {
-    boost::asio::io_context io;
-
     // One "/dev/scom#" file will exist per hub. Each one needs to be monitored
     // for attentions, so loop through all active hubs.
     auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
@@ -128,14 +126,26 @@ void FsiAttnMonitor::configureFsiEvent()
         if (fd < 0)
         {
             trace::err("failed to get file descriptor %s", scomName);
+            close(fd);
+            continue;
         }
 
-        boost::asio::posix::stream_descriptor sd(io);
-        sd.assign(fd);
-        scheduleFsiEvent(sd);
+        if (0 != fsi_configure_scom_interrupt(fd, 0, 0x64000000))
+        {
+            trace::err("FsiAttnMonitor::configureFsiEvent: Failed to "
+                       "configure scom interrupt for %s",
+                       scomName);
+            continue;
+        }
+
+        iv_streamDescriptors.push_back(
+            std::make_unique<boost::asio::posix::stream_descriptor>(iv_io));
+        iv_streamDescriptors.back()->assign(fd);
+
+        scheduleFsiEvent(*iv_streamDescriptors.back());
     }
 
-    io.run();
+    iv_io.run();
 }
 
 } // namespace attn

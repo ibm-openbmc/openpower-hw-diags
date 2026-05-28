@@ -4,6 +4,9 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>
 
+#include <memory>
+#include <vector>
+
 namespace attn
 {
 
@@ -43,6 +46,13 @@ class FsiAttnMonitor
   private: // instance variables
     /** @brief attention handler configuration object pointer */
     Config* iv_config;
+
+    /** @brief io_context for async operations */
+    boost::asio::io_context iv_io;
+
+    /** @brief stream descriptors for monitoring FSI events */
+    std::vector<std::unique_ptr<boost::asio::posix::stream_descriptor>>
+        iv_streamDescriptors;
 
   private: // class methods
     /** @brief schedule an FSI event handler */

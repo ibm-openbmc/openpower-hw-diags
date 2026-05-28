@@ -355,8 +355,8 @@ std::string RasDataParser::parseSignature(
         trace::err("No action defined for signature: %s %s %s", id.c_str(),
                    bit.c_str(), inst.c_str());
 
-        // Default to 'level2_M_th1' if no signature is found.
-        action = "level2_M_th1";
+        // Default to 'level2_M_th_1' if no signature is found.
+        action = "level2_M_th_1";
     }
 
     // Return the action.

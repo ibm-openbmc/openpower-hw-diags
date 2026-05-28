@@ -2,11 +2,7 @@
 # Install the RAS data files
 
 ras_data_files = files(
-    'data/ras-data-explorer-11.json',
-    'data/ras-data-explorer-20.json',
     'data/ras-data-odyssey-10.json',
-    'data/ras-data-p10-10.json',
-    'data/ras-data-p10-20.json',
     'data/ras-data-ps-10.json',
     'data/ras-data-pt-10.json',
 )

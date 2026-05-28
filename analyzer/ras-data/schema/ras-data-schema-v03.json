@@ -37,7 +37,7 @@
         "version": {
             "type": "integer",
             "minimum": 2,
-            "maximum": 2
+            "maximum": 3
         },
         "units": {
             "type": "object",

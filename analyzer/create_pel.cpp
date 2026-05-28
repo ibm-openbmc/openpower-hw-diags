@@ -257,8 +257,8 @@ void __captureHostbootScratchRegisters(
             cfamValue = 0; // just in case
         }
 
-        auto computeList = TARGETING::utils::getChildTargets(
-            bootHub, TARGETING::TYPE_COMPUTE_CHIP);
+        auto computeList =
+            TARGETING::utils::getFuctionalComputeChipsFromHub(bootHub);
 
         for (const auto& compute : computeList)
         {

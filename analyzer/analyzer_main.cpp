@@ -115,7 +115,7 @@ uint32_t analyzeHardware(AnalysisType i_type, attn::DumpParameters& o_dump)
     for (const auto& sig : isoData.getSignatureList())
     {
         trace::inf("Signature: %s 0x%0" PRIx32 " %s",
-                   util::pdbg::getPath(sig.getChip()), sig.toUint32(),
+                   util::pdbg::getPath(sig.getChip()).c_str(), sig.toUint32(),
                    __attn(sig.getAttnType()));
     }
 
