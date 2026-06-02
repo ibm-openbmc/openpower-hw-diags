@@ -121,6 +121,18 @@ void attnHandler(Config* i_config)
                 }
                 else
                 {
+                    // TODO: The FSI attention driver currently clears the true
+                    // mask for any attention it responds to. This is, in
+                    // theory, to prevent attention flooding. This means, at the
+                    // moment, the true mask will not be set here. This may
+                    // cause an issue with breakpoints which should be the only
+                    // type of attention hw-diags is handling more than one of.
+                    // Either the mask needs to not be cleared if unnecessary or
+                    // hw-diags needs to reset the true mask somehow.
+                    // For now, to workaround this, we'll just assume the mask
+                    // is set to what we expect here
+                    isr_mask = 0x64000000;
+
                     // trace true mask
                     trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 

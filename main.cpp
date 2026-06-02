@@ -62,18 +62,16 @@ int main(int argc, char* argv[])
         {
             if (true == getCliOption(argv, argv + argc, "--daemon"))
             {
-                /* TODO - reenable
                 attn::Config attnConfig; // default config
 
                 // convert remaining cmd line args to config values
                 parseConfig(argv, argv + argc, &attnConfig);
 
-                attn::configureFsi2Pib(); // Configure fsi2pib true mask
+                attn::configureFsi2Pib();       // Configure fsi2pib true mask
 
                 attn::attnHandler(&attnConfig); // handle pending attentions
 
                 attn::attnDaemon(&attnConfig);  // start daemon'
-                */
             }
         }
     }
