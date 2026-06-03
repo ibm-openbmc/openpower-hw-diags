@@ -55,6 +55,126 @@ void getStaticTiInfo(uint8_t*& tiInfoPtr);
 bool tiInfoValid(uint8_t* tiInfo);
 
 /**
+ * @brief Handle compute chip attentions under a hub
+ *
+ * Check all compute chips connected to a hub for active attentions.
+ *
+ * @param i_hub The hub target to check compute chips under
+ * @param i_config Attention handler configuration
+ */
+void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
+{
+    trace::inf("Checking compute chips under hub: %u",
+               TARGETING::utils::getPosition(i_hub));
+
+    // Vector of active attentions to be handled
+    std::vector<Attention> active_attentions;
+
+    // Get all functional compute chips connected to this hub
+    TARGETING::TargetPtrList computeList =
+        TARGETING::utils::getFuctionalComputeChipsFromHub(i_hub);
+
+    // Loop through each compute chip
+    for (const auto& compute : computeList)
+    {
+        // Trace the compute chip position
+        trace::inf("compute: %u", TARGETING::utils::getPosition(compute));
+
+        uint32_t isr_val = 0xffffffff; // invalid isr value
+
+        // Get active attentions on the compute chip
+        if (RC_SUCCESS != util::pdbg::getCfam(compute, 0x1007, isr_val))
+        {
+            // Log cfam read error
+            trace::err("compute cfam read 0x1007 FAILED");
+            eventAttentionFail((int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+        }
+        else if (0xffffffff == isr_val)
+        {
+            trace::err("compute cfam read 0x1007 INVALID");
+            continue;
+        }
+        else
+        {
+            // Trace isr value
+            trace::inf("compute cfam 0x1007 = 0x%08x", isr_val);
+
+            uint32_t isr_mask = 0xffffffff; // invalid isr mask
+
+            // Get interrupt enabled special attentions mask
+            if (RC_SUCCESS != util::pdbg::getCfam(compute, 0x100d, isr_mask))
+            {
+                // Log cfam read error
+                trace::err("compute cfam read 0x100d FAILED");
+                eventAttentionFail(
+                    (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            }
+            else if (0xffffffff == isr_mask)
+            {
+                trace::err("compute cfam read 0x100d INVALID");
+                continue;
+            }
+            else
+            {
+                // TODO: The FSI attention driver currently clears the true
+                // mask for any attention it responds to. This is, in
+                // theory, to prevent attention flooding. This means, at the
+                // moment, the true mask will not be set here. This may
+                // cause an issue with breakpoints which should be the only
+                // type of attention hw-diags is handling more than one of.
+                // Either the mask needs to not be cleared if unnecessary or
+                // hw-diags needs to reset the true mask somehow.
+                // For now, to workaround this, we'll just assume the mask
+                // is set to what we expect here
+                isr_mask = 0x64000000;
+
+                // Trace true mask
+                trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
+
+                // Checkstop attention active and not masked?
+                if (true == activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN))
+                {
+                    // Note: Use hub as target, not compute chip
+                    active_attentions.emplace_back(
+                        Attention::Checkstop, handleCheckstop, i_hub, i_config);
+                }
+
+                // Special attention active and not masked?
+                if (true == activeAttn(isr_val, isr_mask, SPECIAL_ATTN))
+                {
+                    // Note: Use hub as target, not compute chip
+                    active_attentions.emplace_back(
+                        Attention::Special, handleSpecial, i_hub, i_config);
+                }
+            } // cfam 0x100d valid
+        } // cfam 0x1007 valid
+    } // next compute chip
+
+    // Convert to heap, highest priority is at front
+    if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
+    {
+        std::make_heap(active_attentions.begin(), active_attentions.end());
+    }
+
+    // Call the attention handler until one is handled or all were attempted
+    while (false == active_attentions.empty())
+    {
+        // Handle highest priority attention, done if successful
+        if (RC_SUCCESS == active_attentions.front().handle())
+        {
+            // An attention was handled so we are done
+            break;
+        }
+
+        // Move attention to back of vector
+        std::pop_heap(active_attentions.begin(), active_attentions.end());
+
+        // Remove attention from vector
+        active_attentions.pop_back();
+    }
+}
+
+/**
  * @brief The main attention handler logic
  *
  * @param i_breakpoints true = breakpoint special attn handling enabled
@@ -156,6 +276,16 @@ void attnHandler(Config* i_config)
                     {
                         active_attentions.emplace_back(
                             Attention::Special, handleSpecial, hub, i_config);
+                    }
+
+                    // If only an attention from a compute chip is reporting
+                    if (!activeAttn(isr_val, isr_mask, SBE_ATTN) &&
+                        !activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN) &&
+                        !activeAttn(isr_val, isr_mask, SPECIAL_ATTN) &&
+                        activeAttn(isr_val, isr_mask, TAP_ATTN))
+                    {
+                        // check the status reg on the taps under this hub
+                        handleComputeAttns(hub, i_config);
                     }
                 } // cfam 0x100d valid
             } // cfam 0x1007 valid
