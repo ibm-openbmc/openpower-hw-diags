@@ -141,7 +141,7 @@ uint32_t analyzeHardware(AnalysisType i_type, attn::DumpParameters& o_dump)
         if (attnFound)
         {
             trace::inf("Root cause attention: %s 0x%0" PRIx32 " %s",
-                       util::pdbg::getPath(rootCause.getChip()),
+                       util::pdbg::getPath(rootCause.getChip()).c_str(),
                        rootCause.toUint32(), __attn(rootCause.getAttnType()));
         }
         else

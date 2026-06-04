@@ -55,14 +55,14 @@ bool registerRead(const Chip& i_chip, RegisterType_t i_regType,
         default:
             trace::err("Unsupported register type: trgt=%s regType=0x%02x "
                        "addr=0x%0" PRIx64,
-                       util::pdbg::getPath(trgt), i_regType, i_address);
+                       util::pdbg::getPath(trgt).c_str(), i_regType, i_address);
             assert(0);
     }
 
     if (accessFailure)
     {
         trace::err("%s failure: trgt=%s addr=0x%0" PRIx64, __regType(i_regType),
-                   util::pdbg::getPath(trgt), i_address);
+                   util::pdbg::getPath(trgt).c_str(), i_address);
         o_value = 0; // just in case
     }
 
