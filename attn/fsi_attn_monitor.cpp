@@ -64,7 +64,8 @@ void configureFsi2Pib()
         // bit 1 - CHIP_CS
         // bit 2 - SP_ATTN
         // bit 5 - any TAP chip event
-        if (fsi_configure_scom_interrupt(fd, 0, 0x64000000))
+        // bit 30 - SPPE_ATTN
+        if (fsi_configure_scom_interrupt(fd, 0, 0x64000002))
         {
             trace::err("FsiAttnMonitor::configureFsiEvent - failure from "
                        "fsi_configure_scom_interrupt() for %s",
@@ -134,7 +135,8 @@ void FsiAttnMonitor::configureFsiEvent()
         // bit 1 - CHIP_CS
         // bit 2 - SP_ATTN
         // bit 5 - any TAP chip event
-        if (0 != fsi_configure_scom_interrupt(fd, 0, 0x64000000))
+        // bit 30 - SPPE_ATTN
+        if (0 != fsi_configure_scom_interrupt(fd, 0, 0x64000002))
         {
             trace::err("FsiAttnMonitor::configureFsiEvent: Failed to "
                        "configure scom interrupt for %s",

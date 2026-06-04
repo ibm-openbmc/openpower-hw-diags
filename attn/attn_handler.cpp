@@ -126,7 +126,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 // hw-diags needs to reset the true mask somehow.
                 // For now, to workaround this, we'll just assume the mask
                 // is set to what we expect here
-                isr_mask = 0x64000000;
+                isr_mask = 0x64000002;
 
                 // Trace true mask
                 trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
@@ -251,13 +251,13 @@ void attnHandler(Config* i_config)
                     // hw-diags needs to reset the true mask somehow.
                     // For now, to workaround this, we'll just assume the mask
                     // is set to what we expect here
-                    isr_mask = 0x64000000;
+                    isr_mask = 0x64000002;
 
                     // trace true mask
                     trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
                     // SBE vital attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, SBE_ATTN))
+                    if (true == activeAttn(isr_val, isr_mask, SPPE_ATTN))
                     {
                         active_attentions.emplace_back(
                             Attention::Vital, handleVital, hub, i_config);
@@ -279,7 +279,7 @@ void attnHandler(Config* i_config)
                     }
 
                     // If only an attention from a compute chip is reporting
-                    if (!activeAttn(isr_val, isr_mask, SBE_ATTN) &&
+                    if (!activeAttn(isr_val, isr_mask, SPPE_ATTN) &&
                         !activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN) &&
                         !activeAttn(isr_val, isr_mask, SPECIAL_ATTN) &&
                         activeAttn(isr_val, isr_mask, TAP_ATTN))
@@ -503,8 +503,8 @@ bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn)
 
         switch (i_attn)
         {
-            case SBE_ATTN:
-                msg = "SBE attn";
+            case SPPE_ATTN:
+                msg = "SPPE attn";
                 break;
             case CHECKSTOP_ATTN:
                 msg = "Checkstop attn";
@@ -667,7 +667,7 @@ void clearAttnInterrupts()
             trace::inf("cfam 0x100b = 0x%08x", int_val);
 
             int_val &= ~(ANY_ATTN | CHECKSTOP_ATTN | SPECIAL_ATTN |
-                         RECOVERABLE_ATTN | SBE_ATTN);
+                         RECOVERABLE_ATTN | SPPE_ATTN);
 
             // clear attention interrupts on the hub
             if (RC_SUCCESS != util::pdbg::putCfam(hub, 0x100b, int_val))

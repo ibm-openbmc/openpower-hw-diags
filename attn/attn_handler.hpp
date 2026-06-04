@@ -7,7 +7,7 @@
 namespace attn
 {
 /** @brief Attention global status bits */
-constexpr uint32_t SBE_ATTN = 0x00000002;
+constexpr uint32_t SPPE_ATTN = 0x00000002;
 constexpr uint32_t ANY_ATTN = 0x80000000;
 constexpr uint32_t CHECKSTOP_ATTN = 0x40000000;
 constexpr uint32_t SPECIAL_ATTN = 0x20000000;

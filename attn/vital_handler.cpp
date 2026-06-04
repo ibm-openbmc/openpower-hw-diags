@@ -46,7 +46,7 @@ bool attemptSbeRecovery(uint32_t sbeInstance)
         // get attention interrupts on the hub
         if (RC_SUCCESS == util::pdbg::getCfam(hub, 0x100b, int_val))
         {
-            if (int_val & SBE_ATTN)
+            if (int_val & SPPE_ATTN)
             {
                 trace::err("sbe attention did not clear");
                 recovered = false;
@@ -131,6 +131,10 @@ bool checkstopActive(uint32_t hubInstance)
 int handleVital(Attention* i_attention)
 {
     trace::inf("vital handler started");
+
+    // TODO - SPPE vital handling updates for P12
+    trace::inf("TODO: SPPE vital handling currently disabled");
+    return RC_NOT_HANDLED;
 
     // if vital handling disabled
     if (false == (i_attention->getConfig()->getFlag(enVital)))
