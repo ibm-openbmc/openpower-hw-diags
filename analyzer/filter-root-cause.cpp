@@ -97,6 +97,30 @@ bool __findPllUnlock(const std::vector<libhei::Signature>& i_list,
 
 //------------------------------------------------------------------------------
 
+bool __findTodError(const std::vector<libhei::Signature>& i_list,
+                    libhei::Signature& o_rootCause)
+{
+    using namespace util::pdbg;
+
+    auto nodeId = libhei::hash<libhei::NodeId_t>("TOD_ERROR");
+
+    // First, look for any TOD error attentions reported by a processsor chip.
+    auto itr1 = std::find_if(i_list.begin(), i_list.end(), [&](const auto& t) {
+        return (nodeId == t.getId() &&
+                TYPE_PROC == getTrgtType(getTrgt(t.getChip())));
+    });
+
+    if (i_list.end() != itr1)
+    {
+        o_rootCause = *itr1;
+        return true;
+    }
+
+    return false;
+}
+
+//------------------------------------------------------------------------------
+
 bool __findMemoryChannelFailure(const std::vector<libhei::Signature>& i_list,
                                 libhei::Signature& o_rootCause,
                                 const RasDataParser& i_rasData)
@@ -365,6 +389,14 @@ bool findRootCause(AnalysisType i_type, const libhei::IsolationData& i_isoData,
     // because PLL unlock attentions can cause any number of downstream
     // attentions, including a system checkstop.
     if (__findPllUnlock(list, o_rootCause))
+    {
+        return true;
+    }
+
+    // Third, look for any TOD error attentions. These are checkstop attentions
+    // but are clock related and therefore should be prioritized over other
+    // attentions.
+    if (__findTodError(list, o_rootCause))
     {
         return true;
     }
