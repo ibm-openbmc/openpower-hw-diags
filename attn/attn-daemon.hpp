@@ -15,6 +15,6 @@ namespace attn
  *
  * @return 0 == success
  */
-int attnDaemon(Config* i_config);
+int startDaemon(Config* i_config);
 
 } // namespace attn

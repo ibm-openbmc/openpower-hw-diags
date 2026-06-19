@@ -41,7 +41,7 @@ attn_src = files(
     'attn_dump.cpp',
     'attn_handler.cpp',
     'attn_logging.cpp',
-    'attn_main.cpp',
+    'attn-daemon.cpp',
     'bp_handler.cpp',
     'fsi_attn_monitor.cpp',
     'gpio_attn_monitor.cpp',

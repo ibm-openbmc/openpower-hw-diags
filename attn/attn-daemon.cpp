@@ -10,7 +10,7 @@ namespace attn
 /**
  * @brief Attention handler application main()
  */
-int attnDaemon(Config* i_config)
+int startDaemon(Config* i_config)
 {
     int rc = 0; // assume success
 
