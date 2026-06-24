@@ -6,13 +6,33 @@
 
 namespace attn
 {
-/** @brief Attention global status bits */
-constexpr uint32_t SPPE_ATTN = 0x00000002;
-constexpr uint32_t ANY_ATTN = 0x80000000;
-constexpr uint32_t CHECKSTOP_ATTN = 0x40000000;
-constexpr uint32_t SPECIAL_ATTN = 0x20000000;
-constexpr uint32_t RECOVERABLE_ATTN = 0x10000000;
-constexpr uint32_t TAP_ATTN = 0x04000000;
+
+/**
+ * @brief A bit mask of each relevant attention type handled in the FSI2PIB
+ *        status register (same for both hub and compute chips).
+ */
+enum Fsi2PibAttn_t : uint32_t
+{
+    // clang-format off
+
+    FSI2PIB_ANY_ATTN     = 0x80000000, //  0
+    FSI2PIB_CHIP_CS      = 0x40000000, //  1
+    FSI2PIB_SPECIAL      = 0x20000000, //  2
+    FSI2PIB_RECOVERABLE  = 0x10000000, //  3
+    FSI2PIB_COMPUTE_ATTN = 0x04000000, //  5 - hub only
+    FSI2PIB_LOCAL_CS     = 0x02000000, //  6
+    FSI2PIB_SBE2FSI_INTR = 0x00400000, //  9 - hub only
+    FSI2PIB_SPPE_ATTN    = 0x00000002, // 30 - hub only
+    FSI2PIB_SBE_ATTN     = 0x00000001, // 31
+
+    // All attentions defined above. Used for clearing interrupts.
+    FSI2PIB_ALL_ATTNS =
+        FSI2PIB_ANY_ATTN | FSI2PIB_CHIP_CS | FSI2PIB_SPECIAL |
+        FSI2PIB_RECOVERABLE | FSI2PIB_COMPUTE_ATTN | FSI2PIB_LOCAL_CS |
+        FSI2PIB_SBE2FSI_INTR | FSI2PIB_SPPE_ATTN | FSI2PIB_SBE_ATTN,
+
+    // clang-format on
+};
 
 /**
  * @brief Clear attention interrupts

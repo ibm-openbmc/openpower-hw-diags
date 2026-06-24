@@ -46,7 +46,7 @@ bool attemptSbeRecovery(uint32_t sbeInstance)
         // get attention interrupts on the hub
         if (RC_SUCCESS == util::pdbg::getCfam(hub, 0x100b, int_val))
         {
-            if (int_val & SPPE_ATTN)
+            if (int_val & FSI2PIB_SPPE_ATTN)
             {
                 trace::err("sbe attention did not clear");
                 recovered = false;
@@ -118,7 +118,7 @@ bool checkstopActive(uint32_t hubInstance)
         return false;
     }
 
-    return activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN);
+    return activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS);
 }
 
 /**

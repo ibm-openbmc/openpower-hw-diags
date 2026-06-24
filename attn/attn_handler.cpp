@@ -132,7 +132,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
 
                 // Checkstop attention active and not masked?
-                if (true == activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN))
+                if (true == activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
                 {
                     // Note: Use hub as target, not compute chip
                     active_attentions.emplace_back(
@@ -140,7 +140,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 }
 
                 // Special attention active and not masked?
-                if (true == activeAttn(isr_val, isr_mask, SPECIAL_ATTN))
+                if (true == activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
                 {
                     // Note: Use hub as target, not compute chip
                     active_attentions.emplace_back(
@@ -257,14 +257,15 @@ void attnHandler(Config* i_config)
                     trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
                     // SBE vital attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, SPPE_ATTN))
+                    if (true ==
+                        activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
                     {
                         active_attentions.emplace_back(
                             Attention::Vital, handleVital, hub, i_config);
                     }
 
                     // Checkstop attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN))
+                    if (true == activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
                     {
                         active_attentions.emplace_back(Attention::Checkstop,
                                                        handleCheckstop, hub,
@@ -272,17 +273,17 @@ void attnHandler(Config* i_config)
                     }
 
                     // Special attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, SPECIAL_ATTN))
+                    if (true == activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
                     {
                         active_attentions.emplace_back(
                             Attention::Special, handleSpecial, hub, i_config);
                     }
 
                     // If only an attention from a compute chip is reporting
-                    if (!activeAttn(isr_val, isr_mask, SPPE_ATTN) &&
-                        !activeAttn(isr_val, isr_mask, CHECKSTOP_ATTN) &&
-                        !activeAttn(isr_val, isr_mask, SPECIAL_ATTN) &&
-                        activeAttn(isr_val, isr_mask, TAP_ATTN))
+                    if (!activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN) &&
+                        !activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS) &&
+                        !activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL) &&
+                        activeAttn(isr_val, isr_mask, FSI2PIB_COMPUTE_ATTN))
                     {
                         // check the status reg on the taps under this hub
                         handleComputeAttns(hub, i_config);
@@ -503,13 +504,13 @@ bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn)
 
         switch (i_attn)
         {
-            case SPPE_ATTN:
+            case FSI2PIB_SPPE_ATTN:
                 msg = "SPPE attn";
                 break;
-            case CHECKSTOP_ATTN:
+            case FSI2PIB_CHIP_CS:
                 msg = "Checkstop attn";
                 break;
-            case SPECIAL_ATTN:
+            case FSI2PIB_SPECIAL:
                 msg = "Special attn";
                 break;
             default:
@@ -666,8 +667,8 @@ void clearAttnInterrupts()
             // trace int value
             trace::inf("cfam 0x100b = 0x%08x", int_val);
 
-            int_val &= ~(ANY_ATTN | CHECKSTOP_ATTN | SPECIAL_ATTN |
-                         RECOVERABLE_ATTN | SPPE_ATTN);
+            // Clear all attentions regardless if we are monitoring them.
+            int_val &= ~FSI2PIB_ALL_ATTNS;
 
             // clear attention interrupts on the hub
             if (RC_SUCCESS != util::pdbg::putCfam(hub, 0x100b, int_val))

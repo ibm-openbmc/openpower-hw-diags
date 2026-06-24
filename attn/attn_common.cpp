@@ -118,7 +118,7 @@ bool recoverableErrors()
                 continue;
             }
             // check recoverable error status bit
-            else if (0 != (isr_val & RECOVERABLE_ATTN))
+            else if (0 != (isr_val & FSI2PIB_RECOVERABLE))
             {
                 recoverableErrors = true;
                 break;
