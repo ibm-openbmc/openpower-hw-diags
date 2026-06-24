@@ -645,42 +645,42 @@ bool tiInfoValid(uint8_t* tiInfo)
     return tiInfoValid;
 }
 
-/** @brief Clear attention interrupts */
+/**
+ * @brief Clear attention interrupts.
+ *
+ * The FSI2PIB_INTERRUPT register (fsi: 0x100B) is a sticky version of the
+ * FSI2PIB_STATUS register (fsi: 0x1007), which must be clear to allow new
+ * interrupt to flow. This function blindly clears all relevant attention bits
+ * and expects persistent attentions to retrigger the interrupt bits.
+ */
 void clearAttnInterrupts()
 {
     trace::inf("Clearing attention interrupts");
 
-    // loop through hubs clearing attention interrupts
     auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
     for (const auto& hub : hubList)
     {
-        // active hubs only
         if (!TARGETING::utils::isFunctional(hub))
         {
             continue;
         }
 
-        // get attention interrupts on the hub
         uint32_t int_val;
-        if (RC_SUCCESS == util::pdbg::getCfam(hub, 0x100b, int_val))
+        if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x100b, int_val))
         {
-            // trace int value
-            trace::inf("cfam 0x100b = 0x%08x", int_val);
-
-            // Clear all attentions regardless if we are monitoring them.
-            int_val &= ~FSI2PIB_ALL_ATTNS;
-
-            // clear attention interrupts on the hub
-            if (RC_SUCCESS != util::pdbg::putCfam(hub, 0x100b, int_val))
-            {
-                // log cfam write error
-                trace::err("cfam write 0x100b FAILED");
-            }
-        }
-        else
-        {
-            // log cfam read error
             trace::err("cfam read 0x100b FAILED");
+            continue;
+        }
+
+        trace::inf("cfam 0x100b = 0x%08x", int_val);
+
+        // Clear all attentions regardless if we are monitoring them.
+        int_val &= ~FSI2PIB_ALL_ATTNS;
+
+        if (RC_SUCCESS != util::pdbg::putCfam(hub, 0x100b, int_val))
+        {
+            trace::err("cfam write 0x100b FAILED");
+            continue;
         }
     }
 }
