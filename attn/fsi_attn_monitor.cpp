@@ -60,12 +60,7 @@ void configureFsi2Pib()
             trace::err("failed to get file descriptor %s", scomName);
         }
 
-        // FSI2PIB status:
-        // bit 1 - CHIP_CS
-        // bit 2 - SP_ATTN
-        // bit 5 - any TAP chip event
-        // bit 30 - SPPE_ATTN
-        if (fsi_configure_scom_interrupt(fd, 0, 0x64000002))
+        if (fsi_configure_scom_interrupt(fd, 0, FSI2PIB_BMC_ATTNS))
         {
             trace::err("FsiAttnMonitor::configureFsiEvent - failure from "
                        "fsi_configure_scom_interrupt() for %s",
@@ -131,12 +126,7 @@ void FsiAttnMonitor::configureFsiEvent()
             continue;
         }
 
-        // FSI2PIB status:
-        // bit 1 - CHIP_CS
-        // bit 2 - SP_ATTN
-        // bit 5 - any TAP chip event
-        // bit 30 - SPPE_ATTN
-        if (0 != fsi_configure_scom_interrupt(fd, 0, 0x64000002))
+        if (0 != fsi_configure_scom_interrupt(fd, 0, FSI2PIB_BMC_ATTNS))
         {
             trace::err("FsiAttnMonitor::configureFsiEvent: Failed to "
                        "configure scom interrupt for %s",

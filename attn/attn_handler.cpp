@@ -126,7 +126,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 // hw-diags needs to reset the true mask somehow.
                 // For now, to workaround this, we'll just assume the mask
                 // is set to what we expect here
-                isr_mask = 0x64000002;
+                isr_mask = FSI2PIB_BMC_ATTNS;
 
                 // Trace true mask
                 trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
@@ -251,7 +251,7 @@ void attnHandler(Config* i_config)
                     // hw-diags needs to reset the true mask somehow.
                     // For now, to workaround this, we'll just assume the mask
                     // is set to what we expect here
-                    isr_mask = 0x64000002;
+                    isr_mask = FSI2PIB_BMC_ATTNS;
 
                     // trace true mask
                     trace::inf("cfam 0x100d = 0x%08x", isr_mask);

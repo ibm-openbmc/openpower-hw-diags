@@ -31,6 +31,14 @@ enum Fsi2PibAttn_t : uint32_t
         FSI2PIB_RECOVERABLE | FSI2PIB_COMPUTE_ATTN | FSI2PIB_LOCAL_CS |
         FSI2PIB_SBE2FSI_INTR | FSI2PIB_SPPE_ATTN | FSI2PIB_SBE_ATTN,
 
+    // Attentions enabled in the FSI2PIB true mask register to be handled by
+    // the BMC. Note that we do not set FSI2PIB_SBE2FSI_INTR when the attention
+    // service is started. Instead that is set by the SPPE just before Hostboot
+    // takes over the IPL.
+    FSI2PIB_BMC_ATTNS =
+        FSI2PIB_CHIP_CS | FSI2PIB_SPECIAL | FSI2PIB_COMPUTE_ATTN |
+        FSI2PIB_SPPE_ATTN,
+
     // clang-format on
 };
 
