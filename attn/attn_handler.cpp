@@ -64,9 +64,6 @@ bool tiInfoValid(uint8_t* tiInfo);
  */
 void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
 {
-    trace::inf("Checking compute chips under hub: %u",
-               TARGETING::utils::getPosition(i_hub));
-
     // Vector of active attentions to be handled
     std::vector<Attention> active_attentions;
 
@@ -77,78 +74,56 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
     // Loop through each compute chip
     for (const auto& compute : computeList)
     {
-        // Trace the compute chip position
         trace::inf("compute: %u", TARGETING::utils::getPosition(compute));
 
-        uint32_t isr_val = 0xffffffff; // invalid isr value
-
-        // Get active attentions on the compute chip
+        // Get the current FSI2PIB status.
+        uint32_t isr_val;
         if (RC_SUCCESS != util::pdbg::getCfam(compute, 0x1007, isr_val))
         {
-            // Log cfam read error
-            trace::err("compute cfam read 0x1007 FAILED");
+            trace::err("cfam read 0x1007 FAILED");
             eventAttentionFail((int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
-        }
-        else if (0xffffffff == isr_val)
-        {
-            trace::err("compute cfam read 0x1007 INVALID");
             continue;
         }
-        else
+        trace::inf("cfam 0x1007 = 0x%08x", isr_val);
+
+        // Get the current FSI2PIB mask.
+        uint32_t isr_mask;
+        if (RC_SUCCESS != util::pdbg::getCfam(compute, 0x100d, isr_mask))
         {
-            // Trace isr value
-            trace::inf("compute cfam 0x1007 = 0x%08x", isr_val);
+            trace::err("cfam read 0x100d FAILED");
+            eventAttentionFail((int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            continue;
+        }
+        trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
-            uint32_t isr_mask = 0xffffffff; // invalid isr mask
+        // TODO: The FSI attention driver currently clears the true
+        // mask for any attention it responds to. This is, in
+        // theory, to prevent attention flooding. This means, at the
+        // moment, the true mask will not be set here. This may
+        // cause an issue with breakpoints which should be the only
+        // type of attention hw-diags is handling more than one of.
+        // Either the mask needs to not be cleared if unnecessary or
+        // hw-diags needs to reset the true mask somehow.
+        // For now, to workaround this, we'll just assume the mask
+        // is set to what we expect here
+        isr_mask = FSI2PIB_BMC_ATTNS;
 
-            // Get interrupt enabled special attentions mask
-            if (RC_SUCCESS != util::pdbg::getCfam(compute, 0x100d, isr_mask))
-            {
-                // Log cfam read error
-                trace::err("compute cfam read 0x100d FAILED");
-                eventAttentionFail(
-                    (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
-            }
-            else if (0xffffffff == isr_mask)
-            {
-                trace::err("compute cfam read 0x100d INVALID");
-                continue;
-            }
-            else
-            {
-                // TODO: The FSI attention driver currently clears the true
-                // mask for any attention it responds to. This is, in
-                // theory, to prevent attention flooding. This means, at the
-                // moment, the true mask will not be set here. This may
-                // cause an issue with breakpoints which should be the only
-                // type of attention hw-diags is handling more than one of.
-                // Either the mask needs to not be cleared if unnecessary or
-                // hw-diags needs to reset the true mask somehow.
-                // For now, to workaround this, we'll just assume the mask
-                // is set to what we expect here
-                isr_mask = FSI2PIB_BMC_ATTNS;
+        // Checkstop attention active and not masked?
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
+        {
+            // Note: Use hub as target, not compute chip
+            active_attentions.emplace_back(Attention::Checkstop,
+                                           handleCheckstop, i_hub, i_config);
+        }
 
-                // Trace true mask
-                trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
-
-                // Checkstop attention active and not masked?
-                if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
-                {
-                    // Note: Use hub as target, not compute chip
-                    active_attentions.emplace_back(
-                        Attention::Checkstop, handleCheckstop, i_hub, i_config);
-                }
-
-                // Special attention active and not masked?
-                if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
-                {
-                    // Note: Use hub as target, not compute chip
-                    active_attentions.emplace_back(
-                        Attention::Special, handleSpecial, i_hub, i_config);
-                }
-            } // cfam 0x100d valid
-        } // cfam 0x1007 valid
-    } // next compute chip
+        // Special attention active and not masked?
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
+        {
+            // Note: Use hub as target, not compute chip
+            active_attentions.emplace_back(Attention::Special, handleSpecial,
+                                           i_hub, i_config);
+        }
+    }
 
     // Convert to heap, highest priority is at front
     if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
@@ -157,7 +132,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
     }
 
     // Call the attention handler until one is handled or all were attempted
-    while (false == active_attentions.empty())
+    while (!active_attentions.empty())
     {
         // Handle highest priority attention, done if successful
         if (RC_SUCCESS == active_attentions.front().handle())
@@ -182,7 +157,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
 void attnHandler(Config* i_config)
 {
     // Check if enClrAttnIntr is enabled
-    if (true == i_config->getFlag(enClrAttnIntr))
+    if (i_config->getFlag(enClrAttnIntr))
     {
         // Clear attention interrupts that may still be active (MPIPL)
         clearAttnInterrupts();
@@ -191,106 +166,82 @@ void attnHandler(Config* i_config)
     // Vector of active attentions to be handled
     std::vector<Attention> active_attentions;
 
-    uint32_t isr_val, isr_mask;
-
     // loop through hubs looking for active attentions
     trace::inf("Attention handler started");
 
     auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
     for (const auto& hub : hubList)
     {
-        if (TARGETING::utils::isFunctional(hub))
+        if (!TARGETING::utils::isFunctional(hub))
         {
-            // trace the hub number
-            trace::inf("hub: %u", TARGETING::utils::getPosition(hub));
+            continue;
+        }
 
-            isr_val = 0xffffffff; // invalid isr value
+        trace::inf("hub: %u", TARGETING::utils::getPosition(hub));
 
-            // get active attentions on the hub
-            if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x1007, isr_val))
-            {
-                // log cfam read error
-                trace::err("cfam read 0x1007 FAILED");
-                eventAttentionFail(
-                    (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
-            }
-            else if (0xffffffff == isr_val)
-            {
-                trace::err("cfam read 0x1007 INVALID");
-                continue;
-            }
-            else
-            {
-                // trace isr value
-                trace::inf("cfam 0x1007 = 0x%08x", isr_val);
+        // Get the current FSI2PIB status.
+        uint32_t isr_val;
+        if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x1007, isr_val))
+        {
+            trace::err("cfam read 0x1007 FAILED");
+            eventAttentionFail((int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            continue;
+        }
+        trace::inf("cfam 0x1007 = 0x%08x", isr_val);
 
-                isr_mask = 0xffffffff; // invalid isr mask
+        // Get the current FSI2PIB mask.
+        uint32_t isr_mask;
+        if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x100d, isr_mask))
+        {
+            trace::err("cfam read 0x100d FAILED");
+            eventAttentionFail((int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
+            continue;
+        }
+        trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
-                // get interrupt enabled special attentions mask
-                if (RC_SUCCESS != util::pdbg::getCfam(hub, 0x100d, isr_mask))
-                {
-                    // log cfam read error
-                    trace::err("cfam read 0x100d FAILED");
-                    eventAttentionFail(
-                        (int)AttnSection::attnHandler | ATTN_PDBG_CFAM);
-                }
-                else if (0xffffffff == isr_mask)
-                {
-                    trace::err("cfam read 0x100d INVALID");
-                    continue;
-                }
-                else
-                {
-                    // TODO: The FSI attention driver currently clears the true
-                    // mask for any attention it responds to. This is, in
-                    // theory, to prevent attention flooding. This means, at the
-                    // moment, the true mask will not be set here. This may
-                    // cause an issue with breakpoints which should be the only
-                    // type of attention hw-diags is handling more than one of.
-                    // Either the mask needs to not be cleared if unnecessary or
-                    // hw-diags needs to reset the true mask somehow.
-                    // For now, to workaround this, we'll just assume the mask
-                    // is set to what we expect here
-                    isr_mask = FSI2PIB_BMC_ATTNS;
+        // TODO: The FSI attention driver currently clears the true
+        // mask for any attention it responds to. This is, in
+        // theory, to prevent attention flooding. This means, at the
+        // moment, the true mask will not be set here. This may
+        // cause an issue with breakpoints which should be the only
+        // type of attention hw-diags is handling more than one of.
+        // Either the mask needs to not be cleared if unnecessary or
+        // hw-diags needs to reset the true mask somehow.
+        // For now, to workaround this, we'll just assume the mask
+        // is set to what we expect here
+        isr_mask = FSI2PIB_BMC_ATTNS;
 
-                    // trace true mask
-                    trace::inf("cfam 0x100d = 0x%08x", isr_mask);
+        // SBE vital attention active and not masked?
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
+        {
+            active_attentions.emplace_back(Attention::Vital, handleVital, hub,
+                                           i_config);
+        }
 
-                    // SBE vital attention active and not masked?
-                    if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
-                    {
-                        active_attentions.emplace_back(
-                            Attention::Vital, handleVital, hub, i_config);
-                    }
+        // Checkstop attention active and not masked?
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
+        {
+            active_attentions.emplace_back(Attention::Checkstop,
+                                           handleCheckstop, hub, i_config);
+        }
 
-                    // Checkstop attention active and not masked?
-                    if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
-                    {
-                        active_attentions.emplace_back(Attention::Checkstop,
-                                                       handleCheckstop, hub,
-                                                       i_config);
-                    }
+        // Special attention active and not masked?
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
+        {
+            active_attentions.emplace_back(Attention::Special, handleSpecial,
+                                           hub, i_config);
+        }
 
-                    // Special attention active and not masked?
-                    if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
-                    {
-                        active_attentions.emplace_back(
-                            Attention::Special, handleSpecial, hub, i_config);
-                    }
-
-                    // If only an attention from a compute chip is reporting
-                    if (!activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN) &&
-                        !activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS) &&
-                        !activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL) &&
-                        activeAttn(isr_val, isr_mask, FSI2PIB_COMPUTE_ATTN))
-                    {
-                        // check the status reg on the taps under this hub
-                        handleComputeAttns(hub, i_config);
-                    }
-                } // cfam 0x100d valid
-            } // cfam 0x1007 valid
-        } // target functional
-    } // next hub
+        // If only an attention from a compute chip is reporting
+        if (!activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN) &&
+            !activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS) &&
+            !activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL) &&
+            activeAttn(isr_val, isr_mask, FSI2PIB_COMPUTE_ATTN))
+        {
+            // check the status reg on the taps under this hub
+            handleComputeAttns(hub, i_config);
+        }
+    }
 
     // convert to heap, highest priority is at front
     if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
@@ -299,7 +250,7 @@ void attnHandler(Config* i_config)
     }
 
     // call the attention handler until one is handled or all were attempted
-    while (false == active_attentions.empty())
+    while (!active_attentions.empty())
     {
         // handle highest priority attention, done if successful
         if (RC_SUCCESS == active_attentions.front().handle())
