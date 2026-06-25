@@ -55,23 +55,23 @@ void getStaticTiInfo(uint8_t*& tiInfoPtr);
 bool tiInfoValid(uint8_t* tiInfo);
 
 /**
- * @brief Handle compute chip attentions under a hub
- *
- * Check all compute chips connected to a hub for active attentions.
- *
- * @param i_hub The hub target to check compute chips under
- * @param i_config Attention handler configuration
+ * @brief Adds connected compute chip attentions to the attention list.
+ * @param i_hub The target hub chip.
+ * @param i_config Attention handler configuration.
+ * @param io_activeAttns The list of active attentions.
  */
-void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
+void getComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config,
+                     std::vector<Attention>& io_activeAttns)
 {
-    // Vector of active attentions to be handled
-    std::vector<Attention> active_attentions;
+    // TODO: Instead of iterating all compute chips. Look at the TAP_STATUS
+    // (fsi: 2950) and TAP_MASK (fsi: 2954) registers to determine which compute
+    // chips actually generated the attentions.
 
-    // Get all functional compute chips connected to this hub
     TARGETING::TargetPtrList computeList =
         TARGETING::utils::getFuctionalComputeChipsFromHub(i_hub);
 
-    // Loop through each compute chip
+    // Look for active attentions on each functional compute chip connected to
+    // this hub chip.
     for (const auto& compute : computeList)
     {
         trace::inf("compute: %u", TARGETING::utils::getPosition(compute));
@@ -108,44 +108,19 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
         // is set to what we expect here
         isr_mask = FSI2PIB_BMC_ATTNS;
 
-        // Checkstop attention active and not masked?
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
             // Note: Use hub as target, not compute chip
-            active_attentions.emplace_back(Attention::Checkstop,
-                                           handleCheckstop, i_hub, i_config);
+            io_activeAttns.emplace_back(Attention::Checkstop, handleCheckstop,
+                                        i_hub, i_config);
         }
 
-        // Special attention active and not masked?
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
             // Note: Use hub as target, not compute chip
-            active_attentions.emplace_back(Attention::Special, handleSpecial,
-                                           i_hub, i_config);
+            io_activeAttns.emplace_back(Attention::Special, handleSpecial,
+                                        i_hub, i_config);
         }
-    }
-
-    // Convert to heap, highest priority is at front
-    if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
-    {
-        std::make_heap(active_attentions.begin(), active_attentions.end());
-    }
-
-    // Call the attention handler until one is handled or all were attempted
-    while (!active_attentions.empty())
-    {
-        // Handle highest priority attention, done if successful
-        if (RC_SUCCESS == active_attentions.front().handle())
-        {
-            // An attention was handled so we are done
-            break;
-        }
-
-        // Move attention to back of vector
-        std::pop_heap(active_attentions.begin(), active_attentions.end());
-
-        // Remove attention from vector
-        active_attentions.pop_back();
     }
 }
 
@@ -163,12 +138,12 @@ void attnHandler(Config* i_config)
         clearAttnInterrupts();
     }
 
-    // Vector of active attentions to be handled
-    std::vector<Attention> active_attentions;
-
-    // loop through hubs looking for active attentions
     trace::inf("Attention handler started");
 
+    // Keep a list of all active attentions.
+    std::vector<Attention> active_attentions;
+
+    // Look for active attentions on each functional hub chip.
     auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
     for (const auto& hub : hubList)
     {
@@ -211,58 +186,52 @@ void attnHandler(Config* i_config)
         // is set to what we expect here
         isr_mask = FSI2PIB_BMC_ATTNS;
 
-        // SBE vital attention active and not masked?
-        if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
-        {
-            active_attentions.emplace_back(Attention::Vital, handleVital, hub,
-                                           i_config);
-        }
-
-        // Checkstop attention active and not masked?
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
             active_attentions.emplace_back(Attention::Checkstop,
                                            handleCheckstop, hub, i_config);
         }
 
-        // Special attention active and not masked?
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
             active_attentions.emplace_back(Attention::Special, handleSpecial,
                                            hub, i_config);
         }
 
-        // If only an attention from a compute chip is reporting
-        if (!activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN) &&
-            !activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS) &&
-            !activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL) &&
-            activeAttn(isr_val, isr_mask, FSI2PIB_COMPUTE_ATTN))
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
         {
-            // check the status reg on the taps under this hub
-            handleComputeAttns(hub, i_config);
+            active_attentions.emplace_back(Attention::Vital, handleVital, hub,
+                                           i_config);
+        }
+
+        // Look for active attentions on each connected compute chip. Do this
+        // after querying the other attentions on this hub chip. It makes the
+        // traces easier to read.
+        if (activeAttn(isr_val, isr_mask, FSI2PIB_COMPUTE_ATTN))
+        {
+            getComputeAttns(hub, i_config, active_attentions);
         }
     }
 
-    // convert to heap, highest priority is at front
+    // By converting the list to a heap the highest priority attentions are
+    // moved to the front of the list.
     if (!std::is_heap(active_attentions.begin(), active_attentions.end()))
     {
         std::make_heap(active_attentions.begin(), active_attentions.end());
     }
 
-    // call the attention handler until one is handled or all were attempted
+    // Handle each attention in priority order until one is handled or all are
+    // attempted.
     while (!active_attentions.empty())
     {
-        // handle highest priority attention, done if successful
+        // The highest priority attention is at the front of the list.
         if (RC_SUCCESS == active_attentions.front().handle())
         {
-            // an attention was handled so we are done
-            break;
+            break; // nothing more to do.
         }
 
-        // move attention to back of vector
+        // Move this attention to back of list and remove it.
         std::pop_heap(active_attentions.begin(), active_attentions.end());
-
-        // remove attention from vector
         active_attentions.pop_back();
     }
 }
