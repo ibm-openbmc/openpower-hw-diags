@@ -81,10 +81,9 @@ void attnHandler(Config* i_config);
  * @param i_val attention status register
  * @param i_mask attention true mask register
  * @param i_attn attention type
- * @param i_proc processor associated with registers
  *
  * @return true if attention is active and not masked, otherwise false
  */
-bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn);
+bool activeAttn(uint32_t i_val, uint32_t i_mask, Fsi2PibAttn_t i_attn);
 
 } // namespace attn

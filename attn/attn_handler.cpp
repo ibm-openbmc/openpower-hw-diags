@@ -132,7 +132,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 trace::inf("compute cfam 0x100d = 0x%08x", isr_mask);
 
                 // Checkstop attention active and not masked?
-                if (true == activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
+                if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
                 {
                     // Note: Use hub as target, not compute chip
                     active_attentions.emplace_back(
@@ -140,7 +140,7 @@ void handleComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config)
                 }
 
                 // Special attention active and not masked?
-                if (true == activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
+                if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
                 {
                     // Note: Use hub as target, not compute chip
                     active_attentions.emplace_back(
@@ -257,15 +257,14 @@ void attnHandler(Config* i_config)
                     trace::inf("cfam 0x100d = 0x%08x", isr_mask);
 
                     // SBE vital attention active and not masked?
-                    if (true ==
-                        activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
+                    if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
                     {
                         active_attentions.emplace_back(
                             Attention::Vital, handleVital, hub, i_config);
                     }
 
                     // Checkstop attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
+                    if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
                     {
                         active_attentions.emplace_back(Attention::Checkstop,
                                                        handleCheckstop, hub,
@@ -273,7 +272,7 @@ void attnHandler(Config* i_config)
                     }
 
                     // Special attention active and not masked?
-                    if (true == activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
+                    if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
                     {
                         active_attentions.emplace_back(
                             Attention::Special, handleSpecial, hub, i_config);
@@ -491,7 +490,7 @@ int handleSpecial(Attention* i_attention)
 }
 
 /** @brief Determine if attention is active and not masked */
-bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn)
+bool activeAttn(uint32_t i_val, uint32_t i_mask, Fsi2PibAttn_t i_attn)
 {
     bool rc = false; // assume attn masked and/or inactive
 
@@ -500,35 +499,32 @@ bool activeAttn(uint32_t i_val, uint32_t i_mask, uint32_t i_attn)
     {
         std::string msg;
 
-        bool validAttn = true; // known attention type
-
         switch (i_attn)
         {
-            case FSI2PIB_SPPE_ATTN:
-                msg = "SPPE attn";
-                break;
             case FSI2PIB_CHIP_CS:
                 msg = "Checkstop attn";
                 break;
             case FSI2PIB_SPECIAL:
                 msg = "Special attn";
                 break;
+            case FSI2PIB_COMPUTE_ATTN:
+                msg = "Compute attn";
+                break;
+            case FSI2PIB_SPPE_ATTN:
+                msg = "SPPE attn";
+                break;
             default:
                 msg = "Unknown attn";
-                validAttn = false;
         }
 
         // see if attention is masked
-        if (true == validAttn)
+        if (0 != (i_mask & i_attn))
         {
-            if (0 != (i_mask & i_attn))
-            {
-                rc = true; // attention active and not masked
-            }
-            else
-            {
-                msg += " masked";
-            }
+            rc = true; // attention active and not masked
+        }
+        else
+        {
+            msg += " masked";
         }
 
         trace::inf(msg.c_str()); // commit trace stream
