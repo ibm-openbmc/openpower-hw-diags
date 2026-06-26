@@ -111,15 +111,15 @@ void getComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config,
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
             // Note: Use hub as target, not compute chip
-            io_activeAttns.emplace_back(Event::Checkstop, handleCheckstop,
+            io_activeAttns.emplace_back(Event::PRI_CHECKSTOP, handleCheckstop,
                                         i_hub, i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
             // Note: Use hub as target, not compute chip
-            io_activeAttns.emplace_back(Event::Special, handleSpecial, i_hub,
-                                        i_config);
+            io_activeAttns.emplace_back(Event::PRI_SPECIAL, handleSpecial,
+                                        i_hub, i_config);
         }
     }
 }
@@ -188,20 +188,20 @@ void attnHandler(Config* i_config)
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
-            active_attentions.emplace_back(Event::Checkstop, handleCheckstop,
-                                           hub, i_config);
+            active_attentions.emplace_back(Event::PRI_CHECKSTOP,
+                                           handleCheckstop, hub, i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
-            active_attentions.emplace_back(Event::Special, handleSpecial, hub,
-                                           i_config);
+            active_attentions.emplace_back(Event::PRI_SPECIAL, handleSpecial,
+                                           hub, i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
         {
-            active_attentions.emplace_back(Event::Vital, handleVital, hub,
-                                           i_config);
+            active_attentions.emplace_back(Event::PRI_SPPE_ATTN, handleVital,
+                                           hub, i_config);
         }
 
         // Look for active attentions on each connected compute chip. Do this

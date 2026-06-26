@@ -32,7 +32,7 @@ int handleAttention(Event* attention)
 
 // Global variables for UT #1 and UT#2.
 // Attention type
-Event::AttentionType gType = Event::AttentionType::Special;
+Event::Priority_t gType = Event::Priority_t::PRI_SPECIAL;
 // pointer to handler callback function
 int (*gHandler)(Event*) = &(handleSpecial);
 const AttentionFlag gAttnFlag = AttentionFlag::enBreakpoints;

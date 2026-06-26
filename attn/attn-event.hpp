@@ -18,21 +18,28 @@ namespace attn
 class Event
 {
   public:
-    /** @brief types of attentions to be handled (by priority low to high) */
-    enum AttentionType
+    /** @brief Supported events and their priorities. */
+    enum Priority_t
     {
-        Special = 0,
-        Checkstop = 1,
-        Vital = 2
+        // While checkstop attentions are most critical, the SPPE is required to
+        // do any SCOMs for analysis or initiate dumps. Therefore, this is the
+        // highest priority.
+        PRI_SPPE_ATTN = 2,
+
+        // Critial error. The host is dead. Higher than special attentions.
+        PRI_CHECKSTOP = 1,
+
+        // For TIs and breakpoints. Lowest priority
+        PRI_SPECIAL = 0,
     };
 
     /** @brief Default constructor. */
     Event() = delete;
 
     /** @brief Main constructor. */
-    Event(AttentionType i_type, int (*i_handler)(Event*),
+    Event(Priority_t i_priority, int (*i_handler)(Event*),
           TARGETING::TargetPtr i_target, Config* i_config) :
-        iv_type(i_type), iv_handler(i_handler), iv_target(i_target),
+        iv_priority(i_priority), iv_handler(i_handler), iv_target(i_target),
         iv_config(i_config)
     {}
 
@@ -46,9 +53,9 @@ class Event
     Event& operator=(const Event&) = default;
 
     /** @brief Get attention priority */
-    int getPriority() const
+    Priority_t getPriority() const
     {
-        return iv_type;
+        return iv_priority;
     }
 
     /** @brief Get config object */
@@ -76,7 +83,7 @@ class Event
     }
 
   private:
-    AttentionType iv_type;          // attention type
+    Priority_t iv_priority;         // The event priority.
     int (*iv_handler)(Event*);      // handler function
     TARGETING::TargetPtr iv_target; // handler function target
     Config* iv_config;              // configuration flags

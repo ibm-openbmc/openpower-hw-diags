@@ -41,13 +41,13 @@ int main(int argc, char* argv[])
     {
         std::vector<attn::Event> attentions;
 
-        attentions.emplace_back(attn::Event::AttentionType::Special,
+        attentions.emplace_back(attn::Event::Priority_t::PRI_SPECIAL,
                                 attn::handleSpecial, hubList[0], &attnConfig);
 
-        attentions.emplace_back(attn::Event::AttentionType::Checkstop,
+        attentions.emplace_back(attn::Event::Priority_t::PRI_CHECKSTOP,
                                 attn::handleCheckstop, hubList[0], &attnConfig);
 
-        attentions.emplace_back(attn::Event::AttentionType::Vital,
+        attentions.emplace_back(attn::Event::Priority_t::PRI_SPPE_ATTN,
                                 attn::handleVital, hubList[0], &attnConfig);
 
         std::for_each(std::begin(attentions), std::end(attentions),
