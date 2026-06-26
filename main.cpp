@@ -1,5 +1,4 @@
 #include <analyzer/analyzer_main.hpp>
-#include <attn/attention.hpp>
 #include <attn/attn-daemon.hpp>
 #include <attn/attn_config.hpp>
 #include <attn/attn_dump.hpp>

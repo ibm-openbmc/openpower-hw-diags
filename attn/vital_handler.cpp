@@ -1,8 +1,8 @@
-#include <attn/attention.hpp>
 #include <attn/attn_common.hpp>
 #include <attn/attn_dump.hpp>
 #include <attn/attn_handler.hpp>
 #include <attn/attn_logging.hpp>
+#include <attn/vital_handler.hpp>
 #include <sdbusplus/bus.hpp>
 #include <util/dbus.hpp>
 #include <util/pdbg.hpp>
@@ -124,11 +124,11 @@ bool checkstopActive(uint32_t hubInstance)
 /**
  * @brief Handle SBE vital attention
  *
- * @param i_attention - attention object
+ * @param i_event An attention event.
  *
  * @return non-zero if attention was not successfully handled
  */
-int handleVital(Attention* i_attention)
+int handleVital(Event* i_event)
 {
     trace::inf("vital handler started");
 
@@ -137,7 +137,7 @@ int handleVital(Attention* i_attention)
     return RC_NOT_HANDLED;
 
     // if vital handling disabled
-    if (false == (i_attention->getConfig()->getFlag(enVital)))
+    if (false == (i_event->getConfig()->getFlag(enVital)))
     {
         trace::inf("vital handling disabled");
         return RC_NOT_HANDLED;
@@ -153,7 +153,7 @@ int handleVital(Attention* i_attention)
 
     // if no checkstop and host is running
     // get hub number
-    uint32_t instance = TARGETING::utils::getPosition(i_attention->getTarget());
+    uint32_t instance = TARGETING::utils::getPosition(i_event->getTarget());
 
     if (!checkstopActive(instance) &&
         util::dbus::HostRunningState::Started == util::dbus::hostRunningState())

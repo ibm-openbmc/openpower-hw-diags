@@ -12,16 +12,15 @@ namespace attn
 inline constexpr uint32_t enableBreakpoints = 1;
 
 /**
- * @brief These objects contain information about an active attention.
+ * @brief Contain information about an active attention event.
  *
- * An Attention object is created for each active attention. These objects
- * carry with them various configuration and status information as well
- * the attention handler function to call for handling the attention. Each
- * Attention object also carries a priority value. This priority is used
- * to determine which attention event(s) to handle when there are more than
- * one active event.
+ * These objects are created for each active attention, which carry with them
+ * various configuration and status information as well a callback function for
+ * handling the attention. Each object also carries a priority value. This
+ * priority is used to determine which attention event(s) to handle when there
+ * are more than one active attentions at the same time.
  */
-class Attention
+class Event
 {
   public:
     /** @brief types of attentions to be handled (by priority low to high) */
@@ -33,23 +32,23 @@ class Attention
     };
 
     /** @brief Default constructor. */
-    Attention() = delete;
+    Event() = delete;
 
     /** @brief Main constructor. */
-    Attention(AttentionType i_type, int (*i_handler)(Attention*),
-              TARGETING::TargetPtr i_target, Config* i_config) :
+    Event(AttentionType i_type, int (*i_handler)(Event*),
+          TARGETING::TargetPtr i_target, Config* i_config) :
         iv_type(i_type), iv_handler(i_handler), iv_target(i_target),
         iv_config(i_config)
     {}
 
     /** @brief Destructor */
-    ~Attention() = default;
+    ~Event() = default;
 
     /** @brief Copy constructor. */
-    Attention(const Attention&) = default;
+    Event(const Event&) = default;
 
     /** @brief Assignment operator. */
-    Attention& operator=(const Attention&) = default;
+    Event& operator=(const Event&) = default;
 
     /** @brief Get attention priority */
     int getPriority() const
@@ -76,14 +75,14 @@ class Attention
     }
 
     /** @brief less than operator, for heap creation */
-    bool operator<(const Attention& right) const
+    bool operator<(const Event& right) const
     {
         return (getPriority() < right.getPriority());
     }
 
   private:
     AttentionType iv_type;          // attention type
-    int (*iv_handler)(Attention*);  // handler function
+    int (*iv_handler)(Event*);      // handler function
     TARGETING::TargetPtr iv_target; // handler function target
     Config* iv_config;              // configuration flags
 };

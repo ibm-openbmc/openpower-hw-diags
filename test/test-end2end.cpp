@@ -1,4 +1,4 @@
-#include <attn/attention.hpp>
+#include <attn/attn-event.hpp>
 #include <attn/attn_config.hpp>
 #include <attn/attn_handler.hpp>
 #include <cli.hpp>
@@ -10,9 +10,9 @@
 namespace attn
 {
 // these are in the attn_lib but not all exposed via headers
-int handleSpecial(Attention* i_attention);
-int handleCheckstop(Attention* i_attention);
-int handleVital(Attention* i_attention);
+int handleSpecial(Event* i_event);
+int handleCheckstop(Event* i_event);
+int handleVital(Event* i_event);
 } // namespace attn
 
 /** @brief Attention handler test application */
@@ -39,19 +39,19 @@ int main(int argc, char* argv[])
     // Exercise special, checkstop and vital attention handler paths
     if ((nullptr != hubList[0]) && TARGETING::utils::isFunctional(hubList[0]))
     {
-        std::vector<attn::Attention> attentions;
+        std::vector<attn::Event> attentions;
 
-        attentions.emplace_back(attn::Attention::AttentionType::Special,
+        attentions.emplace_back(attn::Event::AttentionType::Special,
                                 attn::handleSpecial, hubList[0], &attnConfig);
 
-        attentions.emplace_back(attn::Attention::AttentionType::Checkstop,
+        attentions.emplace_back(attn::Event::AttentionType::Checkstop,
                                 attn::handleCheckstop, hubList[0], &attnConfig);
 
-        attentions.emplace_back(attn::Attention::AttentionType::Vital,
+        attentions.emplace_back(attn::Event::AttentionType::Vital,
                                 attn::handleVital, hubList[0], &attnConfig);
 
         std::for_each(std::begin(attentions), std::end(attentions),
-                      [](attn::Attention attention) {
+                      [](attn::Event attention) {
                           trace::inf("calling handler");
                           attention.handle();
                       });

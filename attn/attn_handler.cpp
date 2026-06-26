@@ -1,7 +1,7 @@
 #include <config.h>
 
 #include <analyzer/analyzer_main.hpp>
-#include <attn/attention.hpp>
+#include <attn/attn-event.hpp>
 #include <attn/attn_common.hpp>
 #include <attn/attn_config.hpp>
 #include <attn/attn_dbus.hpp>
@@ -26,21 +26,21 @@ namespace attn
 /**
  * @brief Handle checkstop attention
  *
- * @param i_attention Attention object
+ * @param i_event An attention event.
  * @return 0 indicates that the checkstop attention was successfully handled
  *         1 indicates that the checkstop attention was NOT successfully
  *           handled.
  */
-int handleCheckstop(Attention* i_attention);
+int handleCheckstop(Event* i_event);
 
 /**
  * @brief Handle special attention
  *
- * @param i_attention Attention object
+ * @param i_event An attention event.
  * @return 0 indicates that the special attention was successfully handled
  *         1 indicates that the special attention was NOT successfully handled
  */
-int handleSpecial(Attention* i_attention);
+int handleSpecial(Event* i_event);
 
 /** @brief Handle phal sbe exception */
 /*
@@ -61,7 +61,7 @@ bool tiInfoValid(uint8_t* tiInfo);
  * @param io_activeAttns The list of active attentions.
  */
 void getComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config,
-                     std::vector<Attention>& io_activeAttns)
+                     std::vector<Event>& io_activeAttns)
 {
     // TODO: Instead of iterating all compute chips. Look at the TAP_STATUS
     // (fsi: 2950) and TAP_MASK (fsi: 2954) registers to determine which compute
@@ -111,15 +111,15 @@ void getComputeAttns(TARGETING::TargetPtr i_hub, Config* i_config,
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
             // Note: Use hub as target, not compute chip
-            io_activeAttns.emplace_back(Attention::Checkstop, handleCheckstop,
+            io_activeAttns.emplace_back(Event::Checkstop, handleCheckstop,
                                         i_hub, i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
             // Note: Use hub as target, not compute chip
-            io_activeAttns.emplace_back(Attention::Special, handleSpecial,
-                                        i_hub, i_config);
+            io_activeAttns.emplace_back(Event::Special, handleSpecial, i_hub,
+                                        i_config);
         }
     }
 }
@@ -141,7 +141,7 @@ void attnHandler(Config* i_config)
     trace::inf("Attention handler started");
 
     // Keep a list of all active attentions.
-    std::vector<Attention> active_attentions;
+    std::vector<Event> active_attentions;
 
     // Look for active attentions on each functional hub chip.
     auto hubList = TARGETING::utils::getTargets(TARGETING::TYPE_HUB_CHIP);
@@ -188,19 +188,19 @@ void attnHandler(Config* i_config)
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_CHIP_CS))
         {
-            active_attentions.emplace_back(Attention::Checkstop,
-                                           handleCheckstop, hub, i_config);
+            active_attentions.emplace_back(Event::Checkstop, handleCheckstop,
+                                           hub, i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPECIAL))
         {
-            active_attentions.emplace_back(Attention::Special, handleSpecial,
-                                           hub, i_config);
+            active_attentions.emplace_back(Event::Special, handleSpecial, hub,
+                                           i_config);
         }
 
         if (activeAttn(isr_val, isr_mask, FSI2PIB_SPPE_ATTN))
         {
-            active_attentions.emplace_back(Attention::Vital, handleVital, hub,
+            active_attentions.emplace_back(Event::Vital, handleVital, hub,
                                            i_config);
         }
 
@@ -239,12 +239,12 @@ void attnHandler(Config* i_config)
 /**
  * @brief Handle checkstop attention
  *
- * @param i_attention Attention object
+ * @param i_event An attention event.
  * @return 0 indicates that the checkstop attention was successfully handled
  *         1 indicates that the checkstop attention was NOT successfully
  *           handled.
  */
-int handleCheckstop(Attention* i_attention)
+int handleCheckstop(Event* i_event)
 {
     int rc = RC_SUCCESS; // assume checkstop handled
 
@@ -254,7 +254,7 @@ int handleCheckstop(Attention* i_attention)
     addHbStatusRegs();
 
     // if checkstop handling enabled, handle checkstop attention
-    if (false == (i_attention->getConfig()->getFlag(enCheckstop)))
+    if (false == (i_event->getConfig()->getFlag(enCheckstop)))
     {
         trace::inf("Checkstop handling disabled");
     }
@@ -288,11 +288,11 @@ int handleCheckstop(Attention* i_attention)
 /**
  * @brief Handle special attention
  *
- * @param i_attention Attention object
+ * @param i_event An attention event.
  * @return 0 indicates that the special attention was successfully handled
  *         1 indicates that the special attention was NOT successfully handled
  */
-int handleSpecial(Attention* i_attention)
+int handleSpecial(Event* i_event)
 {
     int rc = RC_SUCCESS; // assume special attention handled
 
@@ -301,10 +301,9 @@ int handleSpecial(Attention* i_attention)
 
     // TODO - reenable
     // uint32_t tiInfoLen = 0;       // length of TI info data
-    TARGETING::TargetPtr attnHub =
-        i_attention->getTarget(); // hub with attention
+    TARGETING::TargetPtr attnHub = i_event->getTarget(); // hub with attention
 
-    bool tiInfoStatic = false;    // assume TI info was provided (not created)
+    bool tiInfoStatic = false; // assume TI info was provided (not created)
 
     // need hub target to get dynamic TI info
     if (nullptr != attnHub)
@@ -358,7 +357,7 @@ int handleSpecial(Attention* i_attention)
     if (true == tiInfoValid(tiInfo))
     {
         // TI info is valid handle TI if support enabled
-        if (true == (i_attention->getConfig()->getFlag(enTerminate)))
+        if (true == (i_event->getConfig()->getFlag(enTerminate)))
         {
             // Call TI special attention handler
             rc = tiHandler((TiDataArea*)tiInfo);
@@ -369,10 +368,10 @@ int handleSpecial(Attention* i_attention)
         trace::inf("TI info NOT valid");
 
         // if configured to handle TI as default special attention
-        if (i_attention->getConfig()->getFlag(dfltTi))
+        if (i_event->getConfig()->getFlag(dfltTi))
         {
             // TI handling may be disabled
-            if (true == (i_attention->getConfig()->getFlag(enTerminate)))
+            if (true == (i_event->getConfig()->getFlag(enTerminate)))
             {
                 // Call TI special attention handler
                 rc = tiHandler((TiDataArea*)tiInfo);
@@ -382,7 +381,7 @@ int handleSpecial(Attention* i_attention)
         else
         {
             // breakpoint handling may be disabled
-            if (true == (i_attention->getConfig()->getFlag(enBreakpoints)))
+            if (true == (i_event->getConfig()->getFlag(enBreakpoints)))
             {
                 // Call the breakpoint special attention handler
                 rc = bpHandler();

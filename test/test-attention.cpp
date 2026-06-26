@@ -1,4 +1,4 @@
-#include <attn/attention.hpp>
+#include <attn/attn-event.hpp>
 #include <attn/attn_common.hpp>
 #include <attn/attn_config.hpp>
 #include <attn/attn_handler.hpp>
@@ -10,14 +10,14 @@
 namespace attn
 {
 // these are in the attn_lib but not all exposed via headers
-int handleSpecial(Attention* i_attention);
+int handleSpecial(Event* i_event);
 } // namespace attn
 
 using namespace attn;
 using namespace util::pdbg;
 
 /** @brief global function to be called back. */
-int handleAttention(Attention* attention)
+int handleAttention(Event* attention)
 {
     int rc = RC_SUCCESS;
     if (attention != nullptr)
@@ -32,9 +32,9 @@ int handleAttention(Attention* attention)
 
 // Global variables for UT #1 and UT#2.
 // Attention type
-Attention::AttentionType gType = Attention::AttentionType::Special;
+Event::AttentionType gType = Event::AttentionType::Special;
 // pointer to handler callback function
-int (*gHandler)(Attention*) = &(handleSpecial);
+int (*gHandler)(Event*) = &(handleSpecial);
 const AttentionFlag gAttnFlag = AttentionFlag::enBreakpoints;
 
 // Start preparation for UT case #1.
@@ -43,10 +43,10 @@ const AttentionFlag gAttnFlag = AttentionFlag::enBreakpoints;
 const uint32_t gPos = 1;
 
 /** @brief Fixture class for TEST_F(). */
-class AttentionTestPos : public testing::Test
+class EventTestPos : public testing::Test
 {
   public:
-    AttentionTestPos() {}
+    EventTestPos() {}
 
     void SetUp()
     {
@@ -69,8 +69,7 @@ class AttentionTestPos : public testing::Test
         config = new Config;
         EXPECT_EQ(true, config->getFlag(gAttnFlag));
 
-        pAttn = std::make_unique<Attention>(
-            Attention(gType, gHandler, target, config));
+        pAttn = std::make_unique<Event>(Event(gType, gHandler, target, config));
     }
 
     void TearDown()
@@ -78,12 +77,12 @@ class AttentionTestPos : public testing::Test
         delete config;
     }
 
-    std::unique_ptr<Attention> pAttn;
+    std::unique_ptr<Event> pAttn;
     Config* config = nullptr;
     TARGETING::TargetPtr target = nullptr;
 };
 
-TEST_F(AttentionTestPos, TestAttnTargetPos)
+TEST_F(EventTestPos, TestAttnTargetPos)
 {
     EXPECT_EQ(0, pAttn->getPriority());
     EXPECT_EQ(RC_SUCCESS, pAttn->handle());
@@ -114,10 +113,10 @@ TEST_F(AttentionTestPos, TestAttnTargetPos)
 const uint32_t gChipId = 0x20da; // Chip ID for proc0.
 
 /** @brief Fixture class for TEST_F(). */
-class AttentionTestProc : public testing::Test
+class EventTestProc : public testing::Test
 {
   public:
-    AttentionTestProc() {}
+    EventTestProc() {}
 
     void SetUp()
     {
@@ -135,8 +134,7 @@ class AttentionTestProc : public testing::Test
         config = new Config;
         EXPECT_EQ(true, config->getFlag(gAttnFlag));
 
-        pAttn = std::make_unique<Attention>(
-            Attention(gType, gHandler, target, config));
+        pAttn = std::make_unique<Event>(Event(gType, gHandler, target, config));
     }
 
     void TearDown()
@@ -144,13 +142,13 @@ class AttentionTestProc : public testing::Test
         delete config;
     }
 
-    std::unique_ptr<Attention> pAttn;
+    std::unique_ptr<Event> pAttn;
     Config* config = nullptr;
     TARGETING::TargetPtr target = nullptr;
     uint32_t attr = std::numeric_limits<uint32_t>::max();
 };
 
-TEST_F(AttentionTestProc, TestAttentionProc)
+TEST_F(EventTestProc, TestEventProc)
 {
     EXPECT_EQ(0, pAttn->getPriority());
     EXPECT_EQ(RC_SUCCESS, pAttn->handle());
