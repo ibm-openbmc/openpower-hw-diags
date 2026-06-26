@@ -35,24 +35,15 @@ class Attention
     /** @brief Default constructor. */
     Attention() = delete;
 
-    /** @brief Main constructors */
+    /** @brief Main constructor. */
     Attention(AttentionType i_type, int (*i_handler)(Attention*),
-              TARGETING::TargetPtr i_target, Config* i_config);
+              TARGETING::TargetPtr i_target, Config* i_config) :
+        iv_type(i_type), iv_handler(i_handler), iv_target(i_target),
+        iv_config(i_config)
+    {}
 
     /** @brief Destructor */
     ~Attention() = default;
-
-    /** @brief Get attention priority */
-    int getPriority() const;
-
-    /* @brief Get config object */
-    Config* getConfig() const;
-
-    /* @brief Call attention handler function */
-    int handle();
-
-    /* @brief Get attention handler target */
-    TARGETING::TargetPtr getTarget() const;
 
     /** @brief Copy constructor. */
     Attention(const Attention&) = default;
@@ -60,8 +51,35 @@ class Attention
     /** @brief Assignment operator. */
     Attention& operator=(const Attention&) = default;
 
-    /** @brief less than operator */
-    bool operator<(const Attention& right) const;
+    /** @brief Get attention priority */
+    int getPriority() const
+    {
+        return iv_type;
+    }
+
+    /** @brief Get config object */
+    Config* getConfig() const
+    {
+        return iv_config;
+    }
+
+    /** @brief Call attention handler function */
+    int handle()
+    {
+        return iv_handler(this);
+    }
+
+    /** @brief Get attention handler target */
+    TARGETING::TargetPtr getTarget() const
+    {
+        return iv_target;
+    }
+
+    /** @brief less than operator, for heap creation */
+    bool operator<(const Attention& right) const
+    {
+        return (getPriority() < right.getPriority());
+    }
 
   private:
     AttentionType iv_type;          // attention type

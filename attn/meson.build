@@ -34,7 +34,6 @@ configure_file(
 
 # Source files.
 attn_src = files(
-    'attention.cpp',
     'attn_common.cpp',
     'attn_config.cpp',
     'attn_dbus.cpp',
