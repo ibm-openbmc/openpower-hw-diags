@@ -3,13 +3,8 @@
 #include <attn/attn_config.hpp>
 #include <util/pdbg.hpp>
 
-#include <bitset>
-
 namespace attn
 {
-
-/** @brief attention handler configuration flags */
-inline constexpr uint32_t enableBreakpoints = 1;
 
 /**
  * @brief Contain information about an active attention event.
